@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../core/theme/app_colors.dart';
 import '../../domain/entities/wallpaper.dart';
+import '../providers/favorites_provider.dart';
 import '../providers/wallpaper_action_provider.dart';
 import '../providers/wallpaper_deck_provider.dart';
 import '../widgets/batch/batch_complete_dialog.dart';
@@ -15,8 +16,10 @@ import '../widgets/common/header_bar.dart';
 import '../widgets/deck/swipeable_card_stack.dart';
 import '../widgets/preview/wallpaper_preview_dialog.dart';
 import '../widgets/thumbnail_tray.dart';
+import '../widgets/vault/favorites_vault_view.dart';
 
-/// Primary application shell containing the responsive deck, dock, and keyboard listeners.
+/// Primary application shell containing the responsive deck, Favorites Vault,
+/// dock controls, and global keyboard shortcuts.
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -38,6 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
           if (mounted) _prefetchNextCards(deck.deck);
         });
       }
+
+      final favs = context.read<FavoritesProvider?>();
+      favs?.loadFavorites();
     });
   }
 
@@ -59,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _handleSwipeRight() {
     final item = context.read<WallpaperDeckProvider>().swipeRight();
     if (item != null) {
+      context.read<FavoritesProvider?>()?.addFavorite(item);
       _checkBatchDialog();
     }
   }
@@ -71,12 +78,16 @@ class _HomeScreenState extends State<HomeScreen> {
     final item = context.read<WallpaperDeckProvider>().swipeUp();
     if (item != null) {
       context.read<WallpaperActionProvider>().applyAsWallpaper(item);
+      context.read<FavoritesProvider?>()?.addFavorite(item);
       _checkBatchDialog();
     }
   }
 
   void _handleUndo() {
-    context.read<WallpaperDeckProvider>().undo();
+    final undone = context.read<WallpaperDeckProvider>().undo();
+    if (undone != null) {
+      context.read<FavoritesProvider?>()?.removeFavorite(undone.id);
+    }
   }
 
   void _checkBatchDialog() {
@@ -122,12 +133,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final deckProvider = context.watch<WallpaperDeckProvider>();
     final actionProvider = context.watch<WallpaperActionProvider>();
+    final favProvider = context.watch<FavoritesProvider?>();
+
+    final isVault = deckProvider.viewMode == ViewMode.vault;
 
     return KeyboardListener(
       focusNode: _focusNode,
       autofocus: true,
       onKeyEvent: (event) {
-        if (event is KeyDownEvent) {
+        if (event is KeyDownEvent && !isVault) {
           if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
             _handleSwipeRight();
           } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
@@ -170,49 +184,63 @@ class _HomeScreenState extends State<HomeScreen> {
                     activeSource: deckProvider.currentSource,
                     onSelectSource: (source) => deckProvider.setSource(source),
                     onOpenFolder: () => actionProvider.openFolder(),
+                    activeViewMode: deckProvider.viewMode,
+                    onSelectViewMode: (mode) => deckProvider.setViewMode(mode),
+                    favoritesCount: favProvider?.favorites.length ?? 0,
+                    isDayNightEnabled: deckProvider.isDayNightModeEnabled,
+                    onToggleDayNight: () => deckProvider.toggleDayNightMode(),
+                    autoCycleInterval: deckProvider.autoCycleInterval,
+                    onSelectAutoCycleInterval: (interval) =>
+                        deckProvider.setAutoCycleInterval(interval),
                   ),
-                  CategorySelector(
-                    activeCategory: deckProvider.currentCategory,
-                    onSelectCategory: (category) =>
-                        deckProvider.setCategory(category),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: deckProvider.isLoading && deckProvider.deck.isEmpty
-                          ? const Center(
-                              child: SizedBox(
-                                width: 32,
-                                height: 32,
-                                child: CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation(
-                                    AppColors.primary,
+
+                  // Vault View or Deck View
+                  if (isVault)
+                    const Expanded(child: FavoritesVaultView())
+                  else ...[
+                    CategorySelector(
+                      activeCategory: deckProvider.currentCategory,
+                      onSelectCategory: (category) =>
+                          deckProvider.setCategory(category),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: deckProvider.isLoading && deckProvider.deck.isEmpty
+                            ? const Center(
+                                child: SizedBox(
+                                  width: 32,
+                                  height: 32,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(
+                                      AppColors.primary,
+                                    ),
                                   ),
                                 ),
+                              )
+                            : deckProvider.deck.isEmpty
+                            ? _buildEmptyState(deckProvider)
+                            : SwipeableCardStack(
+                                deck: deckProvider.deck,
+                                onSwipeLeft: _handleSwipeLeft,
+                                onSwipeRight: _handleSwipeRight,
+                                onSwipeUp: _handleSwipeUp,
                               ),
-                            )
-                          : deckProvider.deck.isEmpty
-                          ? _buildEmptyState(deckProvider)
-                          : SwipeableCardStack(
-                              deck: deckProvider.deck,
-                              onSwipeLeft: _handleSwipeLeft,
-                              onSwipeRight: _handleSwipeRight,
-                              onSwipeUp: _handleSwipeUp,
-                            ),
+                      ),
                     ),
-                  ),
-                  ThumbnailTray(likedList: deckProvider.likedList),
-                  ActionDock(
-                    onPass: _handleSwipeLeft,
-                    onLike: _handleSwipeRight,
-                    onStar: _handleSwipeUp,
-                    onUndo: _handleUndo,
-                    onPreview: () {
-                      if (deckProvider.topCard != null) {
-                        _showPreview(deckProvider.topCard!);
-                      }
-                    },
-                    canUndo: deckProvider.canUndo,
-                  ),
+                    ThumbnailTray(likedList: deckProvider.likedList),
+                    ActionDock(
+                      onPass: _handleSwipeLeft,
+                      onLike: _handleSwipeRight,
+                      onStar: _handleSwipeUp,
+                      onUndo: _handleUndo,
+                      onPreview: () {
+                        if (deckProvider.topCard != null) {
+                          _showPreview(deckProvider.topCard!);
+                        }
+                      },
+                      canUndo: deckProvider.canUndo,
+                    ),
+                  ],
                 ],
               ),
             ),
