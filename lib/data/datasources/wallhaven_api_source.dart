@@ -33,6 +33,8 @@ class WallhavenApiSource {
         queryParams['q'] = 'space nebula galaxy';
       } else if (category.toLowerCase() == 'oled dark') {
         queryParams['q'] = 'dark black minimal';
+      } else if (category.toLowerCase() == 'ultrawide') {
+        queryParams['ratios'] = '21x9,32x9';
       } else {
         queryParams['q'] = category.toLowerCase();
       }

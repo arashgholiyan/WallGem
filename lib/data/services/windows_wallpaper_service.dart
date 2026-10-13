@@ -2,10 +2,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as p;
-import '../../core/constants/app_constants.dart';
-import '../../domain/services/i_wallpaper_service.dart';
+import 'base_wallpaper_service.dart';
 
 typedef _SystemParametersInfoWNative =
     Int32 Function(
@@ -23,20 +20,8 @@ typedef _SystemParametersInfoWDart =
     );
 
 /// Concrete Windows implementation interacting with user32.dll via Dart FFI.
-class WindowsWallpaperService implements IWallpaperPlatformService {
-  final http.Client _client;
-
-  WindowsWallpaperService({http.Client? client})
-    : _client = client ?? http.Client();
-
-  @override
-  String get defaultSlideshowDirectory {
-    final userProfile =
-        Platform.environment['USERPROFILE'] ??
-        Platform.environment['HOME'] ??
-        Directory.current.path;
-    return p.join(userProfile, 'Pictures', 'WallGem', 'Slideshow');
-  }
+class WindowsWallpaperService extends BaseWallpaperService {
+  WindowsWallpaperService({super.client});
 
   @override
   Future<bool> setWallpaper(String filePath) async {
@@ -75,32 +60,6 @@ class WindowsWallpaperService implements IWallpaperPlatformService {
       debugPrint('WindowsWallpaperService FFI error: $e');
       return false;
     }
-  }
-
-  @override
-  Future<File?> downloadWallpaper(
-    String url, {
-    required String fileName,
-  }) async {
-    try {
-      final dir = Directory(defaultSlideshowDirectory);
-      if (!dir.existsSync()) {
-        dir.createSync(recursive: true);
-      }
-
-      final file = File(p.join(dir.path, fileName));
-      final res = await _client
-          .get(Uri.parse(url), headers: AppConstants.defaultHeaders)
-          .timeout(AppConstants.downloadTimeout);
-
-      if (res.statusCode == 200) {
-        await file.writeAsBytes(res.bodyBytes);
-        return file;
-      }
-    } catch (e) {
-      debugPrint('downloadWallpaper error: $e');
-    }
-    return null;
   }
 
   @override

@@ -34,6 +34,7 @@ class AppConstants {
     'Cyberpunk',
     'Space',
     'OLED Dark',
+    'Ultrawide',
     'Minimal',
     'Architecture',
   ];

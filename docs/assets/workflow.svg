@@ -16,6 +16,17 @@
       <stop offset="0%" stop-color="#f59e0b"/>
       <stop offset="100%" stop-color="#d97706"/>
     </linearGradient>
+    <style>
+      @keyframes flowStroke {
+        0% { stroke-dashoffset: 18; opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { stroke-dashoffset: 0; opacity: 0.5; }
+      }
+      .anim-flow {
+        stroke-dasharray: 6 3;
+        animation: flowStroke 2s linear infinite;
+      }
+    </style>
   </defs>
 
   <!-- Step 1: Discover -->
@@ -32,7 +43,7 @@
   </g>
 
   <!-- Arrow 1 -> 2 -->
-  <path d="M 238 130 L 268 130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 238 130 L 268 130" stroke="#6366f1" stroke-width="2" class="anim-flow"/>
   <polygon points="268,126 276,130 268,134" fill="#6366f1"/>
 
   <!-- Step 2: Swipe & Decide -->
@@ -49,7 +60,7 @@
   </g>
 
   <!-- Arrow 2 -> 3 -->
-  <path d="M 478 130 L 508 130" stroke="#a855f7" stroke-width="2"/>
+  <path d="M 478 130 L 508 130" stroke="#a855f7" stroke-width="2" class="anim-flow"/>
   <polygon points="508,126 516,130 508,134" fill="#a855f7"/>
 
   <!-- Step 3: Native Desktop Engine -->
@@ -58,15 +69,15 @@
     <circle cx="95" cy="48" r="24" fill="url(#flowGrad4)"/>
     <text x="95" y="55" font-size="20" text-anchor="middle" fill="#ffffff">⚡</text>
     <text x="95" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">3. Native Apply</text>
-    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Win32 user32.dll FFI</text>
-    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Zero-lag wallpaper switch</text>
-    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Safe memory calloc.free</text>
+    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Windows • macOS • Linux</text>
+    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Win32 FFI &amp; osascript</text>
+    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">GNOME / KDE / feh</text>
     <rect x="35" y="174" width="120" height="18" rx="9" fill="#f59e0b" fill-opacity="0.15"/>
-    <text x="95" y="187" font-size="10" font-weight="bold" fill="#fbbf24" text-anchor="middle">Desktop System API</text>
+    <text x="95" y="187" font-size="10" font-weight="bold" fill="#fbbf24" text-anchor="middle">Universal Desktop API</text>
   </g>
 
   <!-- Arrow 3 -> 4 -->
-  <path d="M 718 130 L 748 130" stroke="#10b981" stroke-width="2"/>
+  <path d="M 718 130 L 748 130" stroke="#10b981" stroke-width="2" class="anim-flow"/>
   <polygon points="748,126 756,130 748,134" fill="#10b981"/>
 
   <!-- Step 4: Slideshow Automation -->

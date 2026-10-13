@@ -1,17 +1,17 @@
 # Wall Gem 💎
 
 <p align="center">
-  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite for Windows.</strong>
+  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite for Windows, macOS, and Linux.</strong>
   <br />
-  <em>Engineered with Flutter, Clean Architecture, and native Win32 FFI kernel hooks.</em>
+  <em>Engineered with Flutter, Clean Architecture, and native OS kernel hooks (Win32 FFI, macOS System Events, Linux gsettings/KDE).</em>
 </p>
 
 <p align="center">
   <a href="https://github.com/arashgholiyan/wall-gem/releases/latest">
     <img src="https://img.shields.io/github/v/release/arashgholiyan/wall-gem?color=6366F1&label=Release&logo=github" alt="Release" />
   </a>
-  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?logo=windows" alt="Platform" />
-  <img src="https://img.shields.io/badge/Tests-35%2F35%20Passing-10B981?logo=checkmarx" alt="Tests" />
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D6" alt="Platforms" />
+  <img src="https://img.shields.io/badge/Tests-46%2F46%20Passing-10B981?logo=checkmarx" alt="Tests" />
   <img src="https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart" alt="Dart" />
   <img src="https://img.shields.io/badge/Flutter-3.38%2B-02569B?logo=flutter" alt="Flutter" />
   <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
@@ -29,7 +29,7 @@
 
 Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-ridden web galleries or waiting on arbitrary download countdowns. 
 
-**Wall Gem** reimagines wallpaper discovery into an instant, tactile **60 FPS swipe deck**. Built from the ground up for desktop ergonomics, it concurrently streams ultra-high-definition wallpapers from **10 distinct platforms**, deduplicates them in real time, and connects directly to the Windows OS kernel to apply changes in milliseconds—with **zero API keys**, **zero background bloatware**, and **zero telemetry**.
+**Wall Gem** reimagines wallpaper discovery into an instant, tactile **60 FPS swipe deck**. Built from the ground up for desktop ergonomics, it concurrently streams ultra-high-definition wallpapers across diverse categories, deduplicates them in real time, and connects directly to the host OS kernel to apply changes in milliseconds—with **zero API keys**, **zero background bloatware**, and **zero telemetry**.
 
 <p align="center">
   <img src="docs/assets/ui_preview.svg" alt="Wall Gem Interface Preview" width="100%" />
@@ -39,16 +39,19 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
 
 ## ✨ Engineering Highlights
 
-- **⚡ Native Win32 Kernel FFI (`user32.dll`)**  
-  Bypasses heavy background daemons and external scripts. Directly invokes `SystemParametersInfoW` via Dart FFI with UTF-16 pointer allocation and immediate memory cleanup, switching desktop backgrounds in under 100ms.
+- **⚡ Universal Native Desktop Engine (Win32 FFI • macOS • Linux)**  
+  Direct kernel and desktop API integration with zero background bloat:
+  - **Windows**: Direct kernel calls via `user32.dll` (`SystemParametersInfoW`) with UTF-16 pointer safety and immediate `calloc.free` cleanup (<100ms switches).
+  - **macOS**: Native multi-desktop picture management via System Events script execution.
+  - **Linux**: Automatic desktop environment routing across GNOME/Cinnamon/MATE (`gsettings`), KDE Plasma (`qdbus`), XFCE (`xfconf-query`), and tiling window managers (`feh`/`nitrogen`).
 - **🌐 10-Platform Concurrent Pipeline**  
   Queries 10 high-resolution providers simultaneously with asynchronous pooling, real-time URL deduplication, and resilient fallback handling.
 - **🃏 Tactile 60 FPS Card Physics**  
   Fluid swipe mechanics built with hardware-accelerated animations, spring curves, full keyboard hotkey support, and an undo history stack.
-- **🖼️ Automated Windows Slideshow Sync**  
-  Every 5 liked wallpapers are automatically synchronized into `Pictures\WallGem\Slideshow`, seamlessly integrating with native Windows desktop rotation.
+- **🖼️ Automated Desktop Slideshow Sync**  
+  Every 5 liked wallpapers are automatically synchronized into `Pictures/WallGem/Slideshow`, seamlessly integrating with native OS desktop wallpaper rotations.
 - **🛡️ Strict Clean Architecture & 100% Hermetic Tests**  
-  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, and state controller is covered by an automated test harness (35 passing unit & widget tests, 0 analyzer warnings).
+  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, platform service, and state controller is covered by an automated test harness (46 passing unit & widget tests, 0 analyzer warnings).
 
 ---
 
@@ -113,12 +116,15 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 ┌──────────────────────────────┴──────────────────────────────┐
 │                          DATA LAYER                         │
 │  10 Data Sources  •  WallpaperRepositoryImpl  •  Cache Model │
-│   Native FFI: WindowsWallpaperService (user32.dll kernel hook)  │
+│   Platform Services Factory:                                │
+│   ├─ WindowsWallpaperService (user32.dll Win32 FFI)         │
+│   ├─ MacOSWallpaperService (AppleScript System Events)      │
+│   └─ LinuxWallpaperService (GNOME / KDE / XFCE / feh)       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 - **Separation of Concerns**: Pure Dart domain layer has zero dependency on UI or Flutter SDK.
-- **Platform Isolation**: Win32 FFI calls live strictly behind the `IWallpaperPlatformService` interface, enabling painless porting to macOS (`NSWorkspace`) and Linux (`gsettings`).
+- **Platform Isolation**: Native desktop wallpaper setters live strictly behind the `IWallpaperPlatformService` interface, automatically chosen at runtime via `WallpaperServiceFactory`.
 - **Resilience**: Any remote datasource failure degrades gracefully into curated offline fallbacks without disrupting the active card stack.
 
 ---
@@ -127,7 +133,7 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 
 ### Prerequisites
 - [Flutter SDK](https://flutter.dev) (v3.24+ recommended)
-- Windows 10/11 with Developer Mode or C++ build tools
+- Windows 10/11, macOS, or Linux desktop environment
 
 ### Build & Run Locally
 ```bash
@@ -138,8 +144,8 @@ cd wall-gem
 # Fetch dependencies
 flutter pub get
 
-# Launch on Windows Desktop
-flutter run -d windows
+# Launch on Desktop (Windows, macOS, or Linux)
+flutter run
 ```
 
 ### Verification & Testing
@@ -147,7 +153,7 @@ flutter run -d windows
 # Run static analysis
 flutter analyze
 
-# Execute 35 hermetic unit & widget tests
+# Execute 46 hermetic unit & widget tests
 flutter test
 ```
 
