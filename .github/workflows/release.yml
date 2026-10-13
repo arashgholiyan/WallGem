@@ -5,6 +5,11 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release tag to attach binaries to (e.g., v1.2.0)'
+        required: false
+        default: 'v1.2.0'
 
 permissions:
   contents: write
@@ -41,9 +46,16 @@ jobs:
         run: |
           Compress-Archive -Path "build\windows\x64\runner\Release\*" -DestinationPath "wall-gem-windows-x64.zip" -Force
 
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wall-gem-windows-x64
+          path: wall-gem-windows-x64.zip
+
       - name: Publish Windows Artifact to Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           files: wall-gem-windows-x64.zip
 
   build-linux:
@@ -78,9 +90,16 @@ jobs:
         run: |
           tar -czvf wall-gem-linux-x64.tar.gz -C build/linux/x64/release/bundle .
 
+      - name: Upload Linux Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wall-gem-linux-x64
+          path: wall-gem-linux-x64.tar.gz
+
       - name: Publish Linux Artifact to Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           files: wall-gem-linux-x64.tar.gz
 
   build-macos:
@@ -111,7 +130,14 @@ jobs:
           cd build/macos/Build/Products/Release
           zip -r ../../../../../wall-gem-macos-x64.zip "Wall Gem.app"
 
+      - name: Upload macOS Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wall-gem-macos-x64
+          path: wall-gem-macos-x64.zip
+
       - name: Publish macOS Artifact to Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.event.inputs.tag_name || github.ref_name }}
           files: wall-gem-macos-x64.zip
