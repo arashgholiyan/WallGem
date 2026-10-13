@@ -1,28 +1,26 @@
 ---
-name: Bug report
-about: Create a report to help us improve Wall Gem
+name: Bug Report
+about: Report a glitch, unexpected behavior, or crash in Wall Gem
 title: '[BUG] '
 labels: bug
 assignees: ''
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### 🐛 What Happened?
+A clear, concise summary of what went wrong.
 
-**To Reproduce**
-Steps to reproduce the behavior:
+### 🔁 Steps to Reproduce
 1. Launch Wall Gem
-2. Swipe card to '...'
-3. Click on '....'
-4. See error
+2. Swipe or click on ...
+3. Notice that ...
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### 🎯 Expected Behavior
+What did you expect to happen instead?
 
-**Screenshots / Logs**
-If applicable, add screenshots or console output to help explain your problem.
+### 🖼️ Screenshots or Logs
+If applicable, paste any console output, stack traces, or screenshots here.
 
-**Environment (please complete the following information):**
- - OS: [e.g. Windows 11 23H2]
- - Flutter Version: [e.g. 3.38.9]
- - Wall Gem Version: [e.g. 1.0.0]
+### 💻 System & Environment Information
+- **OS**: [e.g. Windows 11 23H2 / Ubuntu 24.04 / macOS Sequoia]
+- **Display Resolution**: [e.g. 1920x1080 / 3440x1440 ultrawide]
+- **Wall Gem Version**: [e.g. v1.2.0]

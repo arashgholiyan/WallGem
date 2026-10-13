@@ -1,19 +1,19 @@
 ---
-name: Feature request
-about: Suggest an idea or new wallpaper source for Wall Gem
-title: '[FEATURE] '
+name: Feature Request
+about: Suggest a new idea, source provider, or customization for Wall Gem
+title: '[IDEA] '
 labels: enhancement
 assignees: ''
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+### 💡 What's Your Idea?
+A clear and concise description of the feature or improvement you'd love to see in Wall Gem.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+### ❓ What Problem Does This Solve?
+How would this improve your daily desktop experience? (e.g. *"I use Hyprland on Arch and want a direct IPC setter"*, or *"I want to filter wallpapers by resolution"*).
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+### 🛠️ Proposed Solution or Design
+How do you envision this working? (UI mockups, CLI commands, or specific API endpoints).
 
-**Additional context**
-Add any other context, API links, or mockups about the feature request here.
+### 🔗 Context & Links
+Any relevant links, public API documentation, or reference examples.

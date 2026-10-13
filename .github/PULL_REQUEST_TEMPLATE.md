@@ -1,19 +1,29 @@
-## Description
-Please include a summary of the changes and the related issue (if any).
+## Summary of Changes
+A quick summary of what this PR does and why it was built.
 
-Fixes #(issue)
+Fixes #(issue number, if applicable)
 
-## Type of change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
-- [ ] Refactoring / performance improvement
+---
 
-## Checklist
-- [ ] My code follows the style guidelines of this project (`dart format .`)
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] `flutter analyze` passes with zero warnings
-- [ ] `flutter test` passes 100%
+## 🎨 Type of Change
+- [ ] 🐛 Bug fix (non-breaking change fixing an issue)
+- [ ] ✨ New feature (e.g. new source provider, new desktop setter, new filter)
+- [ ] 🚀 Performance optimization or UX polish
+- [ ] 📝 Documentation update
+- [ ] 🧹 Refactoring / test harness improvements
+
+---
+
+## 🧪 Testing Performed
+Please describe the tests you ran or added to verify your changes:
+- [ ] Unit tests added / updated under `test/unit/`
+- [ ] Widget / UI tests added / updated under `test/widget/`
+- [ ] Manually verified on desktop (Windows, macOS, or Linux)
+
+---
+
+## 📋 Quality Checklist
+- [ ] Code formatted with `dart format .`
+- [ ] Static analysis passes with 0 warnings (`flutter analyze`)
+- [ ] All automated tests pass (`flutter test`)
+- [ ] Preserves clean architecture (no direct UI imports inside Data or Domain layers)

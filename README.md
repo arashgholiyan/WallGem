@@ -1,9 +1,9 @@
 # Wall Gem 💎
 
 <p align="center">
-  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite for Windows, macOS, and Linux.</strong>
+  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite.</strong>
   <br />
-  <em>Engineered with Flutter, Clean Architecture, and native OS kernel hooks (Win32 FFI, macOS System Events, Linux gsettings/KDE).</em>
+  <em>Crafted with Flutter, Clean Architecture, and direct native OS kernel hooks (Win32 FFI, macOS System Events, Linux desktop managers).</em>
 </p>
 
 <p align="center">
@@ -25,11 +25,20 @@
 
 ---
 
-## 🎨 Overview
+## 💡 Why I Built Wall Gem
 
-Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-ridden web galleries or waiting on arbitrary download countdowns. 
+Like many software engineers and desktop ricing enthusiasts, I spend upwards of 10 hours a day sitting in front of my displays. A great desktop wallpaper isn't just decoration—it sets the tone for deep focus, creative momentum, and a clean workstation.
 
-**Wall Gem** reimagines wallpaper discovery into an instant, tactile **60 FPS swipe deck**. Built from the ground up for desktop ergonomics, it concurrently streams ultra-high-definition wallpapers across diverse categories, deduplicates them in real time, and connects directly to the host OS kernel to apply changes in milliseconds—with **zero API keys**, **zero background bloatware**, and **zero telemetry**.
+But actually *finding* high-resolution wallpapers has become a frustrating chore:
+- Web galleries buried under slow countdown timers, fake download buttons, and cookie banners.
+- Browser tabs easily eating 2GB+ of memory just to browse a handful of images.
+- Desktop wallpaper utilities that are either 800MB Electron shells, ad-supported bloatware, or sketchy services running in the background 24/7.
+
+**Wall Gem** is the application I always wished existed:
+1. **Snappy & Tactile**: A fluid **60 FPS gesture-driven card deck** that makes exploring art and photography effortless.
+2. **Native & Lightweight**: Direct OS kernel syscalls via **Win32 C-FFI** (`user32.dll`) that switch desktop backgrounds in under 50ms with zero resident background services eating CPU or RAM.
+3. **Respectful & Privacy-First**: No accounts to register, no telemetry, no tracking cookies, and no personal API keys required.
+4. **Hackable**: Export color palettes directly into Pywal or CSS for your terminal and window manager, with human-readable JSON configs you can sync via Git.
 
 <p align="center">
   <img src="docs/assets/ui_preview.svg" alt="Wall Gem Interface Preview" width="100%" />
@@ -37,38 +46,41 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
 
 ---
 
-## ✨ Engineering Highlights
+## ✨ Features
 
-- **⚡ Universal Native Desktop Engine (Win32 FFI • macOS • Linux)**  
-  Direct kernel and desktop API integration with zero background bloat:
-  - **Windows**: Direct kernel calls via `user32.dll` (`SystemParametersInfoW`) with UTF-16 pointer safety and immediate `calloc.free` cleanup (<100ms switches).
-  - **macOS**: Native multi-desktop picture management via System Events script execution.
-  - **Linux**: Automatic desktop environment routing across GNOME/Cinnamon/MATE (`gsettings`), KDE Plasma (`qdbus`), XFCE (`xfconf-query`), and tiling window managers (`feh`/`nitrogen`).
+### 🃏 60 FPS Tactile Swipe Deck
+Browse wallpapers with fluid card physics, spring curves, and keyboard hotkeys. Like with <kbd>→</kbd>, pass with <kbd>←</kbd>, or set your wallpaper immediately with <kbd>↑</kbd>. If you accidentally pass an image you loved, hit <kbd>Z</kbd> to pop it back from the undo history stack.
 
-- **🏛️ Favorites Vault & Local Offline Gallery Grid**  
-  Seamlessly toggle between the 3D swipe deck and an offline gallery view (`[ 🃏 Deck ] [ 🏛️ Vault ]`). Filter, search keywords, inspect, and set wallpapers offline from a human-readable `Pictures/WallGem/favorites.json` store without SQLite or binary database bloat.
+### 🏛️ The Favorites Vault (Local Gallery Grid)
+Switch between the card deck and your offline local gallery anytime (`[ 🃏 Deck ] [ 🏛️ Vault ]`). Filter saved favorites with real-time keyword search (title, artist, tags) and category chips. Everything is stored in human-readable JSON at `Pictures/WallGem/favorites.json`—no binary database lock-in.
 
-- **🎨 Dynamic Color Palette & "Ricing" Exporter**  
-  One-click extraction of dominant wallpaper colors into **Pywal (`.Xresources`)**, **CSS custom properties (`:root`)**, **JSON**, and **Hex CSV** formats, designed specifically for Linux, Windows, and Unix ricing enthusiasts.
+### 🎨 Dynamic Color Palette & "Ricing" Exporter
+Extract dominant colors from any wallpaper with a single click. View visual swatches and copy ready-to-paste configurations for:
+- **Pywal (`.Xresources`)**: For terminal emulators and Linux ricing setups.
+- **CSS Custom Properties (`:root`)**: For custom web dashboards and UI themes.
+- **JSON**: Machine-readable format for scripts and automations.
+- **Hex CSV**: Clean comma-separated color codes.
 
-- **☀️ Day & Night Dynamic Sun Cycle**  
-  Intelligent time-aware discovery automatically shifting recommendations between breathtaking daytime vistas (`06:00–19:59`) and deep OLED Dark / Cyberpunk themes (`20:00–05:59`) to soothe eye strain.
+### ☀️ Day & Night Dynamic Sun Cycle
+Your desktop aesthetic flows with the sun:
+- **Daytime (`06:00–19:59`)**: Automatically prioritizes sun-drenched landscapes, architecture, and vibrant scenery.
+- **Nighttime (`20:00–05:59`)**: Switches recommendations to deep AMOLED Dark, Cyberpunk, and Space themes to soothe eye strain during late-night sessions.
+- Easily toggle on/off with the sun/moon icon in the navigation bar.
 
-- **⏱️ Scheduled Interval Auto-Cycler**  
-  Configurable background slideshow timer with flexible intervals (*Off*, *15m*, *30m*, *1h*, *4h*) that smoothly cycles wallpapers hands-free.
+### ⏱️ Scheduled Interval Auto-Cycler
+Prefer a hands-free desktop slideshow? Choose an interval from the header dropdown (*Off*, *15m*, *30m*, *1h*, *4h*) and Wall Gem will smoothly cycle through fresh curation in the background without battery or memory leaks.
 
-- **🖥️ Multi-Monitor & Ultrawide Splitter**  
-  Accurately detects 21:9 and 32:9 panoramic geometries and calculates clean Left/Right display bisection bounds prepared in `Pictures/WallGem/MultiMonitor/`.
+### 🖥️ Multi-Monitor & Ultrawide Splitter
+Rocking a 21:9 or 32:9 panoramic monitor? Wall Gem detects ultrawide aspect ratios, displays a `🖥️ 21:9+` badge, and calculates clean Left/Right screen bisection slices saved to `Pictures/WallGem/MultiMonitor/`.
 
-- **🌐 10-Platform Concurrent Pipeline**  
-  Queries 10 high-resolution providers simultaneously with asynchronous pooling, real-time URL deduplication, and resilient fallback handling.
-
-- **🛡️ Strict Clean Architecture & 100% Hermetic Tests**  
-  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, platform service, and state controller is covered by an automated test harness (**70 passing unit & widget tests**, **0 analyzer warnings**).
+### 🌐 10 Concurrent Provider Feeds
+Streams ultra-high-definition wallpapers simultaneously across 10 high-resolution endpoints with asynchronous pooling and real-time URL deduplication:
+- WallpapersWide • WallpapersCraft • AlphaCoders • 4K Wallpapers • WallpaperHub
+- Birdpaper 4K • Wallhaven • Bing Daily Archives • Windows Spotlight • Picsum 5K
 
 ---
 
-## 🔄 Interaction Workflow
+## 🔄 Architectural Workflow
 
 <p align="center">
   <img src="docs/assets/workflow.svg" alt="Wall Gem Architectural Workflow" width="100%" />
@@ -76,42 +88,24 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
 
 ---
 
-## 🌐 Pluggable Multi-Source Engine
+## ⌨️ Keyboard Shortcuts
 
-Wall Gem is built with a modular, pluggable provider architecture. The engine concurrently streams, deduplicates, and aggregates ultra-high-definition wallpapers across diverse aesthetic categories without requiring accounts or personal API keys:
-
-| Category | Typical Resolutions | Visual Focus | Ingestion Engine |
-| :--- | :---: | :--- | :--- |
-| **Landscapes & Nature** | 4K UHD (3840×2160) | Mountain vistas, national parks, coastal ridges | Open REST & CDN Feeds |
-| **AMOLED & Minimal** | 4K UHD / True Black | High-contrast dark modes, clean geometry, vector art | Public Metadata Indexer |
-| **Gaming & Sci-Fi** | 4K / 8K UHD | Cyberpunk megacities, concept art, futuristic themes | Structured Schema Stream |
-| **Studio Photography** | 5K Studio (5000×3333) | Fine-art textures, architectural photography | CC0 / Public Domain CDN |
-| **Vehicles & Speed** | 4K UHD (3840×2160) | Supercars, aviation, modern industrial engineering | Public Open Endpoints |
-| **Digital & Anime** | 4K UHD (3840×2160) | Expressive illustrations, anime skies, 3D renders | Community Public APIs |
-| **Daily Curated** | 4K UHD | Fresh daily rotating landscape & geography photography | Daily Rolling Archives |
-
-*The modular provider interface (`IWallpaperRepository`) makes it trivial for developers to plug in custom local directories, self-hosted servers, or additional open web endpoints.*
-
----
-
-## ⌨️ Desktop Shortcuts
-
-Engineered for power users and keyboard ergonomics:
+Wall Gem is designed keyboard-first for fast desktop navigation:
 
 | Key | Action | Behavior |
 | :---: | :--- | :--- |
-| <kbd>→</kbd> | **Like** | Push wallpaper to Vault and current batch tray |
-| <kbd>←</kbd> | **Pass** | Dismiss current card to history |
+| <kbd>→</kbd> | **Like** | Save wallpaper to Favorites Vault and batch tray |
+| <kbd>←</kbd> | **Pass** | Dismiss card to history stack |
 | <kbd>↑</kbd> | **Apply Now** | Download & set as desktop background instantly via Win32 FFI |
-| <kbd>Z</kbd> | **Undo** | Pop and restore the previously dismissed card |
-| <kbd>Space</kbd> | **Inspect Lightbox** | Open fullscreen high-res zoom, palette exporter & split controls |
-| <kbd>R</kbd> | **Refresh** | Trigger fresh network fetch from active platform |
+| <kbd>Z</kbd> | **Undo** | Restore the previously dismissed card |
+| <kbd>Space</kbd> | **Lightbox Zoom** | Open high-res inspection, palette exporter & monitor splitter |
+| <kbd>R</kbd> | **Refresh** | Fetch fresh batch from current source platform |
 
 ---
 
-## 🏗️ Architecture & Clean Design
+## 🏗️ Architecture & Engineering Choices
 
-Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow:
+Wall Gem follows Uncle Bob's **Clean Architecture** with strict unidirectional data flow:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -141,10 +135,10 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 └─────────────────────────────────────────────────────────────┘
 ```
 
-- **Separation of Concerns**: Pure Dart domain layer has zero dependency on UI or Flutter SDK.
-- **Platform Isolation**: Native desktop wallpaper setters live strictly behind the `IWallpaperPlatformService` interface, automatically chosen at runtime via `WallpaperServiceFactory`.
-- **Resilience**: Any remote datasource failure degrades gracefully into curated offline fallbacks without disrupting the active card stack.
-- **Human-Readable Persistence**: User favorites are stored as clean JSON in `Pictures/WallGem/favorites.json`, making backup and sync effortless without proprietary database lock-in.
+### Key Engineering Decisions:
+- **Win32 C-FFI instead of shell execution**: Spawning PowerShell commands (`Set-ItemProperty`) introduces a 400–800ms process spin-up lag. Calling `SystemParametersInfoW` directly through Dart FFI executes in **<50ms**, with manual UTF-16 pointer allocation and immediate `calloc.free` cleanup.
+- **Lightweight JSON over SQLite**: Storing bookmarks in SQLite creates opaque binary files. Saving to `favorites.json` keeps your data readable, easily editable in any text editor, and simple to backup via Git.
+- **100% Hermetic Test Suite**: All remote datasources and platform services accept injected HTTP clients and process runners, allowing **70 unit and widget tests** to run in under 15 seconds on CI with zero external network flakiness.
 
 ---
 
@@ -154,48 +148,51 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 - [Flutter SDK](https://flutter.dev) (v3.24+ recommended)
 - Windows 10/11, macOS, or Linux desktop environment
 
-### Build & Run Locally
+### Running from Source
 ```bash
-# Clone the repository
+# 1. Clone the repository
 git clone https://github.com/arashgholiyan/wall-gem.git
 cd wall-gem
 
-# Fetch dependencies
+# 2. Fetch packages
 flutter pub get
 
-# Launch on Desktop (Windows, macOS, or Linux)
-flutter run
+# 3. Launch the desktop app
+flutter run -d windows
 ```
 
-### Verification & Testing
+### Running Tests & Static Analysis
 ```bash
-# Run static analysis (0 warnings)
+# Code formatting check
+dart format --output=none --set-exit-if-changed .
+
+# Static code analysis (0 issues)
 flutter analyze
 
-# Execute 70 hermetic unit & widget tests
+# Execute 70 unit and widget tests
 flutter test
 ```
 
 ---
 
-## 🤝 Let's Collaborate & Build Together!
+## 🤝 Let's Build Together!
 
-Wall Gem is an open-source initiative designed to prove that desktop utility apps can be fast, gorgeous, and respectful of user privacy.
+Wall Gem is an independent, open-source project. If you're into desktop customization, Linux ricing, or Flutter desktop development, I would love to collaborate with you!
 
-I'm actively looking to collaborate with other passionate developers in the FOSS community. Here are areas where contributions are warmly welcomed:
-- 🐧 **Linux & macOS Custom Setters**: Extending platform setters (`feh`, `swww`, `hyprpaper`, macOS dynamic walls).
-- 🖥️ **Multi-Monitor Customization**: Deep per-monitor desktop COM scheduling on Windows 11.
-- 🏷️ **Custom Tag Filtering & Search**: On-the-fly keyword filtering across community APIs.
+Here are a few exciting areas where contributions and ideas are warmly welcomed:
+- 🐧 **Linux Wayland Setters**: Native integrations for `swww`, `hyprpaper`, or `mpvpaper`.
+- 🍎 **macOS Dynamic Desktop**: Integration with native macOS wallpaper CLI utilities.
+- 🖥️ **Windows 11 Virtual Desktops**: Per-monitor background switching via the `IDesktopWallpaper` COM interface.
+- 🔌 **Custom Sources**: Adding plugins for your own self-hosted image servers or community feeds.
 
-If you have ideas, feedback, or want to collaborate on this or future projects, let's connect!
+Feel free to open an [Issue](https://github.com/arashgholiyan/wall-gem/issues) to start a discussion, share feedback, or submit a Pull Request!
 
-- **Creator**: [Arash Gholiyan](https://github.com/arashgholiyan)
-- **Issues & Discussions**: Feel free to open an [Issue](https://github.com/arashgholiyan/wall-gem/issues) or start a conversation.
-- **Pull Requests**: Check out [CONTRIBUTING.md](CONTRIBUTING.md) — PRs of all sizes are welcome.
+- **Author**: [Arash Gholiyan](https://github.com/arashgholiyan)
+- **Guidelines**: See [CONTRIBUTING.md](CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
 ---
 
-## ⚖️ Legal, Copyright & Trademark Notice
+## ⚖️ Legal, Copyright & Responsible Indexing Notice
 
 ### 1. Non-Hosting & Client-Side Operation
 Wall Gem is an open-source, client-side indexing and desktop personalization utility. **Wall Gem does not host, store, cache on remote servers, or redistribute any copyrighted media or image files.** All media assets, thumbnails, and images are retrieved directly on demand by the end-user's device from publicly accessible third-party endpoints and content delivery networks.
