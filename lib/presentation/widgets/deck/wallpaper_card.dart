@@ -29,27 +29,53 @@ class WallpaperCard extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Wallpaper Image
-          CachedNetworkImage(
-            imageUrl: wallpaper.thumbUrl,
-            fit: BoxFit.cover,
-            placeholder: (context, url) => Container(
-              color: const Color(0xFF141722),
-              child: const Center(
-                child: Icon(
-                  Icons.image_outlined,
-                  color: AppColors.textMuted,
-                  size: 36,
+          // High-Resolution Background Wallpaper Image with Progressive Thumbnail Placeholder
+          RepaintBoundary(
+            child: CachedNetworkImage(
+              imageUrl: wallpaper.fullUrl,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.medium,
+              memCacheWidth: 1920,
+              fadeInDuration: const Duration(milliseconds: 250),
+              placeholder: (context, url) => CachedNetworkImage(
+                imageUrl: wallpaper.thumbUrl,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.low,
+                memCacheWidth: 800,
+                placeholder: (context, url) => Container(
+                  color: const Color(0xFF141722),
+                  child: const Center(
+                    child: Icon(
+                      Icons.image_outlined,
+                      color: AppColors.textMuted,
+                      size: 36,
+                    ),
+                  ),
+                ),
+                errorWidget: (context, url, error) => Container(
+                  color: const Color(0xFF141722),
+                  child: const Center(
+                    child: Icon(
+                      Icons.image_outlined,
+                      color: AppColors.textMuted,
+                      size: 36,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            errorWidget: (context, url, error) => Container(
-              color: const Color(0xFF141722),
-              child: const Center(
-                child: Icon(
-                  Icons.broken_image_outlined,
-                  color: AppColors.textMuted,
-                  size: 48,
+              errorWidget: (context, url, error) => CachedNetworkImage(
+                imageUrl: wallpaper.thumbUrl,
+                fit: BoxFit.cover,
+                filterQuality: FilterQuality.low,
+                errorWidget: (context, url, error) => Container(
+                  color: const Color(0xFF141722),
+                  child: const Center(
+                    child: Icon(
+                      Icons.broken_image_outlined,
+                      color: AppColors.textMuted,
+                      size: 48,
+                    ),
+                  ),
                 ),
               ),
             ),

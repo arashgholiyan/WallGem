@@ -56,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _prefetchNextCards(List<Wallpaper> deck) {
     if (Platform.environment.containsKey('FLUTTER_TEST')) return;
     if (deck.length > 1) {
+      // Precache full-res image for the immediate next card so it renders instantly
+      precacheImage(CachedNetworkImageProvider(deck[1].fullUrl), context);
       for (int i = 1; i < min(4, deck.length); i++) {
         precacheImage(CachedNetworkImageProvider(deck[i].thumbUrl), context);
       }

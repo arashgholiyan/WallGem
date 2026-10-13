@@ -144,4 +144,65 @@ void main() {
       expect(tester.takeException(), isNull);
     },
   );
+
+  testWidgets(
+    'HomeScreen toggles Day/Night Sun cycle and updates autoCycleInterval from HeaderBar',
+    (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      final repo = StubWallpaperRepository();
+      final deckProvider = WallpaperDeckProvider(repository: repo);
+      final actionProvider = WallpaperActionProvider(
+        service: NoopWallpaperService(),
+      );
+      final favProvider = FavoritesProvider(
+        repository: StubFavoritesRepository(),
+      );
+      await deckProvider.loadInitialFeed();
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<WallpaperDeckProvider>.value(
+              value: deckProvider,
+            ),
+            ChangeNotifierProvider<WallpaperActionProvider>.value(
+              value: actionProvider,
+            ),
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
+          ],
+          child: const MaterialApp(home: HomeScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
+
+      expect(deckProvider.isDayNightModeEnabled, isFalse);
+      expect(find.text('🌙'), findsOneWidget);
+
+      // Tap Day/Night toggle
+      await tester.tap(find.text('🌙'));
+      await tester.pumpAndSettle();
+
+      expect(deckProvider.isDayNightModeEnabled, isTrue);
+      expect(find.text('☀️'), findsOneWidget);
+
+      // Select Auto-Cycler interval
+      expect(find.text('⏱️ Timer: Off'), findsOneWidget);
+      await tester.tap(find.text('⏱️ Timer: Off'));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('⏱️ Cycle: 15m'));
+      await tester.pumpAndSettle();
+
+      expect(deckProvider.autoCycleInterval, equals(const Duration(minutes: 15)));
+      expect(find.text('⏱️ Cycle: 15m'), findsOneWidget);
+
+      // Clean up timer
+      deckProvider.setAutoCycleInterval(null);
+    },
+  );
 }
+

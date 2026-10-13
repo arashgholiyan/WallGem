@@ -70,13 +70,15 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
     required double translateY,
     required double opacity,
   }) {
-    return Transform.translate(
-      offset: Offset(0, translateY),
-      child: Transform.scale(
-        scale: scale,
-        child: Opacity(
-          opacity: opacity,
-          child: WallpaperCard(wallpaper: wallpaper),
+    return RepaintBoundary(
+      child: Transform.translate(
+        offset: Offset(0, translateY),
+        child: Transform.scale(
+          scale: scale,
+          child: Opacity(
+            opacity: opacity,
+            child: WallpaperCard(wallpaper: wallpaper),
+          ),
         ),
       ),
     );
@@ -104,13 +106,14 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
           _dragOffset = Offset.zero;
         });
       },
-      child: Transform.translate(
-        offset: _dragOffset,
-        child: Transform.rotate(
-          angle: rotateAngle,
-          child: Stack(
-            children: [
-              WallpaperCard(wallpaper: wallpaper),
+      child: RepaintBoundary(
+        child: Transform.translate(
+          offset: _dragOffset,
+          child: Transform.rotate(
+            angle: rotateAngle,
+            child: Stack(
+              children: [
+                WallpaperCard(wallpaper: wallpaper),
 
               // LIKE Stamp
               if (_dragOffset.dx > 20)
@@ -231,6 +234,7 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -54,17 +54,22 @@ class FavoriteCard extends StatelessWidget {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  CachedNetworkImage(
-                    imageUrl: wallpaper.thumbUrl,
-                    fit: BoxFit.cover,
-                    placeholder: (_, _) =>
-                        Container(color: const Color(0xFF1E2235)),
-                    errorWidget: (_, _, _) => Container(
-                      color: const Color(0xFF1E2235),
-                      child: const Center(
-                        child: Icon(
-                          Icons.broken_image,
-                          color: AppColors.textSecondary,
+                  RepaintBoundary(
+                    child: CachedNetworkImage(
+                      imageUrl: wallpaper.thumbUrl,
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.medium,
+                      memCacheWidth: 600,
+                      fadeInDuration: const Duration(milliseconds: 200),
+                      placeholder: (_, _) =>
+                          Container(color: const Color(0xFF1E2235)),
+                      errorWidget: (_, _, _) => Container(
+                        color: const Color(0xFF1E2235),
+                        child: const Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ),
                     ),
