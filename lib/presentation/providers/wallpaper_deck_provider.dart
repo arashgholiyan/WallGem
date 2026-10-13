@@ -1,9 +1,18 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/utils/day_night_calculator.dart';
 import '../../domain/entities/wallpaper.dart';
 import '../../domain/repositories/i_wallpaper_repository.dart';
 
-/// Presentation state controller managing the wallpaper swipe deck.
+/// Top-level view mode switching between the 3D Deck and Favorites Vault.
+enum ViewMode {
+  deck,
+  vault,
+}
+
+/// Presentation state controller managing the wallpaper swipe deck,
+/// Day/Night Sun cycle dynamic categories, and auto-cycler background timer.
 class WallpaperDeckProvider extends ChangeNotifier {
   final IWallpaperRepository _repository;
 
@@ -11,10 +20,15 @@ class WallpaperDeckProvider extends ChangeNotifier {
   final List<Wallpaper> _likedList = [];
   final List<Wallpaper> _historyStack = [];
 
+  ViewMode _viewMode = ViewMode.deck;
   String _currentCategory = 'All';
   String _currentSource = 'All Sources';
   bool _isLoading = false;
   int _page = 1;
+
+  bool _isDayNightModeEnabled = false;
+  Duration? _autoCycleInterval;
+  Timer? _cycleTimer;
 
   WallpaperDeckProvider({required IWallpaperRepository repository})
     : _repository = repository;
@@ -22,6 +36,7 @@ class WallpaperDeckProvider extends ChangeNotifier {
   List<Wallpaper> get deck => List.unmodifiable(_deck);
   List<Wallpaper> get likedList => List.unmodifiable(_likedList);
   List<Wallpaper> get historyStack => List.unmodifiable(_historyStack);
+  ViewMode get viewMode => _viewMode;
   String get currentCategory => _currentCategory;
   String get currentSource => _currentSource;
   bool get isLoading => _isLoading;
@@ -29,6 +44,45 @@ class WallpaperDeckProvider extends ChangeNotifier {
   bool get canUndo => _historyStack.isNotEmpty;
   Wallpaper? get topCard => _deck.isNotEmpty ? _deck.first : null;
   bool get isBatchComplete => _likedList.length >= AppConstants.batchTarget;
+  bool get isDayNightModeEnabled => _isDayNightModeEnabled;
+  Duration? get autoCycleInterval => _autoCycleInterval;
+
+  /// Changes the primary view between 3D Swipe Deck and Favorites Vault.
+  void setViewMode(ViewMode mode) {
+    if (_viewMode == mode) return;
+    _viewMode = mode;
+    notifyListeners();
+  }
+
+  /// Toggles day/night sun cycle mode. When enabled, automatically applies
+  /// intelligent category recommendations ('Landscape' vs 'OLED Dark').
+  Future<void> toggleDayNightMode() async {
+    _isDayNightModeEnabled = !_isDayNightModeEnabled;
+    if (_isDayNightModeEnabled) {
+      final recommended = DayNightCalculator.getRecommendedCategory(DateTime.now());
+      await setCategory(recommended);
+    } else {
+      notifyListeners();
+    }
+  }
+
+  /// Configures or disables the automatic wallpaper cycling slideshow timer.
+  void setAutoCycleInterval(Duration? interval, {VoidCallback? onCycle}) {
+    _cycleTimer?.cancel();
+    _cycleTimer = null;
+    _autoCycleInterval = interval;
+
+    if (interval != null) {
+      _cycleTimer = Timer.periodic(interval, (_) {
+        if (onCycle != null) {
+          onCycle();
+        } else {
+          swipeLeft();
+        }
+      });
+    }
+    notifyListeners();
+  }
 
   /// Loads the first page of wallpapers.
   Future<void> loadInitialFeed() async {
@@ -134,5 +188,11 @@ class WallpaperDeckProvider extends ChangeNotifier {
     if (_deck.length < 5 && !_isLoading) {
       loadMore();
     }
+  }
+
+  @override
+  void dispose() {
+    _cycleTimer?.cancel();
+    super.dispose();
   }
 }
