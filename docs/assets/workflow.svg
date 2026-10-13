@@ -24,11 +24,11 @@
     <circle cx="95" cy="48" r="24" fill="url(#flowGrad1)"/>
     <text x="95" y="55" font-size="20" text-anchor="middle" fill="#ffffff">🌐</text>
     <text x="95" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">1. Discover</text>
-    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Wallhaven 4K API</text>
-    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Bing Daily Archive</text>
-    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Curated Offline Feed</text>
+    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">10 UHD Platforms</text>
+    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Concurrent Stream</text>
+    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Smart Deduplication</text>
     <rect x="35" y="174" width="120" height="18" rx="9" fill="#38bdf8" fill-opacity="0.15"/>
-    <text x="95" y="187" font-size="10" font-weight="bold" fill="#38bdf8" text-anchor="middle">UHD Feed Cache</text>
+    <text x="95" y="187" font-size="10" font-weight="bold" fill="#38bdf8" text-anchor="middle">Multi-Feed Engine</text>
   </g>
 
   <!-- Arrow 1 -> 2 -->

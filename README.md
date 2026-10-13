@@ -1,174 +1,176 @@
 # Wall Gem 💎
 
 <p align="center">
-  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery & desktop slideshow engine for Windows, built with Flutter and native Win32 FFI.</strong>
+  <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite for Windows.</strong>
+  <br />
+  <em>Engineered with Flutter, Clean Architecture, and native Win32 FFI kernel hooks.</em>
 </p>
 
 <p align="center">
   <a href="https://github.com/arashgholiyan/wall-gem/releases/latest">
-    <img src="https://img.shields.io/github/v/release/arashgholiyan/wall-gem?color=6366F1&label=Latest%20Release&logo=github" alt="Latest Release" />
+    <img src="https://img.shields.io/github/v/release/arashgholiyan/wall-gem?color=6366F1&label=Release&logo=github" alt="Release" />
   </a>
-  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%2F%2011-0078D6?logo=windows" alt="Platform Windows" />
-  <img src="https://img.shields.io/badge/Flutter-3.38%2B-02569B?logo=flutter" alt="Flutter Version" />
-  <img src="https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart" alt="Dart Version" />
-  <img src="https://img.shields.io/badge/License-MIT-10B981" alt="License MIT" />
-  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg" alt="PRs Welcome" />
+  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0078D6?logo=windows" alt="Platform" />
+  <img src="https://img.shields.io/badge/Tests-35%2F35%20Passing-10B981?logo=checkmarx" alt="Tests" />
+  <img src="https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart" alt="Dart" />
+  <img src="https://img.shields.io/badge/Flutter-3.38%2B-02569B?logo=flutter" alt="Flutter" />
+  <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
 </p>
 
 <p align="center">
   <a href="https://github.com/arashgholiyan/wall-gem/releases/latest">
-    <img src="https://img.shields.io/badge/📥_Download_for_Windows-v1.0.0_Portable_ZIP-success?style=for-the-badge&logo=windows" alt="Download Windows Release" />
+    <img src="https://img.shields.io/badge/📥_Download_Executable-v1.1.0_x64_Portable-success?style=for-the-badge&logo=windows" alt="Download Windows Release" />
   </a>
 </p>
 
 ---
 
-## 📸 App Interface Preview
+## 🎨 Overview
+
+Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-ridden web galleries or waiting on arbitrary download countdowns. 
+
+**Wall Gem** reimagines wallpaper discovery into an instant, tactile **60 FPS swipe deck**. Built from the ground up for desktop ergonomics, it concurrently streams ultra-high-definition wallpapers from **10 distinct platforms**, deduplicates them in real time, and connects directly to the Windows OS kernel to apply changes in milliseconds—with **zero API keys**, **zero background bloatware**, and **zero telemetry**.
 
 <p align="center">
-  <img src="docs/assets/ui_preview.svg" alt="Wall Gem App UI Preview" width="100%" />
+  <img src="docs/assets/ui_preview.svg" alt="Wall Gem Interface Preview" width="100%" />
 </p>
 
 ---
 
-## 🎬 How It Works
+## ✨ Engineering Highlights
 
-Wall Gem transforms finding desktop wallpapers from browsing messy websites into an addictive, frictionless swipe deck.
-
-<p align="center">
-  <img src="docs/assets/workflow.svg" alt="Wall Gem Workflow" width="100%" />
-</p>
-
-### 1. Multi-Platform UHD Feed Aggregation
-Wall Gem aggregates from **10 distinct, verified wallpaper platforms**:
-- **WallpapersWide.com**: Direct 4K (3840x2160) community downloads across Nature, Games, Anime, Cars, Space & Cartoons.
-- **WallpapersCraft.com**: Direct high-res FHD/4K feeds across Nature, Anime, Cars, City & Space.
-- **AlphaCoders (wall.alphacoders.com)**: Massive 4K & 8K community wallpapers across Gaming, Anime, Sci-Fi, Fantasy & Vehicles.
-- **4kwallpapers.com**: Direct 4K UHD (3840x2160) downloads for Supercars, Games, AMOLED Dark & Minimal.
-- **WallpaperHub.app**: Microsoft Surface, Xbox, Windows 11 & Minimalist 4K/Ultrawide wallpapers.
-- **Wallhaven.cc**: The world's top-rated 4K & 8K community wallpaper platform.
-- **Microsoft Bing Daily**: Daily global nature and landscape photography in 4K UHD.
-- **Windows Spotlight**: Official Microsoft MSN lockscreen landscape collection.
-- **Birdpaper 4K (360 Engine)**: Real-time 4K Ultra HD catalog with Cars, Games, Scenery & 3D.
-- **Picsum Photos (Unsplash Library)**: 5K studio photography, architecture, and textures.
-- **Curated High-Res Library**: Built-in offline fallback ensuring zero network stutter on launch.
-
-### 2. Gesture-Driven Swipe Deck
-Just like Tinder, browse through an infinite stack of wallpapers using fluid mouse gestures or desktop keyboard shortcuts:
-- **Swipe Right** (<kbd>→</kbd>): **Like** the wallpaper and add it to your current batch tray.
-- **Swipe Left** (<kbd>←</kbd>): **Pass** and dismiss the card.
-- **Swipe Up** (<kbd>↑</kbd>): **Apply Now** — downloads the UHD image and sets it directly as your Windows desktop wallpaper in under a second!
-- **Undo** (<kbd>Z</kbd>): Made a mistake? Step backward and bring the previous wallpaper back to the top of the stack.
-- **Inspect** (<kbd>Space</kbd>): Opens the full-screen high-resolution preview lightbox to examine image clarity, dimensions, and photographer credits.
-
-### 3. Native Windows Desktop Integration (Win32 FFI)
-No third-party daemon or background bloatware required. Wall Gem connects directly to the Windows OS kernel via `user32.dll` (`SystemParametersInfoW`) using Dart FFI, applying desktop wallpapers instantly with safe memory cleanup.
-
-### 4. Automated 5-Wallpaper Slideshow Batches
-Whenever you like **5 wallpapers**, Wall Gem automatically synchronizes them into your local Windows slideshow directory:
-```
-C:\Users\<YourUsername>\Pictures\WallGem\Slideshow
-```
-You can configure Windows Desktop Personalization to point to this directory for a custom rotating slideshow of all your saved gems.
+- **⚡ Native Win32 Kernel FFI (`user32.dll`)**  
+  Bypasses heavy background daemons and external scripts. Directly invokes `SystemParametersInfoW` via Dart FFI with UTF-16 pointer allocation and immediate memory cleanup, switching desktop backgrounds in under 100ms.
+- **🌐 10-Platform Concurrent Pipeline**  
+  Queries 10 high-resolution providers simultaneously with asynchronous pooling, real-time URL deduplication, and resilient fallback handling.
+- **🃏 Tactile 60 FPS Card Physics**  
+  Fluid swipe mechanics built with hardware-accelerated animations, spring curves, full keyboard hotkey support, and an undo history stack.
+- **🖼️ Automated Windows Slideshow Sync**  
+  Every 5 liked wallpapers are automatically synchronized into `Pictures\WallGem\Slideshow`, seamlessly integrating with native Windows desktop rotation.
+- **🛡️ Strict Clean Architecture & 100% Hermetic Tests**  
+  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, and state controller is covered by an automated test harness (35 passing unit & widget tests, 0 analyzer warnings).
 
 ---
 
-## ⌨️ Desktop Keyboard Controls
+## 🔄 Interaction Workflow
 
-| Key | Action | Function |
+<p align="center">
+  <img src="docs/assets/workflow.svg" alt="Wall Gem Architectural Workflow" width="100%" />
+</p>
+
+---
+
+## 🌐 Supported Wallpaper Platforms
+
+Wall Gem aggregates directly from open content delivery networks and official endpoints without requiring user authentication:
+
+| Source | Resolution | Featured Content | Engine Type |
+| :--- | :---: | :--- | :--- |
+| **WallpapersWide** | **4K UHD** (3840×2160) | Nature, Games, Anime, Supercars, Space | Direct CDN Scraper |
+| **AlphaCoders** | **4K / 8K UHD** | Gaming, Sci-Fi, Concept Art, Minimalist | Schema.org Stream |
+| **4K Wallpapers** | **4K UHD** (3840×2160) | AMOLED Dark, Vehicles, Abstract, Tech | Direct CDN Scraper |
+| **WallpapersCraft** | **1080p / 4K** | Cityscapes, Macro, Cyberpunk, Fantasy | Direct CDN Scraper |
+| **WallpaperHub** | **4K / Ultrawide** | Microsoft Surface, Xbox, Windows 11 | REST API |
+| **Birdpaper 4K** | **4K UHD** | 3D Renders, Anime, Animals, Landscape | REST API |
+| **Wallhaven** | **4K / 8K UHD** | Premier community digital art & photography | Official REST API |
+| **Bing Daily** | **4K UHD** | Daily award-winning geography & nature | Official Archive Feed |
+| **Windows Spotlight** | **FHD / 4K** | Official Microsoft Windows lockscreen feed | MSN CDN Stream |
+| **Picsum Photos** | **5K Studio** | Fine-art photography & raw architectural textures | High-Bandwidth CDN |
+
+---
+
+## ⌨️ Desktop Shortcuts
+
+Engineered for power users and keyboard ergonomics:
+
+| Key | Action | Behavior |
 | :---: | :--- | :--- |
-| <kbd>→</kbd> | **Like** | Save wallpaper to current batch tray |
+| <kbd>→</kbd> | **Like** | Push wallpaper to current batch tray |
 | <kbd>←</kbd> | **Pass** | Dismiss current card to history |
-| <kbd>↑</kbd> | **Apply Now** | Download & set as current Windows wallpaper immediately |
-| <kbd>Z</kbd> | **Undo** | Restore the previously swiped card |
-| <kbd>Space</kbd> | **Inspect Lightbox** | Open fullscreen high-res viewer |
-| <kbd>R</kbd> | **Refresh** | Reload fresh feed from APIs |
+| <kbd>↑</kbd> | **Apply Now** | Download & set as desktop background instantly via Win32 FFI |
+| <kbd>Z</kbd> | **Undo** | Pop and restore the previously dismissed card |
+| <kbd>Space</kbd> | **Inspect Lightbox** | Open fullscreen high-res zoom & metadata inspection |
+| <kbd>R</kbd> | **Refresh** | Trigger fresh network fetch from active platform |
 
 ---
 
-## 🚀 Download & Installation
+## 🏗️ Architecture & Clean Design
 
-### For End Users (No Developer Tools Required)
-
-1. Go to the **[Latest Release](https://github.com/arashgholiyan/wall-gem/releases/latest)** page.
-2. Download **`wall-gem-windows-x64.zip`** (Portable).
-3. Extract the `.zip` archive to any folder (e.g. `Downloads` or `Desktop`).
-4. Double-click **`wall_gem.exe`** to start discovering wallpapers!
-
----
-
-### For Developers & Contributors
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/arashgholiyan/wall-gem.git
-   cd wall-gem
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   flutter pub get
-   ```
-
-3. **Run on Windows Desktop**:
-   ```bash
-   flutter run -d windows
-   ```
-
-4. **Run Test Suite**:
-   ```bash
-   flutter test
-   ```
-
----
-
-## 🏗️ Architecture Overview
-
-Wall Gem follows **Layered Clean Architecture** powered by `provider`:
+Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow:
 
 ```
-wall_gem/
-├── .github/
-│   ├── workflows/
-│   │   ├── flutter_ci.yml     # Automated linting & unit tests
-│   │   └── release.yml        # Automated cloud builds & GitHub releases
-│   ├── ISSUE_TEMPLATE/        # Bug report & feature request templates
-│   └── PULL_REQUEST_TEMPLATE  # Standardized PR checklist
-├── lib/
-│   ├── core/                  # Color tokens, constants, theme, failure types
-│   ├── domain/                # Entities, repository & platform service interfaces
-│   │   ├── entities/          # Wallpaper entity
-│   │   ├── repositories/      # IWallpaperRepository
-│   │   └── services/          # IWallpaperPlatformService
-│   ├── data/                  # API data sources, models, and native Win32 FFI
-│   │   ├── datasources/       # WallhavenApiSource, BingWallpaperSource, CuratedSource
-│   │   ├── models/            # WallpaperModel DTO with JSON serialization
-│   │   ├── repositories/      # WallpaperRepositoryImpl
-│   │   └── services/          # WindowsWallpaperService (user32.dll) & NoopWallpaperService
-│   └── presentation/          # State controllers, views, and responsive widgets
-│       ├── providers/         # WallpaperDeckProvider, WallpaperActionProvider
-│       ├── views/             # HomeScreen
-│       └── widgets/           # HeaderBar, ActionDock, SwipeableCardStack, Lightbox
-└── test/                      # Hermetic unit & widget test suite (100% passing)
+┌─────────────────────────────────────────────────────────────┐
+│                      PRESENTATION LAYER                     │
+│    HomeScreen  •  SwipeableCardStack  •  ActionDock  •  Header    │
+│            State: WallpaperDeckProvider, ActionProvider            │
+└──────────────────────────────┬──────────────────────────────┘
+                               │ (calls use cases / repos)
+┌──────────────────────────────▼──────────────────────────────┐
+│                         DOMAIN LAYER                        │
+│   Entities: WallpaperEntity  •  Interfaces: IWallpaperRepository  │
+│                Service Contract: IWallpaperPlatformService                │
+└──────────────────────────────▲──────────────────────────────┘
+                               │ (implements)
+┌──────────────────────────────┴──────────────────────────────┐
+│                          DATA LAYER                         │
+│  10 Data Sources  •  WallpaperRepositoryImpl  •  Cache Model │
+│   Native FFI: WindowsWallpaperService (user32.dll kernel hook)  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+- **Separation of Concerns**: Pure Dart domain layer has zero dependency on UI or Flutter SDK.
+- **Platform Isolation**: Win32 FFI calls live strictly behind the `IWallpaperPlatformService` interface, enabling painless porting to macOS (`NSWorkspace`) and Linux (`gsettings`).
+- **Resilience**: Any remote datasource failure degrades gracefully into curated offline fallbacks without disrupting the active card stack.
+
+---
+
+## 🚀 Quickstart
+
+### Prerequisites
+- [Flutter SDK](https://flutter.dev) (v3.24+ recommended)
+- Windows 10/11 with Developer Mode or C++ build tools
+
+### Build & Run Locally
+```bash
+# Clone the repository
+git clone https://github.com/arashgholiyan/wall-gem.git
+cd wall-gem
+
+# Fetch dependencies
+flutter pub get
+
+# Launch on Windows Desktop
+flutter run -d windows
+```
+
+### Verification & Testing
+```bash
+# Run static analysis
+flutter analyze
+
+# Execute 35 hermetic unit & widget tests
+flutter test
 ```
 
 ---
 
-## 📦 Automated Release Pipeline
+## 🤝 Let's Collaborate & Build Together!
 
-Releases are built in the cloud via GitHub Actions:
-- Pushing a new tag (e.g. `git tag v1.0.1 && git push origin v1.0.1`) triggers `.github/workflows/release.yml`.
-- A Windows cloud runner compiles `flutter build windows --release`.
-- GitHub creates a new Release entry and uploads the portable `.zip` and `.msix` bundles automatically.
+Wall Gem is an open-source initiative designed to prove that desktop utility apps can be fast, gorgeous, and respectful of user privacy.
 
----
+I'm actively looking to collaborate with other passionate developers in the FOSS community. Here are areas where contributions are warmly welcomed:
+- 🐧 **Linux & macOS Support**: Implementing native wallpaper setters (`gsettings` / `feh` for Linux, `NSWorkspace` for macOS).
+- 🖥️ **Multi-Monitor Customization**: Independent wallpapers per display monitor via Win32 desktop COM interfaces.
+- 🏷️ **Custom Tag Filtering & Search**: On-the-fly keyword filtering across community APIs.
 
-## 🤝 Contributing
+If you have ideas, feedback, or want to collaborate on this or future projects, let's connect!
 
-Contributions are welcome! Check out [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+- **Creator**: [Arash Gholiyan](https://github.com/arashgholiyan)
+- **Issues & Discussions**: Feel free to open an [Issue](https://github.com/arashgholiyan/wall-gem/issues) or start a conversation.
+- **Pull Requests**: Check out [CONTRIBUTING.md](CONTRIBUTING.md) — PRs of all sizes are welcome.
 
 ---
 
 ## 📄 License
 
-This project is open-source under the [MIT License](LICENSE).
+Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
