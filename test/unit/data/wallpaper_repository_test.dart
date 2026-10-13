@@ -24,4 +24,23 @@ void main() {
       expect(feed.isNotEmpty, isTrue);
     },
   );
+
+  test('WallpaperRepositoryImpl routes to specific source platform', () async {
+    const mockWideHtml = '''
+        <img src="https://hd.wallpaperswide.com/thumbs/sample_nature-t1.jpg" alt="Sample Nature" />
+      ''';
+    final mockClient = createMockHttpClient(
+      responseBody: mockWideHtml,
+      statusCode: 200,
+    );
+    final repo = WallpaperRepositoryImpl(client: mockClient);
+
+    final feed = await repo.fetchWallpapers(
+      category: 'Landscape',
+      source: 'WallpapersWide',
+      page: 1,
+    );
+    expect(feed.isNotEmpty, isTrue);
+    expect(feed.first.sourceName, equals('wallpaperswide.com'));
+  });
 }

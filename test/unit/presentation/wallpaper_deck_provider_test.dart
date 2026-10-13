@@ -7,6 +7,7 @@ class FakeWallpaperRepository implements IWallpaperRepository {
   @override
   Future<List<Wallpaper>> fetchWallpapers({
     required String category,
+    String source = 'All Sources',
     int page = 1,
   }) async {
     return List.generate(
@@ -82,4 +83,18 @@ void main() {
       equals(2),
     ); // Incremented after initial load for category
   });
+
+  test(
+    'WallpaperDeckProvider source change updates currentSource and refreshes',
+    () async {
+      final repo = FakeWallpaperRepository();
+      final provider = WallpaperDeckProvider(repository: repo);
+
+      await provider.loadInitialFeed();
+      await provider.setSource('WallpapersWide');
+
+      expect(provider.currentSource, equals('WallpapersWide'));
+      expect(provider.page, equals(2));
+    },
+  );
 }

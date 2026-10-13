@@ -2,9 +2,10 @@ import '../entities/wallpaper.dart';
 
 /// Abstract contract for fetching wallpapers from aggregated sources.
 abstract class IWallpaperRepository {
-  /// Fetches an aggregated and shuffled page of wallpapers for the specified [category].
+  /// Fetches an aggregated or source-filtered page of wallpapers.
   Future<List<Wallpaper>> fetchWallpapers({
     required String category,
+    String source = 'All Sources',
     int page = 1,
   });
 

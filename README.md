@@ -39,11 +39,19 @@ Wall Gem transforms finding desktop wallpapers from browsing messy websites into
   <img src="docs/assets/workflow.svg" alt="Wall Gem Workflow" width="100%" />
 </p>
 
-### 1. Multi-Source UHD Feed Aggregation
-Wall Gem simultaneously queries official high-resolution APIs without web scraping or CAPTCHAs:
-- **Wallhaven v1 REST API**: Top-rated 4K & 8K community wallpapers filtered by SFW purity, genres, and color palettes.
-- **Bing Daily Wallpaper Archive**: High-definition national geography and landscape photography.
-- **Curated High-Res Library**: Built-in offline fallback that guarantees instant startup with zero loading stutters.
+### 1. Multi-Platform UHD Feed Aggregation
+Wall Gem aggregates from **10 distinct, verified wallpaper platforms**:
+- **WallpapersWide.com**: Direct 4K (3840x2160) community downloads across Nature, Games, Anime, Cars, Space & Cartoons.
+- **WallpapersCraft.com**: Direct high-res FHD/4K feeds across Nature, Anime, Cars, City & Space.
+- **AlphaCoders (wall.alphacoders.com)**: Massive 4K & 8K community wallpapers across Gaming, Anime, Sci-Fi, Fantasy & Vehicles.
+- **4kwallpapers.com**: Direct 4K UHD (3840x2160) downloads for Supercars, Games, AMOLED Dark & Minimal.
+- **WallpaperHub.app**: Microsoft Surface, Xbox, Windows 11 & Minimalist 4K/Ultrawide wallpapers.
+- **Wallhaven.cc**: The world's top-rated 4K & 8K community wallpaper platform.
+- **Microsoft Bing Daily**: Daily global nature and landscape photography in 4K UHD.
+- **Windows Spotlight**: Official Microsoft MSN lockscreen landscape collection.
+- **Birdpaper 4K (360 Engine)**: Real-time 4K Ultra HD catalog with Cars, Games, Scenery & 3D.
+- **Picsum Photos (Unsplash Library)**: 5K studio photography, architecture, and textures.
+- **Curated High-Res Library**: Built-in offline fallback ensuring zero network stutter on launch.
 
 ### 2. Gesture-Driven Swipe Deck
 Just like Tinder, browse through an infinite stack of wallpapers using fluid mouse gestures or desktop keyboard shortcuts:

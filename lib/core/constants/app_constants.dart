@@ -9,12 +9,29 @@ class AppConstants {
   /// Number of liked wallpapers to trigger batch slideshow completion
   static const int batchTarget = 5;
 
+  /// Distinct wallpaper provider platforms
+  static const List<String> sources = [
+    'All Sources',
+    'WallpapersWide',
+    'WallpapersCraft',
+    'AlphaCoders',
+    '4K Wallpapers',
+    'WallpaperHub',
+    'Birdpaper 4K',
+    'Wallhaven',
+    'Bing Daily',
+    'Windows Spotlight',
+    'Picsum Photos',
+  ];
+
   /// Default categories available in the category selector
   static const List<String> categories = [
     'All',
     'Landscape',
-    'Cyberpunk',
+    'Gaming',
     'Anime',
+    'Cars',
+    'Cyberpunk',
     'Space',
     'OLED Dark',
     'Minimal',
@@ -29,6 +46,6 @@ class AppConstants {
   };
 
   /// Timeouts
-  static const Duration networkTimeout = Duration(seconds: 6);
-  static const Duration downloadTimeout = Duration(seconds: 20);
+  static const Duration networkTimeout = Duration(seconds: 8);
+  static const Duration downloadTimeout = Duration(seconds: 25);
 }

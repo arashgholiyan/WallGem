@@ -9,6 +9,7 @@ class StubRepository implements IWallpaperRepository {
   @override
   Future<List<Wallpaper>> fetchWallpapers({
     required String category,
+    String source = 'All Sources',
     int page = 1,
   }) async {
     return [

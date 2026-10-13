@@ -167,6 +167,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   HeaderBar(
                     likedCount: deckProvider.likedList.length,
+                    activeSource: deckProvider.currentSource,
+                    onSelectSource: (source) => deckProvider.setSource(source),
                     onOpenFolder: () => actionProvider.openFolder(),
                   ),
                   CategorySelector(

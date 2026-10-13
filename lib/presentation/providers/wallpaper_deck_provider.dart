@@ -12,6 +12,7 @@ class WallpaperDeckProvider extends ChangeNotifier {
   final List<Wallpaper> _historyStack = [];
 
   String _currentCategory = 'All';
+  String _currentSource = 'All Sources';
   bool _isLoading = false;
   int _page = 1;
 
@@ -22,6 +23,7 @@ class WallpaperDeckProvider extends ChangeNotifier {
   List<Wallpaper> get likedList => List.unmodifiable(_likedList);
   List<Wallpaper> get historyStack => List.unmodifiable(_historyStack);
   String get currentCategory => _currentCategory;
+  String get currentSource => _currentSource;
   bool get isLoading => _isLoading;
   int get page => _page;
   bool get canUndo => _historyStack.isNotEmpty;
@@ -38,6 +40,7 @@ class WallpaperDeckProvider extends ChangeNotifier {
 
     final items = await _repository.fetchWallpapers(
       category: _currentCategory,
+      source: _currentSource,
       page: _page,
     );
 
@@ -54,6 +57,13 @@ class WallpaperDeckProvider extends ChangeNotifier {
     await loadInitialFeed();
   }
 
+  /// Changes source platform filter and refreshes feed.
+  Future<void> setSource(String source) async {
+    if (_currentSource == source && _deck.isNotEmpty) return;
+    _currentSource = source;
+    await loadInitialFeed();
+  }
+
   /// Fetches subsequent page without clearing current deck.
   Future<void> loadMore() async {
     if (_isLoading) return;
@@ -62,6 +72,7 @@ class WallpaperDeckProvider extends ChangeNotifier {
 
     final items = await _repository.fetchWallpapers(
       category: _currentCategory,
+      source: _currentSource,
       page: _page,
     );
 
