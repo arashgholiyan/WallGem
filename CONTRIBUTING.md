@@ -10,8 +10,8 @@ Please be respectful and constructive in all issues, pull requests, and discussi
 
 1. **Fork & Clone**
    ```bash
-   git clone https://github.com/your-username/wall_gem.git
-   cd wall_gem
+   git clone https://github.com/arashgholiyan/wall-gem.git
+   cd wall-gem
    ```
 
 2. **Install Flutter Dependencies**

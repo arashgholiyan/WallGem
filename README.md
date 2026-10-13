@@ -79,8 +79,8 @@ wall_gem/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/wall_gem.git
-   cd wall_gem
+   git clone https://github.com/arashgholiyan/wall-gem.git
+   cd wall-gem
    ```
 
 2. **Install dependencies**:
