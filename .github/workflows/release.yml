@@ -1,0 +1,56 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build & Release Windows App
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Enable Windows Desktop
+        run: flutter config --enable-windows-desktop
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run Tests
+        run: flutter test
+
+      - name: Build Windows Release
+        run: flutter build windows --release
+
+      - name: Create Portable Release ZIP
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "build\windows\x64\runner\Release\*" -DestinationPath "wall-gem-windows-x64.zip" -Force
+
+      - name: Build MSIX Package
+        run: flutter pub run msix:create -v
+        continue-on-error: true
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            wall-gem-windows-x64.zip
+            build\windows\x64\runner\Release\*.msix
+          draft: false
+          prerelease: false
+          generate_release_notes: true

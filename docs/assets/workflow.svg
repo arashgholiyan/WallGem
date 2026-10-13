@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 260" width="100%" height="100%" style="background:#090c15;border-radius:14px;font-family:'Segoe UI',Roboto,sans-serif;">
+  <defs>
+    <linearGradient id="flowGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <linearGradient id="flowGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="flowGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="flowGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Step 1: Discover -->
+  <g transform="translate(40, 30)">
+    <rect width="190" height="200" rx="16" fill="#111625" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.4"/>
+    <circle cx="95" cy="48" r="24" fill="url(#flowGrad1)"/>
+    <text x="95" y="55" font-size="20" text-anchor="middle" fill="#ffffff">🌐</text>
+    <text x="95" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">1. Discover</text>
+    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Wallhaven 4K API</text>
+    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Bing Daily Archive</text>
+    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Curated Offline Feed</text>
+    <rect x="35" y="174" width="120" height="18" rx="9" fill="#38bdf8" fill-opacity="0.15"/>
+    <text x="95" y="187" font-size="10" font-weight="bold" fill="#38bdf8" text-anchor="middle">UHD Feed Cache</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M 238 130 L 268 130" stroke="#6366f1" stroke-width="2" marker-end="url(#arrow)"/>
+  <polygon points="268,126 276,130 268,134" fill="#6366f1"/>
+
+  <!-- Step 2: Swipe & Decide -->
+  <g transform="translate(280, 30)">
+    <rect width="190" height="200" rx="16" fill="#111625" stroke="#a855f7" stroke-width="1.5" stroke-opacity="0.4"/>
+    <circle cx="95" cy="48" r="24" fill="url(#flowGrad2)"/>
+    <text x="95" y="55" font-size="20" text-anchor="middle" fill="#ffffff">🃏</text>
+    <text x="95" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">2. Swipe or Key</text>
+    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Right (→): Like</text>
+    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Left (←): Pass</text>
+    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Up (↑): Instant Apply</text>
+    <rect x="35" y="174" width="120" height="18" rx="9" fill="#a855f7" fill-opacity="0.15"/>
+    <text x="95" y="187" font-size="10" font-weight="bold" fill="#c084fc" text-anchor="middle">60 FPS Gesture Deck</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M 478 130 L 508 130" stroke="#a855f7" stroke-width="2"/>
+  <polygon points="508,126 516,130 508,134" fill="#a855f7"/>
+
+  <!-- Step 3: Native Desktop Engine -->
+  <g transform="translate(520, 30)">
+    <rect width="190" height="200" rx="16" fill="#111625" stroke="#f59e0b" stroke-width="1.5" stroke-opacity="0.4"/>
+    <circle cx="95" cy="48" r="24" fill="url(#flowGrad4)"/>
+    <text x="95" y="55" font-size="20" text-anchor="middle" fill="#ffffff">⚡</text>
+    <text x="95" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">3. Native Apply</text>
+    <text x="95" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">Win32 user32.dll FFI</text>
+    <text x="95" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Zero-lag wallpaper switch</text>
+    <text x="95" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Safe memory calloc.free</text>
+    <rect x="35" y="174" width="120" height="18" rx="9" fill="#f59e0b" fill-opacity="0.15"/>
+    <text x="95" y="187" font-size="10" font-weight="bold" fill="#fbbf24" text-anchor="middle">Desktop System API</text>
+  </g>
+
+  <!-- Arrow 3 -> 4 -->
+  <path d="M 718 130 L 748 130" stroke="#10b981" stroke-width="2"/>
+  <polygon points="748,126 756,130 748,134" fill="#10b981"/>
+
+  <!-- Step 4: Slideshow Automation -->
+  <g transform="translate(760, 30)">
+    <rect width="160" height="200" rx="16" fill="#111625" stroke="#10b981" stroke-width="1.5" stroke-opacity="0.4"/>
+    <circle cx="80" cy="48" r="24" fill="url(#flowGrad3)"/>
+    <text x="80" y="55" font-size="20" text-anchor="middle" fill="#ffffff">📁</text>
+    <text x="80" y="98" font-size="16" font-weight="bold" fill="#f8fafc" text-anchor="middle">4. Auto Batch</text>
+    <text x="80" y="124" font-size="12" fill="#94a3b8" text-anchor="middle">5 Likes = 1 Batch</text>
+    <text x="80" y="142" font-size="12" fill="#94a3b8" text-anchor="middle">Saved to Pictures</text>
+    <text x="80" y="160" font-size="12" fill="#94a3b8" text-anchor="middle">Windows Slideshow</text>
+    <rect x="25" y="174" width="110" height="18" rx="9" fill="#10b981" fill-opacity="0.15"/>
+    <text x="80" y="187" font-size="10" font-weight="bold" fill="#34d399" text-anchor="middle">Sync &amp; Explorer</text>
+  </g>
+</svg>

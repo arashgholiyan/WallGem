@@ -1,10 +1,10 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.14)
-project(wallpaper_swiper_app LANGUAGES CXX)
+project(wall_gem LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "wallpaper_swiper_app")
+set(BINARY_NAME "wall_gem")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.

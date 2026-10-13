@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "wallpaper_swiper_app" "\0"
+            VALUE "CompanyName", "Arash Gholiyan" "\0"
+            VALUE "FileDescription", "Wall Gem - 4K Wallpaper Discovery & Desktop Engine" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "wallpaper_swiper_app" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "wallpaper_swiper_app.exe" "\0"
-            VALUE "ProductName", "wallpaper_swiper_app" "\0"
+            VALUE "InternalName", "wall_gem" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 Arash Gholiyan. All rights reserved." "\0"
+            VALUE "OriginalFilename", "wall_gem.exe" "\0"
+            VALUE "ProductName", "Wall Gem" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

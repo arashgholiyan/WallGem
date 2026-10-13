@@ -23,6 +23,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  msix: ^3.18.0
+
+msix_config:
+  display_name: Wall Gem
+  publisher_display_name: Arash Gholiyan
+  identity_name: arashgholiyan.wallgem
+  msix_version: 1.0.0.0
+  logo_path: windows/runner/resources/app_icon.ico
+  capabilities:
+    - internetClient
 
 flutter:
   uses-material-design: true
