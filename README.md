@@ -1,4 +1,8 @@
-# Wall Gem 💎
+<p align="center">
+  <img src="docs/assets/app_icon.png" alt="Wall Gem App Icon" width="120" height="120" style="border-radius: 28px;" />
+</p>
+
+<h1 align="center">Wall Gem 💎</h1>
 
 <p align="center">
   <strong>A lightning-fast, gesture-driven 4K wallpaper discovery engine & desktop personalization suite.</strong>

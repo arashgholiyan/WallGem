@@ -36,3 +36,5 @@ msix_config:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icon/
