@@ -60,22 +60,21 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
 
 ---
 
-## 🌐 Supported Wallpaper Platforms
+## 🌐 Pluggable Multi-Source Engine
 
-Wall Gem indexes publicly accessible endpoints and open content delivery networks directly on demand from the client without requiring user accounts or API keys:
+Wall Gem is built with a modular, pluggable provider architecture. The engine concurrently streams, deduplicates, and aggregates ultra-high-definition wallpapers across diverse aesthetic categories without requiring accounts or personal API keys:
 
-| Source | Resolution | Featured Content | Indexing Mechanism |
+| Category | Typical Resolutions | Visual Focus | Ingestion Engine |
 | :--- | :---: | :--- | :--- |
-| **WallpapersWide** | **4K UHD** (3840×2160) | Nature, Games, Anime, Vehicles, Space | Public Web Indexer |
-| **AlphaCoders** | **4K / 8K UHD** | Gaming, Sci-Fi, Concept Art, Minimalist | Schema.org Metadata Indexer |
-| **4K Wallpapers** | **4K UHD** (3840×2160) | AMOLED Dark, Vehicles, Abstract, Tech | Public Web Indexer |
-| **WallpapersCraft** | **1080p / 4K** | Cityscapes, Macro, Cyberpunk, Fantasy | Public Web Indexer |
-| **WallpaperHub** | **4K / Ultrawide** | Surface & Windows themed minimal designs | Public REST API |
-| **Birdpaper 4K** | **4K UHD** | 3D Renders, Anime, Animals, Landscape | Public REST API |
-| **Wallhaven** | **4K / 8K UHD** | Community-submitted digital art | Public REST API |
-| **Bing Daily** | **4K UHD** | Daily curated geography & nature photography | Public Feed Archive |
-| **Windows Spotlight** | **FHD / 4K** | Curated landscape photography collection | MSN Public Content Delivery |
-| **Picsum Photos** | **5K Studio** | Fine-art photography & raw textures | CC0 / Public Domain CDN |
+| **Landscapes & Nature** | 4K UHD (3840×2160) | Mountain vistas, national parks, coastal ridges | Open REST & CDN Feeds |
+| **AMOLED & Minimal** | 4K UHD / True Black | High-contrast dark modes, clean geometry, vector art | Public Metadata Indexer |
+| **Gaming & Sci-Fi** | 4K / 8K UHD | Cyberpunk megacities, concept art, futuristic themes | Structured Schema Stream |
+| **Studio Photography** | 5K Studio (5000×3333) | Fine-art textures, architectural photography | CC0 / Public Domain CDN |
+| **Vehicles & Speed** | 4K UHD (3840×2160) | Supercars, aviation, modern industrial engineering | Public Open Endpoints |
+| **Digital & Anime** | 4K UHD (3840×2160) | Expressive illustrations, anime skies, 3D renders | Community Public APIs |
+| **Daily Curated** | 4K UHD | Fresh daily rotating landscape & geography photography | Daily Rolling Archives |
+
+*The modular provider interface (`IWallpaperRepository`) makes it trivial for developers to plug in custom local directories, self-hosted servers, or additional open web endpoints.*
 
 ---
 
@@ -183,7 +182,7 @@ All images, artwork, photography, and wallpapers accessible through this client 
 This software is provided for personal, non-commercial, and educational purposes under the [MIT License](LICENSE). The indexing of publicly accessible web feeds is performed in good faith under fair use doctrine.
 
 ### 4. Trademark Notice
-*Windows*, *Microsoft*, *Surface*, *Xbox*, and *Bing* are registered trademarks of Microsoft Corporation. *Wallhaven* is a trademark of Wallhaven.cc. All other trademarks, trade names, and logos referenced or displayed in this repository and application belong to their respective owners. Wall Gem is an independent open-source project and is not affiliated with, endorsed by, or sponsored by Microsoft or any referenced wallpaper platform.
+*Windows* and *Microsoft* are registered trademarks of Microsoft Corporation. All other trademarks, service marks, trade names, and logos referenced or displayed within this repository and application belong to their respective owners. Wall Gem is an independent open-source project and is not affiliated with, endorsed by, or sponsored by any referenced company or platform.
 
 ### 5. Content Removal & Takedown Requests
 If you are a copyright holder, artist, or platform administrator and wish to request the exclusion or removal of your content feed or domain from Wall Gem's default indexer, please open a GitHub Issue or contact the maintainer at [github.com/arashgholiyan](https://github.com/arashgholiyan). Your request will be honored and the source endpoint will be promptly removed from the codebase within 24–48 hours.
