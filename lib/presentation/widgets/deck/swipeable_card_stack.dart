@@ -17,7 +17,10 @@ class SwipeableCardStack extends StatefulWidget {
     required this.onSwipeLeft,
     required this.onSwipeRight,
     required this.onSwipeUp,
+    this.onInspectPreview,
   });
+
+  final VoidCallback? onInspectPreview;
 
   @override
   State<SwipeableCardStack> createState() => _SwipeableCardStackState();
@@ -87,8 +90,11 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
   Widget _buildTopDraggableCard(Wallpaper wallpaper) {
     final rotateAngle = _dragOffset.dx * 0.0008;
 
-    return GestureDetector(
-      onPanUpdate: (details) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onInspectPreview,
+        onPanUpdate: (details) {
         setState(() {
           _dragOffset += details.delta;
         });
@@ -235,6 +241,7 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
         ),
       ),
     ),
-  );
+  ),
+);
 }
 }

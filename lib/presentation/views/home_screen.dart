@@ -76,12 +76,50 @@ class _HomeScreenState extends State<HomeScreen> {
     context.read<WallpaperDeckProvider>().swipeLeft();
   }
 
-  void _handleSwipeUp() {
+  void _showApplyFeedback(bool success, String title) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:
+            success ? const Color(0xFF1E293B) : const Color(0xFF7F1D1D),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        content: Row(
+          children: [
+            Icon(
+              success ? Icons.check_circle : Icons.error_outline,
+              color:
+                  success
+                      ? const Color(0xFF10B981)
+                      : const Color(0xFFEF4444),
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                success
+                    ? 'Applied "$title" as desktop wallpaper!'
+                    : 'Failed to set wallpaper. Please check permissions.',
+                style: const TextStyle(color: Colors.white, fontSize: 13),
+              ),
+            ),
+          ],
+        ),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  void _handleSwipeUp() async {
     final item = context.read<WallpaperDeckProvider>().swipeUp();
     if (item != null) {
-      context.read<WallpaperActionProvider>().applyAsWallpaper(item);
       context.read<FavoritesProvider?>()?.addFavorite(item);
       _checkBatchDialog();
+      final success =
+          await context.read<WallpaperActionProvider>().applyAsWallpaper(item);
+      _showApplyFeedback(success, item.title);
     }
   }
 
@@ -103,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       showDialog(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (dialogCtx) => BatchCompleteDialog(
           batch: currentBatch,
           onOpenFolder: () {
@@ -115,7 +153,9 @@ class _HomeScreenState extends State<HomeScreen> {
             deckProvider.clearLikedList();
           },
         ),
-      );
+      ).then((_) {
+        _dialogOpen = false;
+      });
     }
   }
 
@@ -124,8 +164,11 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (ctx) => WallpaperPreviewDialog(
         wallpaper: wallpaper,
-        onApply: () {
-          context.read<WallpaperActionProvider>().applyAsWallpaper(wallpaper);
+        onApply: () async {
+          final success = await context
+              .read<WallpaperActionProvider>()
+              .applyAsWallpaper(wallpaper);
+          _showApplyFeedback(success, wallpaper.title);
         },
       ),
     );
@@ -193,7 +236,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     onToggleDayNight: () => deckProvider.toggleDayNightMode(),
                     autoCycleInterval: deckProvider.autoCycleInterval,
                     onSelectAutoCycleInterval: (interval) =>
-                        deckProvider.setAutoCycleInterval(interval),
+                        deckProvider.setAutoCycleInterval(
+                          interval,
+                          onCycle: _handleSwipeUp,
+                        ),
                   ),
 
                   // Vault View or Deck View
@@ -227,10 +273,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                 onSwipeLeft: _handleSwipeLeft,
                                 onSwipeRight: _handleSwipeRight,
                                 onSwipeUp: _handleSwipeUp,
+                                onInspectPreview: () {
+                                  if (deckProvider.topCard != null) {
+                                    _showPreview(deckProvider.topCard!);
+                                  }
+                                },
                               ),
                       ),
                     ),
-                    ThumbnailTray(likedList: deckProvider.likedList),
+                    ThumbnailTray(
+                      likedList: deckProvider.likedList,
+                      onSelectWallpaper: (w) => _showPreview(w),
+                    ),
                     ActionDock(
                       onPass: _handleSwipeLeft,
                       onLike: _handleSwipeRight,
@@ -247,6 +301,61 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
+
+            // Floating Status HUD when applying wallpaper
+            if (actionProvider.isApplying)
+              Positioned(
+                top: 76,
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xEE1E293B),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: AppColors.cyan.withValues(alpha: 0.5),
+                      ),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black54,
+                          blurRadius: 16,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(
+                          width: 14,
+                          height: 14,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation(
+                              AppColors.cyan,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          actionProvider.statusMessage ??
+                              'Applying desktop wallpaper...',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

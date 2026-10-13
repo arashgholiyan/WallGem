@@ -89,7 +89,7 @@ class WallpaperCard extends StatelessWidget {
             child: Row(
               children: [
                 CardBadge(
-                  icon: Icons.bolt,
+                  icon: Icons.high_quality_rounded,
                   label: wallpaper.resolution,
                   color: AppColors.cyan,
                 ),

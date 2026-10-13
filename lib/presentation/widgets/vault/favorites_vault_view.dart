@@ -91,6 +91,7 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                       ),
                       if (_searchController.text.isNotEmpty)
                         IconButton(
+                          tooltip: 'Clear search',
                           icon: const Icon(
                             Icons.close,
                             size: 16,
@@ -196,9 +197,57 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                           return FavoriteCard(
                             wallpaper: item,
                             onTap: () => _showPreview(context, item),
-                            onApply: () =>
-                                actionProvider.applyAsWallpaper(item),
-                            onRemove: () => favProvider.removeFavorite(item.id),
+                            onApply: () async {
+                              final success =
+                                  await actionProvider.applyAsWallpaper(item);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor:
+                                        success
+                                            ? const Color(0xFF1E293B)
+                                            : const Color(0xFF7F1D1D),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    content: Text(
+                                      success
+                                          ? 'Applied "${item.title}" as desktop wallpaper!'
+                                          : 'Failed to set wallpaper. Please check permissions.',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            },
+                            onRemove: () {
+                              favProvider.removeFavorite(item.id);
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: const Color(0xFF1E293B),
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  content: Text(
+                                    'Removed "${item.title}" from Vault',
+                                  ),
+                                  action: SnackBarAction(
+                                    label: 'UNDO',
+                                    textColor: AppColors.cyan,
+                                    onPressed:
+                                        () => favProvider.addFavorite(item),
+                                  ),
+                                  duration: const Duration(seconds: 4),
+                                ),
+                              );
+                            },
                             onSplit: () {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

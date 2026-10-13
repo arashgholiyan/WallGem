@@ -51,14 +51,14 @@ class ActionDock extends StatelessWidget {
           ),
           const SizedBox(width: 16),
 
-          // Star / Apply Now (↑)
+          // Apply Wallpaper (↑)
           _buildActionButton(
             key: AppKeys.starButton,
-            icon: Icons.star,
+            icon: Icons.wallpaper_rounded,
             color: AppColors.star,
             size: 52,
             onTap: onStar,
-            tooltip: 'Apply Now (Up Arrow)',
+            tooltip: 'Set as Desktop Wallpaper (Up Arrow)',
           ),
           const SizedBox(width: 16),
 

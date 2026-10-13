@@ -25,15 +25,29 @@ class BatchCompleteDialog extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
         side: const BorderSide(color: AppColors.border),
       ),
-      title: const Row(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('🎉 ', style: TextStyle(fontSize: 26)),
-          Text(
-            'Batch Completed!',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+          const Row(
+            children: [
+              Text('🎉 ', style: TextStyle(fontSize: 26)),
+              Text(
+                'Batch Completed!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+              size: 20,
+              color: AppColors.textSecondary,
             ),
+            tooltip: 'Dismiss',
+            onPressed: onContinue,
           ),
         ],
       ),

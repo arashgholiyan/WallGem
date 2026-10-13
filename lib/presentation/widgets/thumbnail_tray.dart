@@ -7,8 +7,13 @@ import '../../domain/entities/wallpaper.dart';
 /// Bottom thumbnail drawer displaying currently liked wallpapers towards batch completion.
 class ThumbnailTray extends StatelessWidget {
   final List<Wallpaper> likedList;
+  final void Function(Wallpaper)? onSelectWallpaper;
 
-  const ThumbnailTray({super.key, required this.likedList});
+  const ThumbnailTray({
+    super.key,
+    required this.likedList,
+    this.onSelectWallpaper,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +25,29 @@ class ThumbnailTray extends StatelessWidget {
         children: List.generate(AppConstants.batchTarget, (index) {
           if (index < likedList.length) {
             final wallpaper = likedList[index];
-            return Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: 44,
-              height: 28,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: AppColors.like, width: 1.5),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: CachedNetworkImage(
-                imageUrl: wallpaper.thumbUrl,
-                fit: BoxFit.cover,
+            return Tooltip(
+              message: '${wallpaper.title} (Click to preview)',
+              child: MouseRegion(
+                cursor: onSelectWallpaper != null
+                    ? SystemMouseCursors.click
+                    : SystemMouseCursors.basic,
+                child: GestureDetector(
+                  onTap: () => onSelectWallpaper?.call(wallpaper),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: 44,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.like, width: 1.5),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: CachedNetworkImage(
+                      imageUrl: wallpaper.thumbUrl,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
             );
           } else {

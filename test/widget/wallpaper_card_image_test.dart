@@ -182,7 +182,7 @@ void main() {
       expect(find.text(sampleWallpaper.author), findsOneWidget);
       expect(find.text(sampleWallpaper.resolution), findsOneWidget);
       expect(find.text(sampleWallpaper.sourceName), findsOneWidget);
-      expect(find.byIcon(Icons.bolt), findsOneWidget);
+      expect(find.byIcon(Icons.high_quality_rounded), findsOneWidget);
       expect(find.byIcon(Icons.public), findsOneWidget);
     },
   );
