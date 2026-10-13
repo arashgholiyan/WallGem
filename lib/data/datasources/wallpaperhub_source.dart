@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constants/app_constants.dart';
 import '../models/wallpaper_model.dart';
 
-/// Official REST API client for WallpaperHub.app (Surface, Xbox, Windows 11 & Minimal).
+/// Client for public endpoints from WallpaperHub.app.
 class WallpaperHubSource {
   final http.Client _client;
 

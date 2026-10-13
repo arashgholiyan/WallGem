@@ -62,20 +62,20 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
 
 ## 🌐 Supported Wallpaper Platforms
 
-Wall Gem aggregates directly from open content delivery networks and official endpoints without requiring user authentication:
+Wall Gem indexes publicly accessible endpoints and open content delivery networks directly on demand from the client without requiring user accounts or API keys:
 
-| Source | Resolution | Featured Content | Engine Type |
+| Source | Resolution | Featured Content | Indexing Mechanism |
 | :--- | :---: | :--- | :--- |
-| **WallpapersWide** | **4K UHD** (3840×2160) | Nature, Games, Anime, Supercars, Space | Direct CDN Scraper |
-| **AlphaCoders** | **4K / 8K UHD** | Gaming, Sci-Fi, Concept Art, Minimalist | Schema.org Stream |
-| **4K Wallpapers** | **4K UHD** (3840×2160) | AMOLED Dark, Vehicles, Abstract, Tech | Direct CDN Scraper |
-| **WallpapersCraft** | **1080p / 4K** | Cityscapes, Macro, Cyberpunk, Fantasy | Direct CDN Scraper |
-| **WallpaperHub** | **4K / Ultrawide** | Microsoft Surface, Xbox, Windows 11 | REST API |
-| **Birdpaper 4K** | **4K UHD** | 3D Renders, Anime, Animals, Landscape | REST API |
-| **Wallhaven** | **4K / 8K UHD** | Premier community digital art & photography | Official REST API |
-| **Bing Daily** | **4K UHD** | Daily award-winning geography & nature | Official Archive Feed |
-| **Windows Spotlight** | **FHD / 4K** | Official Microsoft Windows lockscreen feed | MSN CDN Stream |
-| **Picsum Photos** | **5K Studio** | Fine-art photography & raw architectural textures | High-Bandwidth CDN |
+| **WallpapersWide** | **4K UHD** (3840×2160) | Nature, Games, Anime, Vehicles, Space | Public Web Indexer |
+| **AlphaCoders** | **4K / 8K UHD** | Gaming, Sci-Fi, Concept Art, Minimalist | Schema.org Metadata Indexer |
+| **4K Wallpapers** | **4K UHD** (3840×2160) | AMOLED Dark, Vehicles, Abstract, Tech | Public Web Indexer |
+| **WallpapersCraft** | **1080p / 4K** | Cityscapes, Macro, Cyberpunk, Fantasy | Public Web Indexer |
+| **WallpaperHub** | **4K / Ultrawide** | Surface & Windows themed minimal designs | Public REST API |
+| **Birdpaper 4K** | **4K UHD** | 3D Renders, Anime, Animals, Landscape | Public REST API |
+| **Wallhaven** | **4K / 8K UHD** | Community-submitted digital art | Public REST API |
+| **Bing Daily** | **4K UHD** | Daily curated geography & nature photography | Public Feed Archive |
+| **Windows Spotlight** | **FHD / 4K** | Curated landscape photography collection | MSN Public Content Delivery |
+| **Picsum Photos** | **5K Studio** | Fine-art photography & raw textures | CC0 / Public Domain CDN |
 
 ---
 
@@ -168,6 +168,25 @@ If you have ideas, feedback, or want to collaborate on this or future projects, 
 - **Creator**: [Arash Gholiyan](https://github.com/arashgholiyan)
 - **Issues & Discussions**: Feel free to open an [Issue](https://github.com/arashgholiyan/wall-gem/issues) or start a conversation.
 - **Pull Requests**: Check out [CONTRIBUTING.md](CONTRIBUTING.md) — PRs of all sizes are welcome.
+
+---
+
+## ⚖️ Legal, Copyright & Trademark Notice
+
+### 1. Non-Hosting & Client-Side Operation
+Wall Gem is an open-source, client-side indexing and desktop personalization utility. **Wall Gem does not host, store, cache on remote servers, or redistribute any copyrighted media or image files.** All media assets, thumbnails, and images are retrieved directly on demand by the end-user's device from publicly accessible third-party endpoints and content delivery networks.
+
+### 2. Intellectual Property & Copyright Ownership
+All images, artwork, photography, and wallpapers accessible through this client remain the exclusive intellectual property and copyright of their respective authors, photographers, creators, and platforms. Display within Wall Gem does not grant or imply any transfer of ownership or licensing rights.
+
+### 3. Fair Use & Educational Purpose
+This software is provided for personal, non-commercial, and educational purposes under the [MIT License](LICENSE). The indexing of publicly accessible web feeds is performed in good faith under fair use doctrine.
+
+### 4. Trademark Notice
+*Windows*, *Microsoft*, *Surface*, *Xbox*, and *Bing* are registered trademarks of Microsoft Corporation. *Wallhaven* is a trademark of Wallhaven.cc. All other trademarks, trade names, and logos referenced or displayed in this repository and application belong to their respective owners. Wall Gem is an independent open-source project and is not affiliated with, endorsed by, or sponsored by Microsoft or any referenced wallpaper platform.
+
+### 5. Content Removal & Takedown Requests
+If you are a copyright holder, artist, or platform administrator and wish to request the exclusion or removal of your content feed or domain from Wall Gem's default indexer, please open a GitHub Issue or contact the maintainer at [github.com/arashgholiyan](https://github.com/arashgholiyan). Your request will be honored and the source endpoint will be promptly removed from the codebase within 24–48 hours.
 
 ---
 

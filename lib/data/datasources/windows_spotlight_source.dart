@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constants/app_constants.dart';
 import '../models/wallpaper_model.dart';
 
-/// Official Microsoft MSN Delivery feed for Windows 10/11 Spotlight lockscreen wallpapers.
+/// Client for Windows Spotlight feed via MSN placement endpoints.
 class WindowsSpotlightSource {
   final http.Client _client;
 
@@ -71,17 +71,21 @@ class WindowsSpotlightSource {
 
         if (fullUrl == null || fullUrl.isEmpty) continue;
 
-        // Title from title_text or destination search query
+        final copyrightText = ad['copyright_text']?['tx']?.toString();
         final titleText =
             ad['title_text']?['tx']?.toString() ??
-            ad['copyright_text']?['tx']?.toString() ??
-            'Windows Spotlight #$i';
+            (copyrightText != null && copyrightText.isNotEmpty
+                ? copyrightText.split('(').first.trim()
+                : 'Spotlight Landscape #$i');
+        final authorText = (copyrightText != null && copyrightText.isNotEmpty)
+            ? copyrightText
+            : 'Windows Spotlight Collection';
 
         results.add(
           WallpaperModel(
             id: 'spotlight_$i',
             title: titleText,
-            author: 'Microsoft Windows Spotlight',
+            author: authorText,
             sourceName: 'Windows Spotlight',
             thumbUrl: fullUrl,
             fullUrl: fullUrl,

@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constants/app_constants.dart';
 import '../models/wallpaper_model.dart';
 
-/// Bing Daily Wallpaper official feed client.
+/// Client for publicly available Bing Daily Wallpaper feeds.
 class BingWallpaperSource {
   final http.Client _client;
 

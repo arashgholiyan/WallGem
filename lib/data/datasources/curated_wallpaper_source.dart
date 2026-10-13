@@ -10,8 +10,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_cyberpunk_neon',
         title: 'Neon Megacity Skyline',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'Alex Perez (Unsplash / Public Domain)',
+        sourceName: 'picsum.photos',
         thumbUrl: 'https://picsum.photos/id/1015/800/450',
         fullUrl: 'https://picsum.photos/id/1015/3840/2160',
         resolution: '3840x2160 (4K UHD)',
@@ -22,8 +22,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_obsidian_peaks',
         title: 'Midnight Obsidian Mountain Peak',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'Matthew Wiebe (Unsplash / Public Domain)',
+        sourceName: 'picsum.photos',
         thumbUrl: 'https://picsum.photos/id/1025/800/450',
         fullUrl: 'https://picsum.photos/id/1025/3840/2160',
         resolution: '3840x2160 (4K UHD)',
@@ -34,8 +34,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_emerald_valley',
         title: 'Emerald Pine Mist Valley',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'Jeremy Thomas (Unsplash / Public Domain)',
+        sourceName: 'picsum.photos',
         thumbUrl: 'https://picsum.photos/id/1036/800/450',
         fullUrl: 'https://picsum.photos/id/1036/3840/2160',
         resolution: '3840x2160 (4K UHD)',
@@ -46,8 +46,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_pacific_ocean',
         title: 'Pacific Blue Ocean Ridge',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'Christian Bardenhorst (Unsplash / Public Domain)',
+        sourceName: 'picsum.photos',
         thumbUrl: 'https://picsum.photos/id/1043/800/450',
         fullUrl: 'https://picsum.photos/id/1043/3840/2160',
         resolution: '3840x2160 (4K UHD)',
@@ -58,8 +58,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_shinkai_sunset',
         title: 'Twilight Anime Skyline',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'Samuel Zeller (Unsplash / Public Domain)',
+        sourceName: 'picsum.photos',
         thumbUrl: 'https://picsum.photos/id/1074/800/450',
         fullUrl: 'https://picsum.photos/id/1074/3840/2160',
         resolution: '3840x2160 (4K UHD)',
@@ -70,8 +70,8 @@ class CuratedWallpaperSource {
       WallpaperModel(
         id: 'curated_cosmic_nebula',
         title: 'Carina Deep Cosmic Vistas',
-        author: 'Wall Gem Curated',
-        sourceName: 'Curated UHD',
+        author: 'European Southern Observatory (ESO / CC-BY 4.0)',
+        sourceName: 'commons.wikimedia.org',
         thumbUrl:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Carina_Nebula_%28NGC_3372%29_by_ESO.jpg/800px-Carina_Nebula_%28NGC_3372%29_by_ESO.jpg',
         fullUrl:

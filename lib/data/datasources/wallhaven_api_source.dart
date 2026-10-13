@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../../core/constants/app_constants.dart';
 import '../models/wallpaper_model.dart';
 
-/// Official Wallhaven v1 REST API client.
+/// Client for the public Wallhaven v1 REST API.
 class WallhavenApiSource {
   final http.Client _client;
 
