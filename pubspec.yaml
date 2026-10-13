@@ -1,0 +1,28 @@
+name: wall_gem
+description: "A fast, gesture-driven 4K wallpaper discovery and slideshow application."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  http: ^1.6.0
+  path: ^1.9.1
+  google_fonts: ^8.2.1
+  cached_network_image: ^3.4.1
+  ffi: ^2.2.0
+  provider: ^6.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,262 @@
+import 'dart:io';
+import 'dart:math';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import '../../core/theme/app_colors.dart';
+import '../../domain/entities/wallpaper.dart';
+import '../providers/wallpaper_action_provider.dart';
+import '../providers/wallpaper_deck_provider.dart';
+import '../widgets/batch/batch_complete_dialog.dart';
+import '../widgets/common/action_dock.dart';
+import '../widgets/common/category_selector.dart';
+import '../widgets/common/header_bar.dart';
+import '../widgets/deck/swipeable_card_stack.dart';
+import '../widgets/preview/wallpaper_preview_dialog.dart';
+import '../widgets/thumbnail_tray.dart';
+
+/// Primary application shell containing the responsive deck, dock, and keyboard listeners.
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final FocusNode _focusNode = FocusNode();
+  bool _dialogOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final deck = context.read<WallpaperDeckProvider>();
+      if (deck.deck.isEmpty && !deck.isLoading) {
+        deck.loadInitialFeed().then((_) {
+          if (mounted) _prefetchNextCards(deck.deck);
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _prefetchNextCards(List<Wallpaper> deck) {
+    if (Platform.environment.containsKey('FLUTTER_TEST')) return;
+    if (deck.length > 1) {
+      for (int i = 1; i < min(4, deck.length); i++) {
+        precacheImage(CachedNetworkImageProvider(deck[i].thumbUrl), context);
+      }
+    }
+  }
+
+  void _handleSwipeRight() {
+    final item = context.read<WallpaperDeckProvider>().swipeRight();
+    if (item != null) {
+      _checkBatchDialog();
+    }
+  }
+
+  void _handleSwipeLeft() {
+    context.read<WallpaperDeckProvider>().swipeLeft();
+  }
+
+  void _handleSwipeUp() {
+    final item = context.read<WallpaperDeckProvider>().swipeUp();
+    if (item != null) {
+      context.read<WallpaperActionProvider>().applyAsWallpaper(item);
+      _checkBatchDialog();
+    }
+  }
+
+  void _handleUndo() {
+    context.read<WallpaperDeckProvider>().undo();
+  }
+
+  void _checkBatchDialog() {
+    final deckProvider = context.read<WallpaperDeckProvider>();
+    final actionProvider = context.read<WallpaperActionProvider>();
+
+    if (deckProvider.isBatchComplete && !_dialogOpen) {
+      _dialogOpen = true;
+      final currentBatch = List<Wallpaper>.from(deckProvider.likedList);
+      actionProvider.saveBatchToDisk(currentBatch);
+
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (dialogCtx) => BatchCompleteDialog(
+          batch: currentBatch,
+          onOpenFolder: () {
+            actionProvider.openFolder();
+          },
+          onContinue: () {
+            Navigator.of(dialogCtx).pop();
+            _dialogOpen = false;
+            deckProvider.clearLikedList();
+          },
+        ),
+      );
+    }
+  }
+
+  void _showPreview(Wallpaper wallpaper) {
+    showDialog(
+      context: context,
+      builder: (ctx) => WallpaperPreviewDialog(
+        wallpaper: wallpaper,
+        onApply: () {
+          context.read<WallpaperActionProvider>().applyAsWallpaper(wallpaper);
+        },
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final deckProvider = context.watch<WallpaperDeckProvider>();
+    final actionProvider = context.watch<WallpaperActionProvider>();
+
+    return KeyboardListener(
+      focusNode: _focusNode,
+      autofocus: true,
+      onKeyEvent: (event) {
+        if (event is KeyDownEvent) {
+          if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+            _handleSwipeRight();
+          } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+            _handleSwipeLeft();
+          } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+            _handleSwipeUp();
+          } else if (event.logicalKey == LogicalKeyboardKey.keyZ) {
+            _handleUndo();
+          } else if (event.logicalKey == LogicalKeyboardKey.space &&
+              deckProvider.topCard != null) {
+            _showPreview(deckProvider.topCard!);
+          } else if (event.logicalKey == LogicalKeyboardKey.keyR) {
+            deckProvider.loadInitialFeed();
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        body: Stack(
+          children: [
+            // Ambient neon background glow
+            Positioned(
+              top: -150,
+              left: MediaQuery.of(context).size.width / 2 - 300,
+              child: Container(
+                width: 600,
+                height: 400,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primary.withValues(alpha: 0.12),
+                ),
+              ),
+            ),
+
+            SafeArea(
+              child: Column(
+                children: [
+                  HeaderBar(
+                    likedCount: deckProvider.likedList.length,
+                    onOpenFolder: () => actionProvider.openFolder(),
+                  ),
+                  CategorySelector(
+                    activeCategory: deckProvider.currentCategory,
+                    onSelectCategory: (category) =>
+                        deckProvider.setCategory(category),
+                  ),
+                  Expanded(
+                    child: Center(
+                      child: deckProvider.isLoading && deckProvider.deck.isEmpty
+                          ? const Center(
+                              child: SizedBox(
+                                width: 32,
+                                height: 32,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation(
+                                    AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : deckProvider.deck.isEmpty
+                          ? _buildEmptyState(deckProvider)
+                          : SwipeableCardStack(
+                              deck: deckProvider.deck,
+                              onSwipeLeft: _handleSwipeLeft,
+                              onSwipeRight: _handleSwipeRight,
+                              onSwipeUp: _handleSwipeUp,
+                            ),
+                    ),
+                  ),
+                  ThumbnailTray(likedList: deckProvider.likedList),
+                  ActionDock(
+                    onPass: _handleSwipeLeft,
+                    onLike: _handleSwipeRight,
+                    onStar: _handleSwipeUp,
+                    onUndo: _handleUndo,
+                    onPreview: () {
+                      if (deckProvider.topCard != null) {
+                        _showPreview(deckProvider.topCard!);
+                      }
+                    },
+                    canUndo: deckProvider.canUndo,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(WallpaperDeckProvider deckProvider) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('🎉', style: TextStyle(fontSize: 48)),
+        const SizedBox(height: 12),
+        const Text(
+          'All caught up!',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          'Discover more fresh high-resolution wallpapers',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          icon: const Icon(Icons.refresh),
+          label: const Text(
+            'Refresh Deck',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onPressed: () => deckProvider.loadInitialFeed(),
+        ),
+      ],
+    );
+  }
+}
