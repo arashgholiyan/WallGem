@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:wall_gem/domain/entities/wallpaper.dart';
-import 'package:wall_gem/domain/entities/favorite_wallpaper.dart';
 import 'package:wall_gem/data/services/favorites_storage_service.dart';
 import 'package:wall_gem/data/repositories/favorites_repository_impl.dart';
 
@@ -43,19 +42,25 @@ void main() {
     expect(list, isEmpty);
   });
 
-  test('saveFavorite saves and loadFavorites restores FavoriteWallpaper', () async {
-    await repository.saveFavorite(sampleWallpaper, localPath: 'C:/Pictures/sample.jpg');
+  test(
+    'saveFavorite saves and loadFavorites restores FavoriteWallpaper',
+    () async {
+      await repository.saveFavorite(
+        sampleWallpaper,
+        localPath: 'C:/Pictures/sample.jpg',
+      );
 
-    final favorites = await repository.loadFavorites();
-    expect(favorites.length, 1);
-    expect(favorites.first.id, 'wall-001');
-    expect(favorites.first.title, 'Neon Cyberpunk City');
-    expect(favorites.first.localFilePath, 'C:/Pictures/sample.jpg');
-    expect(favorites.first.dominantColors.length, 2);
+      final favorites = await repository.loadFavorites();
+      expect(favorites.length, 1);
+      expect(favorites.first.id, 'wall-001');
+      expect(favorites.first.title, 'Neon Cyberpunk City');
+      expect(favorites.first.localFilePath, 'C:/Pictures/sample.jpg');
+      expect(favorites.first.dominantColors.length, 2);
 
-    final isFav = await repository.isFavorite('wall-001');
-    expect(isFav, isTrue);
-  });
+      final isFav = await repository.isFavorite('wall-001');
+      expect(isFav, isTrue);
+    },
+  );
 
   test('saveFavorite deduplicates items with same id', () async {
     await repository.saveFavorite(sampleWallpaper);
@@ -74,12 +79,15 @@ void main() {
     expect(await repository.loadFavorites(), isEmpty);
   });
 
-  test('recovers gracefully from corrupted JSON file without crashing', () async {
-    final file = File(testFilePath);
-    await file.parent.create(recursive: true);
-    await file.writeAsString('{ corrupted json syntax [[[');
+  test(
+    'recovers gracefully from corrupted JSON file without crashing',
+    () async {
+      final file = File(testFilePath);
+      await file.parent.create(recursive: true);
+      await file.writeAsString('{ corrupted json syntax [[[');
 
-    final favorites = await storageService.loadFavorites();
-    expect(favorites, isEmpty);
-  });
+      final favorites = await storageService.loadFavorites();
+      expect(favorites, isEmpty);
+    },
+  );
 }

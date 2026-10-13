@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 /// Service responsible for identifying panoramic / ultrawide wallpapers (21:9, 32:9)
@@ -8,7 +7,9 @@ import 'package:path/path.dart' as p;
 class MultiMonitorSplitterService {
   /// Checks whether a resolution and aspect ratio qualify as panoramic (aspect >= 2.0).
   static bool isPanoramic(String resolution, String ratio) {
-    if (ratio.contains('21:9') || ratio.contains('32:9') || ratio.contains('48:9')) {
+    if (ratio.contains('21:9') ||
+        ratio.contains('32:9') ||
+        ratio.contains('48:9')) {
       return true;
     }
 
@@ -36,7 +37,9 @@ class MultiMonitorSplitterService {
   }
 
   /// Generates clean file names for left and right display slices.
-  static ({String left, String right}) generateSplitFileNames(String originalFileName) {
+  static ({String left, String right}) generateSplitFileNames(
+    String originalFileName,
+  ) {
     final ext = p.extension(originalFileName);
     final base = p.basenameWithoutExtension(originalFileName);
 
@@ -59,6 +62,8 @@ class MultiMonitorSplitterService {
     }
 
     final separator = Platform.pathSeparator;
-    return Directory('$basePath${separator}Pictures${separator}WallGem${separator}MultiMonitor');
+    return Directory(
+      '$basePath${separator}Pictures${separator}WallGem${separator}MultiMonitor',
+    );
   }
 }

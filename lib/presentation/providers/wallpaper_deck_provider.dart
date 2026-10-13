@@ -6,10 +6,7 @@ import '../../domain/entities/wallpaper.dart';
 import '../../domain/repositories/i_wallpaper_repository.dart';
 
 /// Top-level view mode switching between the 3D Deck and Favorites Vault.
-enum ViewMode {
-  deck,
-  vault,
-}
+enum ViewMode { deck, vault }
 
 /// Presentation state controller managing the wallpaper swipe deck,
 /// Day/Night Sun cycle dynamic categories, and auto-cycler background timer.
@@ -59,7 +56,9 @@ class WallpaperDeckProvider extends ChangeNotifier {
   Future<void> toggleDayNightMode() async {
     _isDayNightModeEnabled = !_isDayNightModeEnabled;
     if (_isDayNightModeEnabled) {
-      final recommended = DayNightCalculator.getRecommendedCategory(DateTime.now());
+      final recommended = DayNightCalculator.getRecommendedCategory(
+        DateTime.now(),
+      );
       await setCategory(recommended);
     } else {
       notifyListeners();

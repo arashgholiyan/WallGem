@@ -11,7 +11,7 @@
     <img src="https://img.shields.io/github/v/release/arashgholiyan/wall-gem?color=6366F1&label=Release&logo=github" alt="Release" />
   </a>
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D6" alt="Platforms" />
-  <img src="https://img.shields.io/badge/Tests-46%2F46%20Passing-10B981?logo=checkmarx" alt="Tests" />
+  <img src="https://img.shields.io/badge/Tests-70%2F70%20Passing-10B981?logo=checkmarx" alt="Tests" />
   <img src="https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart" alt="Dart" />
   <img src="https://img.shields.io/badge/Flutter-3.38%2B-02569B?logo=flutter" alt="Flutter" />
   <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
@@ -19,7 +19,7 @@
 
 <p align="center">
   <a href="https://github.com/arashgholiyan/wall-gem/releases/latest">
-    <img src="https://img.shields.io/badge/📥_Download_Executable-v1.1.0_x64_Portable-success?style=for-the-badge&logo=windows" alt="Download Windows Release" />
+    <img src="https://img.shields.io/badge/📥_Download_Executable-v1.2.0_x64_Portable-success?style=for-the-badge&logo=windows" alt="Download Windows Release" />
   </a>
 </p>
 
@@ -44,14 +44,27 @@ Finding exceptional desktop wallpapers shouldn't mean sifting through slow, ad-r
   - **Windows**: Direct kernel calls via `user32.dll` (`SystemParametersInfoW`) with UTF-16 pointer safety and immediate `calloc.free` cleanup (<100ms switches).
   - **macOS**: Native multi-desktop picture management via System Events script execution.
   - **Linux**: Automatic desktop environment routing across GNOME/Cinnamon/MATE (`gsettings`), KDE Plasma (`qdbus`), XFCE (`xfconf-query`), and tiling window managers (`feh`/`nitrogen`).
+
+- **🏛️ Favorites Vault & Local Offline Gallery Grid**  
+  Seamlessly toggle between the 3D swipe deck and an offline gallery view (`[ 🃏 Deck ] [ 🏛️ Vault ]`). Filter, search keywords, inspect, and set wallpapers offline from a human-readable `Pictures/WallGem/favorites.json` store without SQLite or binary database bloat.
+
+- **🎨 Dynamic Color Palette & "Ricing" Exporter**  
+  One-click extraction of dominant wallpaper colors into **Pywal (`.Xresources`)**, **CSS custom properties (`:root`)**, **JSON**, and **Hex CSV** formats, designed specifically for Linux, Windows, and Unix ricing enthusiasts.
+
+- **☀️ Day & Night Dynamic Sun Cycle**  
+  Intelligent time-aware discovery automatically shifting recommendations between breathtaking daytime vistas (`06:00–19:59`) and deep OLED Dark / Cyberpunk themes (`20:00–05:59`) to soothe eye strain.
+
+- **⏱️ Scheduled Interval Auto-Cycler**  
+  Configurable background slideshow timer with flexible intervals (*Off*, *15m*, *30m*, *1h*, *4h*) that smoothly cycles wallpapers hands-free.
+
+- **🖥️ Multi-Monitor & Ultrawide Splitter**  
+  Accurately detects 21:9 and 32:9 panoramic geometries and calculates clean Left/Right display bisection bounds prepared in `Pictures/WallGem/MultiMonitor/`.
+
 - **🌐 10-Platform Concurrent Pipeline**  
   Queries 10 high-resolution providers simultaneously with asynchronous pooling, real-time URL deduplication, and resilient fallback handling.
-- **🃏 Tactile 60 FPS Card Physics**  
-  Fluid swipe mechanics built with hardware-accelerated animations, spring curves, full keyboard hotkey support, and an undo history stack.
-- **🖼️ Automated Desktop Slideshow Sync**  
-  Every 5 liked wallpapers are automatically synchronized into `Pictures/WallGem/Slideshow`, seamlessly integrating with native OS desktop wallpaper rotations.
+
 - **🛡️ Strict Clean Architecture & 100% Hermetic Tests**  
-  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, platform service, and state controller is covered by an automated test harness (46 passing unit & widget tests, 0 analyzer warnings).
+  Decoupled Presentation, Domain, and Data layers. Every remote provider, parser, platform service, and state controller is covered by an automated test harness (**70 passing unit & widget tests**, **0 analyzer warnings**).
 
 ---
 
@@ -87,11 +100,11 @@ Engineered for power users and keyboard ergonomics:
 
 | Key | Action | Behavior |
 | :---: | :--- | :--- |
-| <kbd>→</kbd> | **Like** | Push wallpaper to current batch tray |
+| <kbd>→</kbd> | **Like** | Push wallpaper to Vault and current batch tray |
 | <kbd>←</kbd> | **Pass** | Dismiss current card to history |
 | <kbd>↑</kbd> | **Apply Now** | Download & set as desktop background instantly via Win32 FFI |
 | <kbd>Z</kbd> | **Undo** | Pop and restore the previously dismissed card |
-| <kbd>Space</kbd> | **Inspect Lightbox** | Open fullscreen high-res zoom & metadata inspection |
+| <kbd>Space</kbd> | **Inspect Lightbox** | Open fullscreen high-res zoom, palette exporter & split controls |
 | <kbd>R</kbd> | **Refresh** | Trigger fresh network fetch from active platform |
 
 ---
@@ -103,19 +116,24 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                      PRESENTATION LAYER                     │
-│    HomeScreen  •  SwipeableCardStack  •  ActionDock  •  Header    │
-│            State: WallpaperDeckProvider, ActionProvider            │
+│    HomeScreen  •  SwipeableCardStack  •  FavoritesVaultView │
+│    PaletteExportModal  •  ActionDock  •  Responsive Header   │
+│   State: WallpaperDeckProvider, FavoritesProvider, Action   │
 └──────────────────────────────┬──────────────────────────────┘
                                │ (calls use cases / repos)
 ┌──────────────────────────────▼──────────────────────────────┐
 │                         DOMAIN LAYER                        │
-│   Entities: WallpaperEntity  •  Interfaces: IWallpaperRepository  │
-│                Service Contract: IWallpaperPlatformService                │
+│   Entities: Wallpaper, FavoriteWallpaper                    │
+│   Contracts: IWallpaperRepository, IFavoritesRepository    │
+│   Platform Contract: IWallpaperPlatformService              │
 └──────────────────────────────▲──────────────────────────────┘
                                │ (implements)
 ┌──────────────────────────────┴──────────────────────────────┐
 │                          DATA LAYER                         │
-│  10 Data Sources  •  WallpaperRepositoryImpl  •  Cache Model │
+│   FavoritesStorageService (atomic favorites.json store)     │
+│   PaletteFormatService (Pywal, CSS, JSON, Hex Exporter)     │
+│   MultiMonitorSplitterService (21:9 & 32:9 geometry)       │
+│   10 Remote Data Sources & Fallback Repositories            │
 │   Platform Services Factory:                                │
 │   ├─ WindowsWallpaperService (user32.dll Win32 FFI)         │
 │   ├─ MacOSWallpaperService (AppleScript System Events)      │
@@ -126,6 +144,7 @@ Wall Gem adopts Uncle Bob's **Clean Architecture** with unidirectional data flow
 - **Separation of Concerns**: Pure Dart domain layer has zero dependency on UI or Flutter SDK.
 - **Platform Isolation**: Native desktop wallpaper setters live strictly behind the `IWallpaperPlatformService` interface, automatically chosen at runtime via `WallpaperServiceFactory`.
 - **Resilience**: Any remote datasource failure degrades gracefully into curated offline fallbacks without disrupting the active card stack.
+- **Human-Readable Persistence**: User favorites are stored as clean JSON in `Pictures/WallGem/favorites.json`, making backup and sync effortless without proprietary database lock-in.
 
 ---
 
@@ -150,10 +169,10 @@ flutter run
 
 ### Verification & Testing
 ```bash
-# Run static analysis
+# Run static analysis (0 warnings)
 flutter analyze
 
-# Execute 46 hermetic unit & widget tests
+# Execute 70 hermetic unit & widget tests
 flutter test
 ```
 
@@ -164,8 +183,8 @@ flutter test
 Wall Gem is an open-source initiative designed to prove that desktop utility apps can be fast, gorgeous, and respectful of user privacy.
 
 I'm actively looking to collaborate with other passionate developers in the FOSS community. Here are areas where contributions are warmly welcomed:
-- 🐧 **Linux & macOS Support**: Implementing native wallpaper setters (`gsettings` / `feh` for Linux, `NSWorkspace` for macOS).
-- 🖥️ **Multi-Monitor Customization**: Independent wallpapers per display monitor via Win32 desktop COM interfaces.
+- 🐧 **Linux & macOS Custom Setters**: Extending platform setters (`feh`, `swww`, `hyprpaper`, macOS dynamic walls).
+- 🖥️ **Multi-Monitor Customization**: Deep per-monitor desktop COM scheduling on Windows 11.
 - 🏷️ **Custom Tag Filtering & Search**: On-the-fly keyword filtering across community APIs.
 
 If you have ideas, feedback, or want to collaborate on this or future projects, let's connect!

@@ -98,11 +98,18 @@ class WallpaperPreviewDialog extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
                       ),
                       icon: const Icon(Icons.palette_outlined, size: 16),
-                      label: const Text('Export Palette', style: TextStyle(fontSize: 12)),
-                      onPressed: () => PaletteExportModal.show(context, wallpaper),
+                      label: const Text(
+                        'Export Palette',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      onPressed: () =>
+                          PaletteExportModal.show(context, wallpaper),
                     ),
 
                     if (isPanoramic) ...[
@@ -114,10 +121,16 @@ class WallpaperPreviewDialog extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
                         ),
                         icon: const Icon(Icons.splitscreen, size: 16),
-                        label: const Text('Dual Screens', style: TextStyle(fontSize: 12)),
+                        label: const Text(
+                          'Dual Screens',
+                          style: TextStyle(fontSize: 12),
+                        ),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -139,12 +152,18 @@ class WallpaperPreviewDialog extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                       ),
                       icon: const Icon(Icons.wallpaper, size: 16),
                       label: const Text(
                         'Set Wallpaper',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();

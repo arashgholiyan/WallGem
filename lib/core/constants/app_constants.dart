@@ -4,7 +4,7 @@ class AppConstants {
 
   static const String appName = 'Wall Gem';
   static const String appTagline = '4K Discovery & Desktop Engine';
-  static const String appVersion = '1.1.0';
+  static const String appVersion = '1.2.0';
 
   /// Number of liked wallpapers to trigger batch slideshow completion
   static const int batchTarget = 5;

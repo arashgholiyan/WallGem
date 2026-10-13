@@ -25,7 +25,10 @@ void main() {
       final dawnEdge = DateTime(2026, 10, 13, 5, 59);
 
       expect(DayNightCalculator.isDaytime(nightStart), isFalse);
-      expect(DayNightCalculator.getRecommendedCategory(nightStart), 'OLED Dark');
+      expect(
+        DayNightCalculator.getRecommendedCategory(nightStart),
+        'OLED Dark',
+      );
 
       expect(DayNightCalculator.isDaytime(midnight), isFalse);
       expect(DayNightCalculator.getRecommendedCategory(midnight), 'OLED Dark');

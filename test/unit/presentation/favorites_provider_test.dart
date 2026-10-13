@@ -76,19 +76,22 @@ void main() {
     expect(provider.favorites.first.id, 'fav-1');
   });
 
-  test('addFavorite and removeFavorite update state and notify listeners', () async {
-    int notifyCount = 0;
-    provider.addListener(() => notifyCount++);
+  test(
+    'addFavorite and removeFavorite update state and notify listeners',
+    () async {
+      int notifyCount = 0;
+      provider.addListener(() => notifyCount++);
 
-    await provider.addFavorite(wall1);
-    expect(provider.isFavorite('fav-1'), isTrue);
-    expect(provider.favorites.length, 1);
-    expect(notifyCount, greaterThanOrEqualTo(1));
+      await provider.addFavorite(wall1);
+      expect(provider.isFavorite('fav-1'), isTrue);
+      expect(provider.favorites.length, 1);
+      expect(notifyCount, greaterThanOrEqualTo(1));
 
-    await provider.removeFavorite('fav-1');
-    expect(provider.isFavorite('fav-1'), isFalse);
-    expect(provider.favorites, isEmpty);
-  });
+      await provider.removeFavorite('fav-1');
+      expect(provider.isFavorite('fav-1'), isFalse);
+      expect(provider.favorites, isEmpty);
+    },
+  );
 
   test('toggleFavorite toggles presence cleanly', () async {
     await provider.toggleFavorite(wall1);

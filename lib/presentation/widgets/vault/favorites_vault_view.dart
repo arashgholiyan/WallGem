@@ -63,14 +63,22 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
                     children: [
-                      const Icon(Icons.search, color: AppColors.textSecondary, size: 20),
+                      const Icon(
+                        Icons.search,
+                        color: AppColors.textSecondary,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: TextField(
                           controller: _searchController,
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                          ),
                           decoration: const InputDecoration(
-                            hintText: 'Search favorites by title, artist, or tags...',
+                            hintText:
+                                'Search favorites by title, artist, or tags...',
                             hintStyle: TextStyle(
                               color: AppColors.textSecondary,
                               fontSize: 13,
@@ -83,7 +91,11 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                       ),
                       if (_searchController.text.isNotEmpty)
                         IconButton(
-                          icon: const Icon(Icons.close, size: 16, color: AppColors.textSecondary),
+                          icon: const Icon(
+                            Icons.close,
+                            size: 16,
+                            color: AppColors.textSecondary,
+                          ),
                           onPressed: () {
                             _searchController.clear();
                             favProvider.setSearchKeyword('');
@@ -95,11 +107,16 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
               ),
               const SizedBox(width: 12),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+                  border: Border.all(
+                    color: AppColors.primary.withValues(alpha: 0.3),
+                  ),
                 ),
                 child: Row(
                   children: [
@@ -134,9 +151,13 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                     selectedColor: AppColors.primary,
                     backgroundColor: const Color(0xFF161B2A),
                     labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                      color: isSelected
+                          ? Colors.white
+                          : AppColors.textSecondary,
                       fontSize: 11,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
                     ),
                     side: BorderSide(
                       color: isSelected ? AppColors.primary : AppColors.border,
@@ -175,7 +196,8 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                           return FavoriteCard(
                             wallpaper: item,
                             onTap: () => _showPreview(context, item),
-                            onApply: () => actionProvider.applyAsWallpaper(item),
+                            onApply: () =>
+                                actionProvider.applyAsWallpaper(item),
                             onRemove: () => favProvider.removeFavorite(item.id),
                             onSplit: () {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -205,7 +227,10 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(hasAnyFavorites ? '🔍' : '🏛️', style: const TextStyle(fontSize: 48)),
+          Text(
+            hasAnyFavorites ? '🔍' : '🏛️',
+            style: const TextStyle(fontSize: 48),
+          ),
           const SizedBox(height: 14),
           Text(
             hasAnyFavorites ? 'No matching wallpapers' : 'Your Vault is Empty',
@@ -221,7 +246,10 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                 ? 'Try adjusting your search query or category filter.'
                 : 'Like or star wallpapers in the 3D Deck to preserve them in your offline vault.',
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 13,
+            ),
           ),
           const SizedBox(height: 20),
           ElevatedButton.icon(
@@ -229,7 +257,9 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             icon: Icon(hasAnyFavorites ? Icons.clear_all : Icons.view_carousel),
             label: Text(
@@ -242,7 +272,9 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                 provider.setSearchKeyword('');
                 provider.setSelectedCategory('All');
               } else {
-                context.read<WallpaperDeckProvider>().setViewMode(ViewMode.deck);
+                context.read<WallpaperDeckProvider>().setViewMode(
+                  ViewMode.deck,
+                );
               }
             },
           ),

@@ -61,10 +61,9 @@ class FavoriteWallpaper extends Wallpaper {
               ?.map((c) => Color(c as int))
               .toList() ??
           const [],
-      savedAt:
-          json['savedAt'] != null
-              ? DateTime.parse(json['savedAt'] as String)
-              : DateTime.now(),
+      savedAt: json['savedAt'] != null
+          ? DateTime.parse(json['savedAt'] as String)
+          : DateTime.now(),
       localFilePath: json['localFilePath'] as String?,
     );
   }

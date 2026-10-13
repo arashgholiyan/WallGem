@@ -18,7 +18,9 @@ class StubFavoritesRepository implements IFavoritesRepository {
   @override
   Future<void> saveFavorite(Wallpaper wallpaper, {String? localPath}) async {
     items.removeWhere((f) => f.id == wallpaper.id);
-    items.add(FavoriteWallpaper.fromWallpaper(wallpaper, localFilePath: localPath));
+    items.add(
+      FavoriteWallpaper.fromWallpaper(wallpaper, localFilePath: localPath),
+    );
   }
 
   @override
@@ -31,31 +33,34 @@ class StubFavoritesRepository implements IFavoritesRepository {
 }
 
 void main() {
-  testWidgets('FavoritesVaultView renders empty state when no favorites exist', (
-    WidgetTester tester,
-  ) async {
-    final repo = StubFavoritesRepository();
-    final favProvider = FavoritesProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(service: NoopWallpaperService());
+  testWidgets(
+    'FavoritesVaultView renders empty state when no favorites exist',
+    (WidgetTester tester) async {
+      final repo = StubFavoritesRepository();
+      final favProvider = FavoritesProvider(repository: repo);
+      final actionProvider = WallpaperActionProvider(
+        service: NoopWallpaperService(),
+      );
 
-    await favProvider.loadFavorites();
+      await favProvider.loadFavorites();
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(value: actionProvider),
-        ],
-        child: const MaterialApp(
-          home: Scaffold(body: FavoritesVaultView()),
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
+            ChangeNotifierProvider<WallpaperActionProvider>.value(
+              value: actionProvider,
+            ),
+          ],
+          child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.text('Your Vault is Empty'), findsOneWidget);
-    expect(find.byType(TextField), findsOneWidget);
-  });
+      expect(find.text('Your Vault is Empty'), findsOneWidget);
+      expect(find.byType(TextField), findsOneWidget);
+    },
+  );
 
   testWidgets('FavoritesVaultView renders cards and filters by keyword', (
     WidgetTester tester,
@@ -90,18 +95,20 @@ void main() {
     await repo.saveFavorite(sample2);
 
     final favProvider = FavoritesProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(service: NoopWallpaperService());
+    final actionProvider = WallpaperActionProvider(
+      service: NoopWallpaperService(),
+    );
     await favProvider.loadFavorites();
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(value: actionProvider),
+          ChangeNotifierProvider<WallpaperActionProvider>.value(
+            value: actionProvider,
+          ),
         ],
-        child: const MaterialApp(
-          home: Scaffold(body: FavoritesVaultView()),
-        ),
+        child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
       ),
     );
     await tester.pumpAndSettle();

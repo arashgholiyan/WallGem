@@ -46,7 +46,9 @@ class StubFavoritesRepository implements IFavoritesRepository {
 
   @override
   Future<void> saveFavorite(Wallpaper wallpaper, {String? localPath}) async {
-    items.add(FavoriteWallpaper.fromWallpaper(wallpaper, localFilePath: localPath));
+    items.add(
+      FavoriteWallpaper.fromWallpaper(wallpaper, localFilePath: localPath),
+    );
   }
 
   @override
@@ -71,7 +73,9 @@ void main() {
       final actionProvider = WallpaperActionProvider(
         service: NoopWallpaperService(),
       );
-      final favProvider = FavoritesProvider(repository: StubFavoritesRepository());
+      final favProvider = FavoritesProvider(
+        repository: StubFavoritesRepository(),
+      );
       await deckProvider.loadInitialFeed();
 
       await tester.pumpWidget(
@@ -83,9 +87,7 @@ void main() {
             ChangeNotifierProvider<WallpaperActionProvider>.value(
               value: actionProvider,
             ),
-            ChangeNotifierProvider<FavoritesProvider>.value(
-              value: favProvider,
-            ),
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
           ],
           child: const MaterialApp(home: HomeScreen()),
         ),
@@ -98,47 +100,48 @@ void main() {
     },
   );
 
-  testWidgets('HomeScreen renders smoothly on large 1920x1080 display and switches to Vault view', (
-    WidgetTester tester,
-  ) async {
-    tester.view.physicalSize = const Size(1920, 1080);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
+  testWidgets(
+    'HomeScreen renders smoothly on large 1920x1080 display and switches to Vault view',
+    (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(1920, 1080);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-    final repo = StubWallpaperRepository();
-    final deckProvider = WallpaperDeckProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(
-      service: NoopWallpaperService(),
-    );
-    final favProvider = FavoritesProvider(repository: StubFavoritesRepository());
-    await deckProvider.loadInitialFeed();
+      final repo = StubWallpaperRepository();
+      final deckProvider = WallpaperDeckProvider(repository: repo);
+      final actionProvider = WallpaperActionProvider(
+        service: NoopWallpaperService(),
+      );
+      final favProvider = FavoritesProvider(
+        repository: StubFavoritesRepository(),
+      );
+      await deckProvider.loadInitialFeed();
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<WallpaperDeckProvider>.value(
-            value: deckProvider,
-          ),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(
-            value: actionProvider,
-          ),
-          ChangeNotifierProvider<FavoritesProvider>.value(
-            value: favProvider,
-          ),
-        ],
-        child: const MaterialApp(home: HomeScreen()),
-      ),
-    );
-    await tester.pump();
-    await tester.pump(const Duration(milliseconds: 50));
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<WallpaperDeckProvider>.value(
+              value: deckProvider,
+            ),
+            ChangeNotifierProvider<WallpaperActionProvider>.value(
+              value: actionProvider,
+            ),
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
+          ],
+          child: const MaterialApp(home: HomeScreen()),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 50));
 
-    expect(find.text('Wall Gem'), findsOneWidget);
+      expect(find.text('Wall Gem'), findsOneWidget);
 
-    // Switch to Vault view
-    await tester.tap(find.textContaining('Vault'));
-    await tester.pumpAndSettle();
+      // Switch to Vault view
+      await tester.tap(find.textContaining('Vault'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Your Vault is Empty'), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+      expect(find.text('Your Vault is Empty'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 }

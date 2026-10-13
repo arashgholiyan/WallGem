@@ -39,12 +39,15 @@ void main() {
     expect(hexCsv, contains('#6366F1, #38BDF8, #10B981'));
   });
 
-  test('PaletteFormatService handles empty color list with elegant fallback', () {
-    final pywal = PaletteFormatService.toPywal(const []);
-    expect(pywal, isNotEmpty);
-    expect(pywal, contains('*background: #'));
+  test(
+    'PaletteFormatService handles empty color list with elegant fallback',
+    () {
+      final pywal = PaletteFormatService.toPywal(const []);
+      expect(pywal, isNotEmpty);
+      expect(pywal, contains('*background: #'));
 
-    final css = PaletteFormatService.toCssVariables(const []);
-    expect(css, contains('--wg-accent-1: #'));
-  });
+      final css = PaletteFormatService.toCssVariables(const []);
+      expect(css, contains('--wg-accent-1: #'));
+    },
+  );
 }

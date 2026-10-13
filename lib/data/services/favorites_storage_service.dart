@@ -27,7 +27,9 @@ class FavoritesStorageService {
     }
 
     final separator = Platform.pathSeparator;
-    return File('$basePath${separator}Pictures${separator}WallGem${separator}favorites.json');
+    return File(
+      '$basePath${separator}Pictures${separator}WallGem${separator}favorites.json',
+    );
   }
 
   /// Loads all favorited wallpapers from the JSON file.
@@ -54,7 +56,9 @@ class FavoritesStorageService {
           .map((item) => FavoriteWallpaper.fromJson(item))
           .toList();
     } catch (e, stack) {
-      debugPrint('FavoritesStorageService: Recovery from unreadable JSON: $e\n$stack');
+      debugPrint(
+        'FavoritesStorageService: Recovery from unreadable JSON: $e\n$stack',
+      );
       return [];
     }
   }
@@ -68,14 +72,16 @@ class FavoritesStorageService {
         await parent.create(recursive: true);
       }
 
-      final jsonString = const JsonEncoder.withIndent('  ').convert(
-        favorites.map((f) => f.toJson()).toList(),
-      );
+      final jsonString = const JsonEncoder.withIndent(
+        '  ',
+      ).convert(favorites.map((f) => f.toJson()).toList());
 
       // Write with flush to guarantee persistence
       await file.writeAsString(jsonString, flush: true);
     } catch (e, stack) {
-      debugPrint('FavoritesStorageService: Failed to save favorites: $e\n$stack');
+      debugPrint(
+        'FavoritesStorageService: Failed to save favorites: $e\n$stack',
+      );
       rethrow;
     }
   }

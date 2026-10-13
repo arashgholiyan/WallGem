@@ -205,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Expanded(
                       child: Center(
-                        child: deckProvider.isLoading && deckProvider.deck.isEmpty
+                        child:
+                            deckProvider.isLoading && deckProvider.deck.isEmpty
                             ? const Center(
                                 child: SizedBox(
                                   width: 32,

@@ -57,11 +57,15 @@ class FavoriteCard extends StatelessWidget {
                   CachedNetworkImage(
                     imageUrl: wallpaper.thumbUrl,
                     fit: BoxFit.cover,
-                    placeholder: (_, _) => Container(color: const Color(0xFF1E2235)),
+                    placeholder: (_, _) =>
+                        Container(color: const Color(0xFF1E2235)),
                     errorWidget: (_, _, _) => Container(
                       color: const Color(0xFF1E2235),
                       child: const Center(
-                        child: Icon(Icons.broken_image, color: AppColors.textSecondary),
+                        child: Icon(
+                          Icons.broken_image,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ),
                   ),
@@ -74,7 +78,10 @@ class FavoriteCard extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.black54,
                             borderRadius: BorderRadius.circular(10),
@@ -92,10 +99,16 @@ class FavoriteCard extends StatelessWidget {
                         if (isPanoramic) ...[
                           const SizedBox(width: 6),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
                             decoration: BoxDecoration(
                               gradient: const LinearGradient(
-                                colors: [AppColors.primary, AppColors.secondary],
+                                colors: [
+                                  AppColors.primary,
+                                  AppColors.secondary,
+                                ],
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -155,7 +168,8 @@ class FavoriteCard extends StatelessWidget {
                         tooltip: 'Export Palette (Pywal/CSS)',
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
-                        onPressed: () => PaletteExportModal.show(context, wallpaper),
+                        onPressed: () =>
+                            PaletteExportModal.show(context, wallpaper),
                       ),
 
                       if (isPanoramic)

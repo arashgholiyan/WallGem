@@ -120,7 +120,10 @@ class _PaletteExportModalState extends State<PaletteExportModal> {
                     ],
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                    icon: const Icon(
+                      Icons.close,
+                      color: AppColors.textSecondary,
+                    ),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -135,7 +138,10 @@ class _PaletteExportModalState extends State<PaletteExportModal> {
                   final hex =
                       '#${(c.toARGB32() & 0x00FFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
                   return Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: c.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(16),
@@ -183,12 +189,18 @@ class _PaletteExportModalState extends State<PaletteExportModal> {
                         selectedColor: AppColors.primary,
                         backgroundColor: const Color(0xFF1E2235),
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.white : AppColors.textSecondary,
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.textSecondary,
                           fontSize: 12,
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isSelected
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                         ),
                         side: BorderSide(
-                          color: isSelected ? AppColors.primary : AppColors.border,
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.border,
                         ),
                         onSelected: (_) {
                           setState(() => _selectedFormat = fmt);
@@ -231,9 +243,14 @@ class _PaletteExportModalState extends State<PaletteExportModal> {
                 children: [
                   ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _copied ? AppColors.like : AppColors.primary,
+                      backgroundColor: _copied
+                          ? AppColors.like
+                          : AppColors.primary,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),

@@ -35,53 +35,62 @@ class FakeWallpaperRepository implements IWallpaperRepository {
 }
 
 void main() {
-  test('WallpaperDeckProvider manages ViewMode switching between Deck and Vault', () {
-    final repo = FakeWallpaperRepository();
-    final provider = WallpaperDeckProvider(repository: repo);
+  test(
+    'WallpaperDeckProvider manages ViewMode switching between Deck and Vault',
+    () {
+      final repo = FakeWallpaperRepository();
+      final provider = WallpaperDeckProvider(repository: repo);
 
-    expect(provider.viewMode, ViewMode.deck);
-    provider.setViewMode(ViewMode.vault);
-    expect(provider.viewMode, ViewMode.vault);
-    provider.setViewMode(ViewMode.deck);
-    expect(provider.viewMode, ViewMode.deck);
-  });
+      expect(provider.viewMode, ViewMode.deck);
+      provider.setViewMode(ViewMode.vault);
+      expect(provider.viewMode, ViewMode.vault);
+      provider.setViewMode(ViewMode.deck);
+      expect(provider.viewMode, ViewMode.deck);
+    },
+  );
 
-  test('WallpaperDeckProvider toggles DayNightMode and recommends category', () async {
-    final repo = FakeWallpaperRepository();
-    final provider = WallpaperDeckProvider(repository: repo);
+  test(
+    'WallpaperDeckProvider toggles DayNightMode and recommends category',
+    () async {
+      final repo = FakeWallpaperRepository();
+      final provider = WallpaperDeckProvider(repository: repo);
 
-    expect(provider.isDayNightModeEnabled, isFalse);
-    await provider.toggleDayNightMode();
-    expect(provider.isDayNightModeEnabled, isTrue);
-    expect(provider.currentCategory, anyOf('Landscape', 'OLED Dark'));
+      expect(provider.isDayNightModeEnabled, isFalse);
+      await provider.toggleDayNightMode();
+      expect(provider.isDayNightModeEnabled, isTrue);
+      expect(provider.currentCategory, anyOf('Landscape', 'OLED Dark'));
 
-    await provider.toggleDayNightMode();
-    expect(provider.isDayNightModeEnabled, isFalse);
-  });
+      await provider.toggleDayNightMode();
+      expect(provider.isDayNightModeEnabled, isFalse);
+    },
+  );
 
-  test('WallpaperDeckProvider manages autoCycleInterval and triggers callback', () async {
-    final repo = FakeWallpaperRepository();
-    final provider = WallpaperDeckProvider(repository: repo);
-    await provider.loadInitialFeed();
+  test(
+    'WallpaperDeckProvider manages autoCycleInterval and triggers callback',
+    () async {
+      final repo = FakeWallpaperRepository();
+      final provider = WallpaperDeckProvider(repository: repo);
+      await provider.loadInitialFeed();
 
-    expect(provider.autoCycleInterval, isNull);
+      expect(provider.autoCycleInterval, isNull);
 
-    int triggerCount = 0;
-    provider.setAutoCycleInterval(
-      const Duration(milliseconds: 50),
-      onCycle: () => triggerCount++,
-    );
-    expect(provider.autoCycleInterval, const Duration(milliseconds: 50));
+      int triggerCount = 0;
+      provider.setAutoCycleInterval(
+        const Duration(milliseconds: 50),
+        onCycle: () => triggerCount++,
+      );
+      expect(provider.autoCycleInterval, const Duration(milliseconds: 50));
 
-    await Future.delayed(const Duration(milliseconds: 130));
-    expect(triggerCount, greaterThanOrEqualTo(2));
+      await Future.delayed(const Duration(milliseconds: 130));
+      expect(triggerCount, greaterThanOrEqualTo(2));
 
-    provider.setAutoCycleInterval(null);
-    expect(provider.autoCycleInterval, isNull);
-    final countAfterCancel = triggerCount;
-    await Future.delayed(const Duration(milliseconds: 80));
-    expect(triggerCount, equals(countAfterCancel));
+      provider.setAutoCycleInterval(null);
+      expect(provider.autoCycleInterval, isNull);
+      final countAfterCancel = triggerCount;
+      await Future.delayed(const Duration(milliseconds: 80));
+      expect(triggerCount, equals(countAfterCancel));
 
-    provider.dispose();
-  });
+      provider.dispose();
+    },
+  );
 }
