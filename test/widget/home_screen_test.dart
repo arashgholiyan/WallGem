@@ -197,7 +197,10 @@ void main() {
       await tester.tap(find.text('⏱️ Cycle: 15m'));
       await tester.pumpAndSettle();
 
-      expect(deckProvider.autoCycleInterval, equals(const Duration(minutes: 15)));
+      expect(
+        deckProvider.autoCycleInterval,
+        equals(const Duration(minutes: 15)),
+      );
       expect(find.text('⏱️ Cycle: 15m'), findsOneWidget);
 
       // Clean up timer
@@ -205,4 +208,3 @@ void main() {
     },
   );
 }
-

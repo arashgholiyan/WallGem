@@ -93,43 +93,43 @@ void main() {
       },
     );
 
-    testWidgets(
-      'visually highlights the active segment with primary color',
-      (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
+    testWidgets('visually highlights the active segment with primary color', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-        await tester.pumpWidget(
-          buildHeaderBar(
-            activeViewMode: ViewMode.deck,
-            favoritesCount: 3,
-          ),
-        );
+      await tester.pumpWidget(
+        buildHeaderBar(activeViewMode: ViewMode.deck, favoritesCount: 3),
+      );
 
-        // Find AnimatedContainer wrapping '🃏 Deck'
-        final deckContainerFinder = find.ancestor(
-          of: find.text('🃏 Deck'),
-          matching: find.byType(AnimatedContainer),
-        );
-        expect(deckContainerFinder, findsOneWidget);
+      // Find AnimatedContainer wrapping '🃏 Deck'
+      final deckContainerFinder = find.ancestor(
+        of: find.text('🃏 Deck'),
+        matching: find.byType(AnimatedContainer),
+      );
+      expect(deckContainerFinder, findsOneWidget);
 
-        final deckContainer = tester.widget<AnimatedContainer>(deckContainerFinder);
-        final deckDecoration = deckContainer.decoration as BoxDecoration;
-        expect(deckDecoration.color, equals(AppColors.primary));
+      final deckContainer = tester.widget<AnimatedContainer>(
+        deckContainerFinder,
+      );
+      final deckDecoration = deckContainer.decoration as BoxDecoration;
+      expect(deckDecoration.color, equals(AppColors.primary));
 
-        // Find AnimatedContainer wrapping '🏛️ Vault (3)'
-        final vaultContainerFinder = find.ancestor(
-          of: find.text('🏛️ Vault (3)'),
-          matching: find.byType(AnimatedContainer),
-        );
-        expect(vaultContainerFinder, findsOneWidget);
+      // Find AnimatedContainer wrapping '🏛️ Vault (3)'
+      final vaultContainerFinder = find.ancestor(
+        of: find.text('🏛️ Vault (3)'),
+        matching: find.byType(AnimatedContainer),
+      );
+      expect(vaultContainerFinder, findsOneWidget);
 
-        final vaultContainer = tester.widget<AnimatedContainer>(vaultContainerFinder);
-        final vaultDecoration = vaultContainer.decoration as BoxDecoration;
-        expect(vaultDecoration.color, equals(Colors.transparent));
-      },
-    );
+      final vaultContainer = tester.widget<AnimatedContainer>(
+        vaultContainerFinder,
+      );
+      final vaultDecoration = vaultContainer.decoration as BoxDecoration;
+      expect(vaultDecoration.color, equals(Colors.transparent));
+    });
   });
 
   group('HeaderBar Day & Night Sun Cycle Controls', () {
@@ -150,7 +150,10 @@ void main() {
         );
 
         expect(find.text('🌙'), findsOneWidget);
-        expect(find.byTooltip('Sun Cycle Off (Tap to sync dynamic themes)'), findsOneWidget);
+        expect(
+          find.byTooltip('Sun Cycle Off (Tap to sync dynamic themes)'),
+          findsOneWidget,
+        );
 
         await tester.tap(find.text('🌙'));
         await tester.pumpAndSettle();
@@ -176,7 +179,10 @@ void main() {
         );
 
         expect(find.text('☀️'), findsOneWidget);
-        expect(find.byTooltip('Sun Cycle Active (Syncing with Day/Night)'), findsOneWidget);
+        expect(
+          find.byTooltip('Sun Cycle Active (Syncing with Day/Night)'),
+          findsOneWidget,
+        );
 
         await tester.tap(find.text('☀️'));
         await tester.pumpAndSettle();
@@ -223,105 +229,98 @@ void main() {
       },
     );
 
-    testWidgets(
-      'displays "⏱️ Cycle: 30m" and allows changing to 1h',
-      (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
+    testWidgets('displays "⏱️ Cycle: 30m" and allows changing to 1h', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-        Duration? chosenInterval;
+      Duration? chosenInterval;
 
-        await tester.pumpWidget(
-          buildHeaderBar(
-            autoCycleInterval: const Duration(minutes: 30),
-            onSelectAutoCycleInterval: (val) => chosenInterval = val,
-          ),
-        );
+      await tester.pumpWidget(
+        buildHeaderBar(
+          autoCycleInterval: const Duration(minutes: 30),
+          onSelectAutoCycleInterval: (val) => chosenInterval = val,
+        ),
+      );
 
-        expect(find.text('⏱️ Cycle: 30m'), findsOneWidget);
+      expect(find.text('⏱️ Cycle: 30m'), findsOneWidget);
 
-        await tester.tap(find.text('⏱️ Cycle: 30m'));
-        await tester.pumpAndSettle();
+      await tester.tap(find.text('⏱️ Cycle: 30m'));
+      await tester.pumpAndSettle();
 
-        await tester.tap(find.text('⏱️ Cycle: 1h'));
-        await tester.pumpAndSettle();
+      await tester.tap(find.text('⏱️ Cycle: 1h'));
+      await tester.pumpAndSettle();
 
-        expect(chosenInterval, equals(const Duration(hours: 1)));
-      },
-    );
+      expect(chosenInterval, equals(const Duration(hours: 1)));
+    });
 
-    testWidgets(
-      'allows turning auto-cycler Off from an active interval',
-      (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
+    testWidgets('allows turning auto-cycler Off from an active interval', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-        Duration? chosenInterval = const Duration(hours: 4);
+      Duration? chosenInterval = const Duration(hours: 4);
 
-        await tester.pumpWidget(
-          buildHeaderBar(
-            autoCycleInterval: const Duration(hours: 4),
-            onSelectAutoCycleInterval: (val) => chosenInterval = val,
-          ),
-        );
+      await tester.pumpWidget(
+        buildHeaderBar(
+          autoCycleInterval: const Duration(hours: 4),
+          onSelectAutoCycleInterval: (val) => chosenInterval = val,
+        ),
+      );
 
-        expect(find.text('⏱️ Cycle: 4h'), findsOneWidget);
+      expect(find.text('⏱️ Cycle: 4h'), findsOneWidget);
 
-        await tester.tap(find.text('⏱️ Cycle: 4h'));
-        await tester.pumpAndSettle();
+      await tester.tap(find.text('⏱️ Cycle: 4h'));
+      await tester.pumpAndSettle();
 
-        // Select '⏱️ Timer: Off'
-        await tester.tap(find.text('⏱️ Timer: Off').last);
-        await tester.pumpAndSettle();
+      // Select '⏱️ Timer: Off'
+      await tester.tap(find.text('⏱️ Timer: Off').last);
+      await tester.pumpAndSettle();
 
-        expect(chosenInterval, isNull);
-      },
-    );
+      expect(chosenInterval, isNull);
+    });
   });
 
   group('HeaderBar General Navigation & Responsiveness', () {
-    testWidgets(
-      'triggers onOpenFolder when folder icon is tapped',
-      (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(1280, 800);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
+    testWidgets('triggers onOpenFolder when folder icon is tapped', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-        bool folderOpened = false;
+      bool folderOpened = false;
 
-        await tester.pumpWidget(
-          buildHeaderBar(onOpenFolder: () => folderOpened = true),
-        );
+      await tester.pumpWidget(
+        buildHeaderBar(onOpenFolder: () => folderOpened = true),
+      );
 
-        expect(find.byIcon(Icons.folder_open_outlined), findsOneWidget);
-        await tester.tap(find.byIcon(Icons.folder_open_outlined));
-        await tester.pumpAndSettle();
+      expect(find.byIcon(Icons.folder_open_outlined), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.folder_open_outlined));
+      await tester.pumpAndSettle();
 
-        expect(folderOpened, isTrue);
-      },
-    );
+      expect(folderOpened, isTrue);
+    });
 
-    testWidgets(
-      'renders without overflow on compact 800x600 screen',
-      (WidgetTester tester) async {
-        tester.view.physicalSize = const Size(800, 600);
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(tester.view.resetPhysicalSize);
+    testWidgets('renders without overflow on compact 800x600 screen', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(800, 600);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-        await tester.pumpWidget(
-          buildHeaderBar(
-            activeViewMode: ViewMode.deck,
-            favoritesCount: 3,
-          ),
-        );
+      await tester.pumpWidget(
+        buildHeaderBar(activeViewMode: ViewMode.deck, favoritesCount: 3),
+      );
 
-        expect(find.byKey(AppKeys.headerBar), findsOneWidget);
-        expect(find.text('🃏 Deck'), findsOneWidget);
-        expect(find.text('🏛️ Vault (3)'), findsOneWidget);
-        expect(tester.takeException(), isNull);
-      },
-    );
+      expect(find.byKey(AppKeys.headerBar), findsOneWidget);
+      expect(find.text('🃏 Deck'), findsOneWidget);
+      expect(find.text('🏛️ Vault (3)'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
   });
 }

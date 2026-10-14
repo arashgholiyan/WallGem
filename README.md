@@ -15,7 +15,9 @@
     <img src="https://img.shields.io/github/v/release/arashgholiyan/wall-gem?color=6366F1&label=Release&logo=github" alt="Release" />
   </a>
   <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-0078D6" alt="Platforms" />
-  <img src="https://img.shields.io/badge/Tests-98%2F98%20Passing-10B981?logo=checkmarx" alt="Tests" />
+  <a href="https://github.com/arashgholiyan/wall-gem/actions/workflows/flutter_ci.yml">
+    <img src="https://github.com/arashgholiyan/wall-gem/actions/workflows/flutter_ci.yml/badge.svg" alt="CI Status" />
+  </a>
   <img src="https://img.shields.io/badge/Dart-3.10%2B-0175C2?logo=dart" alt="Dart" />
   <img src="https://img.shields.io/badge/Flutter-3.38%2B-02569B?logo=flutter" alt="Flutter" />
   <img src="https://img.shields.io/badge/License-MIT-purple" alt="License" />
@@ -150,7 +152,7 @@ Wall Gem follows Uncle Bob's **Clean Architecture** with strict unidirectional d
 ### Key Engineering Decisions:
 - **Win32 C-FFI instead of shell execution**: Spawning PowerShell commands (`Set-ItemProperty`) introduces a 400–800ms process spin-up lag. Calling `SystemParametersInfoW` directly through Dart FFI executes in **<50ms**, with manual UTF-16 pointer allocation and immediate `calloc.free` cleanup.
 - **Lightweight JSON over SQLite**: Storing bookmarks in SQLite creates opaque binary files. Saving to `favorites.json` keeps your data readable, easily editable in any text editor, and simple to backup via Git.
-- **100% Hermetic Test Suite**: All remote datasources and platform services accept injected HTTP clients and process runners, allowing **98 unit and widget tests** to run in under 10 seconds on CI with zero external network flakiness.
+- **Hermetic Architecture**: Remote datasources and platform services accept injected HTTP clients and process runners, enabling fully isolated and deterministic unit and widget testing with zero external network flakiness.
 
 ---
 
@@ -177,13 +179,13 @@ flutter run -d macos     # macOS (App bundle runner)
 
 ### Running Tests & Static Analysis
 ```bash
-# Code formatting check
+# Verify code formatting
 dart format --output=none --set-exit-if-changed .
 
-# Static code analysis (0 issues)
+# Static code analysis
 flutter analyze
 
-# Execute 98 unit and widget tests
+# Run automated test suite
 flutter test
 ```
 

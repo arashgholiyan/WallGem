@@ -35,6 +35,7 @@ windows/flutter/ephemeral/
 
 # Internal tool workspaces
 .superpowers/
+docs/superpowers/
 
 # Symbolication related
 app.*.symbols

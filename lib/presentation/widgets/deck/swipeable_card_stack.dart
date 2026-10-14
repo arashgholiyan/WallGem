@@ -95,153 +95,162 @@ class _SwipeableCardStackState extends State<SwipeableCardStack> {
       child: GestureDetector(
         onTap: widget.onInspectPreview,
         onPanUpdate: (details) {
-        setState(() {
-          _dragOffset += details.delta;
-        });
-      },
-      onPanEnd: (details) {
-        if (_dragOffset.dy < -120 && _dragOffset.dx.abs() < 80) {
-          widget.onSwipeUp();
-        } else if (_dragOffset.dx > 130) {
-          widget.onSwipeRight();
-        } else if (_dragOffset.dx < -130) {
-          widget.onSwipeLeft();
-        }
+          setState(() {
+            _dragOffset += details.delta;
+          });
+        },
+        onPanEnd: (details) {
+          if (_dragOffset.dy < -120 && _dragOffset.dx.abs() < 80) {
+            widget.onSwipeUp();
+          } else if (_dragOffset.dx > 130) {
+            widget.onSwipeRight();
+          } else if (_dragOffset.dx < -130) {
+            widget.onSwipeLeft();
+          }
 
-        setState(() {
-          _dragOffset = Offset.zero;
-        });
-      },
-      child: RepaintBoundary(
-        child: Transform.translate(
-          offset: _dragOffset,
-          child: Transform.rotate(
-            angle: rotateAngle,
-            child: Stack(
-              children: [
-                WallpaperCard(wallpaper: wallpaper),
+          setState(() {
+            _dragOffset = Offset.zero;
+          });
+        },
+        child: RepaintBoundary(
+          child: Transform.translate(
+            offset: _dragOffset,
+            child: Transform.rotate(
+              angle: rotateAngle,
+              child: Stack(
+                children: [
+                  WallpaperCard(wallpaper: wallpaper),
 
-              // LIKE Stamp
-              if (_dragOffset.dx > 20)
-                Positioned(
-                  top: 30,
-                  right: 30,
-                  child: Opacity(
-                    opacity: (_dragOffset.dx / 120).clamp(0.0, 1.0),
-                    child: Transform.rotate(
-                      angle: 0.2,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.like, width: 3),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.black87,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: AppColors.likeGlow,
-                              blurRadius: 20,
+                  // LIKE Stamp
+                  if (_dragOffset.dx > 20)
+                    Positioned(
+                      top: 30,
+                      right: 30,
+                      child: Opacity(
+                        opacity: (_dragOffset.dx / 120).clamp(0.0, 1.0),
+                        child: Transform.rotate(
+                          angle: 0.2,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
                             ),
-                          ],
-                        ),
-                        child: const Text(
-                          'LIKE',
-                          style: TextStyle(
-                            color: AppColors.like,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.like,
+                                width: 3,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.likeGlow,
+                                  blurRadius: 20,
+                                ),
+                              ],
+                            ),
+                            child: const Text(
+                              'LIKE',
+                              style: TextStyle(
+                                color: AppColors.like,
+                                fontSize: 28,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-              // PASS Stamp
-              if (_dragOffset.dx < -20)
-                Positioned(
-                  top: 30,
-                  left: 30,
-                  child: Opacity(
-                    opacity: (-_dragOffset.dx / 120).clamp(0.0, 1.0),
-                    child: Transform.rotate(
-                      angle: -0.2,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.pass, width: 3),
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.black87,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: AppColors.passGlow,
-                              blurRadius: 20,
+                  // PASS Stamp
+                  if (_dragOffset.dx < -20)
+                    Positioned(
+                      top: 30,
+                      left: 30,
+                      child: Opacity(
+                        opacity: (-_dragOffset.dx / 120).clamp(0.0, 1.0),
+                        child: Transform.rotate(
+                          angle: -0.2,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
                             ),
-                          ],
-                        ),
-                        child: const Text(
-                          'PASS',
-                          style: TextStyle(
-                            color: AppColors.pass,
-                            fontSize: 28,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.pass,
+                                width: 3,
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.black87,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.passGlow,
+                                  blurRadius: 20,
+                                ),
+                              ],
+                            ),
+                            child: const Text(
+                              'PASS',
+                              style: TextStyle(
+                                color: AppColors.pass,
+                                fontSize: 28,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 2,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-              // APPLY NOW Stamp
-              if (_dragOffset.dy < -40)
-                Positioned(
-                  top: 50,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Opacity(
-                      opacity: (-_dragOffset.dy / 100).clamp(0.0, 1.0),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: AppColors.star, width: 3),
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.black87,
-                          boxShadow: const [
-                            BoxShadow(
-                              color: AppColors.starGlow,
-                              blurRadius: 24,
+                  // APPLY NOW Stamp
+                  if (_dragOffset.dy < -40)
+                    Positioned(
+                      top: 50,
+                      left: 0,
+                      right: 0,
+                      child: Center(
+                        child: Opacity(
+                          opacity: (-_dragOffset.dy / 100).clamp(0.0, 1.0),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 10,
                             ),
-                          ],
-                        ),
-                        child: const Text(
-                          '★ APPLY NOW',
-                          style: TextStyle(
-                            color: AppColors.star,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.star,
+                                width: 3,
+                              ),
+                              borderRadius: BorderRadius.circular(16),
+                              color: Colors.black87,
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: AppColors.starGlow,
+                                  blurRadius: 24,
+                                ),
+                              ],
+                            ),
+                            child: const Text(
+                              '★ APPLY NOW',
+                              style: TextStyle(
+                                color: AppColors.star,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       ),
-    ),
-  ),
-);
-}
+    );
+  }
 }

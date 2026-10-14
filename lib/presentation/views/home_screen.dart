@@ -80,20 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor:
-            success ? const Color(0xFF1E293B) : const Color(0xFF7F1D1D),
+        backgroundColor: success
+            ? const Color(0xFF1E293B)
+            : const Color(0xFF7F1D1D),
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Row(
           children: [
             Icon(
               success ? Icons.check_circle : Icons.error_outline,
-              color:
-                  success
-                      ? const Color(0xFF10B981)
-                      : const Color(0xFFEF4444),
+              color: success
+                  ? const Color(0xFF10B981)
+                  : const Color(0xFFEF4444),
               size: 20,
             ),
             const SizedBox(width: 10),
@@ -117,8 +115,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (item != null) {
       context.read<FavoritesProvider?>()?.addFavorite(item);
       _checkBatchDialog();
-      final success =
-          await context.read<WallpaperActionProvider>().applyAsWallpaper(item);
+      final success = await context
+          .read<WallpaperActionProvider>()
+          .applyAsWallpaper(item);
       _showApplyFeedback(success, item.title);
     }
   }
@@ -336,9 +335,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 14,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation(
-                              AppColors.cyan,
-                            ),
+                            valueColor: AlwaysStoppedAnimation(AppColors.cyan),
                           ),
                         ),
                         const SizedBox(width: 10),

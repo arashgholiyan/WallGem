@@ -124,77 +124,82 @@ void main() {
     expect(find.text('Misty Mountains'), findsNothing);
   });
 
-  testWidgets('FavoritesVaultView filters wallpapers by category chip selection', (
-    WidgetTester tester,
-  ) async {
-    final repo = StubFavoritesRepository();
-    final sample1 = const Wallpaper(
-      id: 'w1',
-      title: 'Neon Tokyo',
-      author: 'Kavinsky',
-      sourceName: 'Curated',
-      thumbUrl: 'https://thumb1.jpg',
-      fullUrl: 'https://full1.jpg',
-      resolution: '3840x2160',
-      aspectRatio: '16:9',
-      category: 'Cyberpunk',
-      dominantColors: [Colors.purple],
-    );
-    final sample2 = const Wallpaper(
-      id: 'w2',
-      title: 'Misty Mountains',
-      author: 'Ansel',
-      sourceName: 'Curated',
-      thumbUrl: 'https://thumb2.jpg',
-      fullUrl: 'https://full2.jpg',
-      resolution: '3840x2160',
-      aspectRatio: '16:9',
-      category: 'Landscape',
-      dominantColors: [Colors.green],
-    );
+  testWidgets(
+    'FavoritesVaultView filters wallpapers by category chip selection',
+    (WidgetTester tester) async {
+      final repo = StubFavoritesRepository();
+      final sample1 = const Wallpaper(
+        id: 'w1',
+        title: 'Neon Tokyo',
+        author: 'Kavinsky',
+        sourceName: 'Curated',
+        thumbUrl: 'https://thumb1.jpg',
+        fullUrl: 'https://full1.jpg',
+        resolution: '3840x2160',
+        aspectRatio: '16:9',
+        category: 'Cyberpunk',
+        dominantColors: [Colors.purple],
+      );
+      final sample2 = const Wallpaper(
+        id: 'w2',
+        title: 'Misty Mountains',
+        author: 'Ansel',
+        sourceName: 'Curated',
+        thumbUrl: 'https://thumb2.jpg',
+        fullUrl: 'https://full2.jpg',
+        resolution: '3840x2160',
+        aspectRatio: '16:9',
+        category: 'Landscape',
+        dominantColors: [Colors.green],
+      );
 
-    await repo.saveFavorite(sample1);
-    await repo.saveFavorite(sample2);
+      await repo.saveFavorite(sample1);
+      await repo.saveFavorite(sample2);
 
-    final favProvider = FavoritesProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(service: NoopWallpaperService());
-    await favProvider.loadFavorites();
+      final favProvider = FavoritesProvider(repository: repo);
+      final actionProvider = WallpaperActionProvider(
+        service: NoopWallpaperService(),
+      );
+      await favProvider.loadFavorites();
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(value: actionProvider),
-        ],
-        child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
-      ),
-    );
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
+            ChangeNotifierProvider<WallpaperActionProvider>.value(
+              value: actionProvider,
+            ),
+          ],
+          child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.text('Neon Tokyo'), findsOneWidget);
-    expect(find.text('Misty Mountains'), findsOneWidget);
+      expect(find.text('Neon Tokyo'), findsOneWidget);
+      expect(find.text('Misty Mountains'), findsOneWidget);
 
-    // Tap 'Cyberpunk' category chip
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Cyberpunk'));
-    await tester.pumpAndSettle();
+      // Tap 'Cyberpunk' category chip
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Cyberpunk'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Neon Tokyo'), findsOneWidget);
-    expect(find.text('Misty Mountains'), findsNothing);
+      expect(find.text('Neon Tokyo'), findsOneWidget);
+      expect(find.text('Misty Mountains'), findsNothing);
 
-    // Tap 'Landscape' category chip
-    await tester.tap(find.widgetWithText(ChoiceChip, 'Landscape'));
-    await tester.pumpAndSettle();
+      // Tap 'Landscape' category chip
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Landscape'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Neon Tokyo'), findsNothing);
-    expect(find.text('Misty Mountains'), findsOneWidget);
+      expect(find.text('Neon Tokyo'), findsNothing);
+      expect(find.text('Misty Mountains'), findsOneWidget);
 
-    // Tap 'All' category chip
-    await tester.tap(find.widgetWithText(ChoiceChip, 'All'));
-    await tester.pumpAndSettle();
+      // Tap 'All' category chip
+      await tester.tap(find.widgetWithText(ChoiceChip, 'All'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Neon Tokyo'), findsOneWidget);
-    expect(find.text('Misty Mountains'), findsOneWidget);
-  });
+      expect(find.text('Neon Tokyo'), findsOneWidget);
+      expect(find.text('Misty Mountains'), findsOneWidget);
+    },
+  );
 
   testWidgets('FavoritesVaultView remove action deletes item from vault', (
     WidgetTester tester,
@@ -216,14 +221,18 @@ void main() {
     await repo.saveFavorite(sample1);
 
     final favProvider = FavoritesProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(service: NoopWallpaperService());
+    final actionProvider = WallpaperActionProvider(
+      service: NoopWallpaperService(),
+    );
     await favProvider.loadFavorites();
 
     await tester.pumpWidget(
       MultiProvider(
         providers: [
           ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(value: actionProvider),
+          ChangeNotifierProvider<WallpaperActionProvider>.value(
+            value: actionProvider,
+          ),
         ],
         child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
       ),
@@ -242,53 +251,57 @@ void main() {
     expect(find.text('0 saved'), findsOneWidget);
   });
 
-  testWidgets('FavoritesVaultView shows Reset Filters when search yields empty and restores items on reset', (
-    WidgetTester tester,
-  ) async {
-    final repo = StubFavoritesRepository();
-    final sample1 = const Wallpaper(
-      id: 'w1',
-      title: 'Neon Tokyo',
-      author: 'Kavinsky',
-      sourceName: 'Curated',
-      thumbUrl: 'https://thumb1.jpg',
-      fullUrl: 'https://full1.jpg',
-      resolution: '3840x2160',
-      aspectRatio: '16:9',
-      category: 'Cyberpunk',
-      dominantColors: [Colors.purple],
-    );
+  testWidgets(
+    'FavoritesVaultView shows Reset Filters when search yields empty and restores items on reset',
+    (WidgetTester tester) async {
+      final repo = StubFavoritesRepository();
+      final sample1 = const Wallpaper(
+        id: 'w1',
+        title: 'Neon Tokyo',
+        author: 'Kavinsky',
+        sourceName: 'Curated',
+        thumbUrl: 'https://thumb1.jpg',
+        fullUrl: 'https://full1.jpg',
+        resolution: '3840x2160',
+        aspectRatio: '16:9',
+        category: 'Cyberpunk',
+        dominantColors: [Colors.purple],
+      );
 
-    await repo.saveFavorite(sample1);
+      await repo.saveFavorite(sample1);
 
-    final favProvider = FavoritesProvider(repository: repo);
-    final actionProvider = WallpaperActionProvider(service: NoopWallpaperService());
-    await favProvider.loadFavorites();
+      final favProvider = FavoritesProvider(repository: repo);
+      final actionProvider = WallpaperActionProvider(
+        service: NoopWallpaperService(),
+      );
+      await favProvider.loadFavorites();
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
-          ChangeNotifierProvider<WallpaperActionProvider>.value(value: actionProvider),
-        ],
-        child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
-      ),
-    );
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<FavoritesProvider>.value(value: favProvider),
+            ChangeNotifierProvider<WallpaperActionProvider>.value(
+              value: actionProvider,
+            ),
+          ],
+          child: const MaterialApp(home: Scaffold(body: FavoritesVaultView())),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    // Type query that matches nothing
-    await tester.enterText(find.byType(TextField), 'NonExistentTitle');
-    await tester.pumpAndSettle();
+      // Type query that matches nothing
+      await tester.enterText(find.byType(TextField), 'NonExistentTitle');
+      await tester.pumpAndSettle();
 
-    expect(find.text('No matching wallpapers'), findsOneWidget);
-    expect(find.text('Reset Filters'), findsOneWidget);
+      expect(find.text('No matching wallpapers'), findsOneWidget);
+      expect(find.text('Reset Filters'), findsOneWidget);
 
-    // Tap Reset Filters
-    await tester.tap(find.text('Reset Filters'));
-    await tester.pumpAndSettle();
+      // Tap Reset Filters
+      await tester.tap(find.text('Reset Filters'));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Neon Tokyo'), findsOneWidget);
-    expect(find.text('No matching wallpapers'), findsNothing);
-  });
+      expect(find.text('Neon Tokyo'), findsOneWidget);
+      expect(find.text('No matching wallpapers'), findsNothing);
+    },
+  );
 }
-

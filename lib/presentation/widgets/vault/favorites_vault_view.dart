@@ -198,15 +198,14 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                             wallpaper: item,
                             onTap: () => _showPreview(context, item),
                             onApply: () async {
-                              final success =
-                                  await actionProvider.applyAsWallpaper(item);
+                              final success = await actionProvider
+                                  .applyAsWallpaper(item);
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    backgroundColor:
-                                        success
-                                            ? const Color(0xFF1E293B)
-                                            : const Color(0xFF7F1D1D),
+                                    backgroundColor: success
+                                        ? const Color(0xFF1E293B)
+                                        : const Color(0xFF7F1D1D),
                                     behavior: SnackBarBehavior.floating,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -227,7 +226,9 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                             },
                             onRemove: () {
                               favProvider.removeFavorite(item.id);
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(
+                                context,
+                              ).hideCurrentSnackBar();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   backgroundColor: const Color(0xFF1E293B),
@@ -241,8 +242,8 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                                   action: SnackBarAction(
                                     label: 'UNDO',
                                     textColor: AppColors.cyan,
-                                    onPressed:
-                                        () => favProvider.addFavorite(item),
+                                    onPressed: () =>
+                                        favProvider.addFavorite(item),
                                   ),
                                   duration: const Duration(seconds: 4),
                                 ),

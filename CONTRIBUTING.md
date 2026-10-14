@@ -80,10 +80,10 @@ Before submitting your PR, make sure these three commands pass cleanly:
 # 1. Format all code cleanly
 dart format .
 
-# 2. Verify static analysis (must report zero warnings)
+# 2. Verify static analysis
 flutter analyze
 
-# 3. Run the full hermetic test harness (70 tests)
+# 3. Run the automated test suite
 flutter test
 ```
 

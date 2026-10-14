@@ -15,11 +15,7 @@ void main() {
     resolution: '3840x2160',
     aspectRatio: '16:9',
     category: 'Cyberpunk',
-    dominantColors: [
-      Color(0xFF6366F1),
-      Color(0xFFEC4899),
-      Color(0xFF10B981),
-    ],
+    dominantColors: [Color(0xFF6366F1), Color(0xFFEC4899), Color(0xFF10B981)],
   );
 
   Widget buildTestCard({Wallpaper wallpaper = sampleWallpaper}) {
@@ -51,7 +47,10 @@ void main() {
       expect(cachedImage.memCacheWidth, equals(1920));
       expect(cachedImage.fit, equals(BoxFit.cover));
       expect(cachedImage.filterQuality, equals(FilterQuality.medium));
-      expect(cachedImage.fadeInDuration, equals(const Duration(milliseconds: 250)));
+      expect(
+        cachedImage.fadeInDuration,
+        equals(const Duration(milliseconds: 250)),
+      );
     },
   );
 
@@ -71,7 +70,9 @@ void main() {
       );
       expect(repaintBoundaryFinder, findsOneWidget);
 
-      final repaintBoundary = tester.widget<RepaintBoundary>(repaintBoundaryFinder);
+      final repaintBoundary = tester.widget<RepaintBoundary>(
+        repaintBoundaryFinder,
+      );
       expect(repaintBoundary.child, equals(tester.widget(fullImageFinder)));
     },
   );
@@ -87,7 +88,8 @@ void main() {
       expect(fullImageFinder, findsOneWidget);
 
       final thumbImageFinder = find.byWidgetPredicate(
-        (w) => w is CachedNetworkImage && w.imageUrl == sampleWallpaper.thumbUrl,
+        (w) =>
+            w is CachedNetworkImage && w.imageUrl == sampleWallpaper.thumbUrl,
       );
       expect(thumbImageFinder, findsOneWidget);
 
@@ -112,7 +114,8 @@ void main() {
 
       final fullImage = tester.widget<CachedNetworkImage>(
         find.byWidgetPredicate(
-          (w) => w is CachedNetworkImage && w.imageUrl == sampleWallpaper.fullUrl,
+          (w) =>
+              w is CachedNetworkImage && w.imageUrl == sampleWallpaper.fullUrl,
         ),
       );
       expect(fullImage.placeholder, isNotNull);
@@ -147,31 +150,30 @@ void main() {
     },
   );
 
-  testWidgets(
-    'WallpaperCard errorWidget falls back to thumbnail image',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(buildTestCard());
+  testWidgets('WallpaperCard errorWidget falls back to thumbnail image', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(buildTestCard());
 
-      final fullImage = tester.widget<CachedNetworkImage>(
-        find.byWidgetPredicate(
-          (w) => w is CachedNetworkImage && w.imageUrl == sampleWallpaper.fullUrl,
-        ),
-      );
-      expect(fullImage.errorWidget, isNotNull);
+    final fullImage = tester.widget<CachedNetworkImage>(
+      find.byWidgetPredicate(
+        (w) => w is CachedNetworkImage && w.imageUrl == sampleWallpaper.fullUrl,
+      ),
+    );
+    expect(fullImage.errorWidget, isNotNull);
 
-      final errorFallback = fullImage.errorWidget!(
-        tester.element(find.byType(WallpaperCard)),
-        sampleWallpaper.fullUrl,
-        'network error',
-      );
+    final errorFallback = fullImage.errorWidget!(
+      tester.element(find.byType(WallpaperCard)),
+      sampleWallpaper.fullUrl,
+      'network error',
+    );
 
-      expect(errorFallback, isA<CachedNetworkImage>());
-      final fallbackThumb = errorFallback as CachedNetworkImage;
-      expect(fallbackThumb.imageUrl, equals(sampleWallpaper.thumbUrl));
-      expect(fallbackThumb.fit, equals(BoxFit.cover));
-      expect(fallbackThumb.filterQuality, equals(FilterQuality.low));
-    },
-  );
+    expect(errorFallback, isA<CachedNetworkImage>());
+    final fallbackThumb = errorFallback as CachedNetworkImage;
+    expect(fallbackThumb.imageUrl, equals(sampleWallpaper.thumbUrl));
+    expect(fallbackThumb.fit, equals(BoxFit.cover));
+    expect(fallbackThumb.filterQuality, equals(FilterQuality.low));
+  });
 
   testWidgets(
     'WallpaperCard displays resolution badge, source badge, title, author, and color dots',
