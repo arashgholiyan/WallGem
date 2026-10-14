@@ -16,6 +16,7 @@ import '../widgets/common/header_bar.dart';
 import '../widgets/deck/swipeable_card_stack.dart';
 import '../widgets/preview/wallpaper_preview_dialog.dart';
 import '../widgets/thumbnail_tray.dart';
+import '../widgets/common/keyboard_shortcuts_modal.dart';
 import '../widgets/vault/favorites_vault_view.dart';
 
 /// Primary application shell containing the responsive deck, Favorites Vault,
@@ -195,6 +196,17 @@ class _HomeScreenState extends State<HomeScreen> {
           final isEditingText = primaryFocus?.context?.widget is EditableText;
           if (isEditingText) return;
 
+          // Help / Shortcuts Cheatsheet (? or F1)
+          if (event.logicalKey == LogicalKeyboardKey.f1 ||
+              event.character == '?' ||
+              (HardwareKeyboard.instance.isShiftPressed &&
+                  event.logicalKey == LogicalKeyboardKey.slash)) {
+            KeyboardShortcutsModal.show(context).then((_) {
+              if (mounted) _focusNode.requestFocus();
+            });
+            return;
+          }
+
           if (!isVault) {
             if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
               _handleSwipeRight();
@@ -258,6 +270,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           interval,
                           onCycle: _handleSwipeUp,
                         ),
+                    onShowShortcuts: () {
+                      KeyboardShortcutsModal.show(context).then((_) {
+                        if (mounted) _focusNode.requestFocus();
+                      });
+                    },
                   ),
 
                   // Vault View or Deck View

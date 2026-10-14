@@ -19,6 +19,7 @@ class HeaderBar extends StatelessWidget {
   final VoidCallback? onToggleDayNight;
   final Duration? autoCycleInterval;
   final ValueChanged<Duration?>? onSelectAutoCycleInterval;
+  final VoidCallback? onShowShortcuts;
 
   const HeaderBar({
     super.key,
@@ -33,6 +34,7 @@ class HeaderBar extends StatelessWidget {
     this.onToggleDayNight,
     this.autoCycleInterval,
     this.onSelectAutoCycleInterval,
+    this.onShowShortcuts,
   });
 
   String _getSourceEmoji(String source) {
@@ -506,6 +508,18 @@ class HeaderBar extends StatelessWidget {
                                 tooltip: 'Open Wallpaper Folder',
                                 onPressed: onOpenFolder,
                               ),
+                              if (onShowShortcuts != null) ...[
+                                const SizedBox(width: 2),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_outlined,
+                                    color: AppColors.textSecondary,
+                                    size: 18,
+                                  ),
+                                  tooltip: 'Keyboard Shortcuts (?)',
+                                  onPressed: onShowShortcuts,
+                                ),
+                              ],
                             ],
                           ),
                         ],

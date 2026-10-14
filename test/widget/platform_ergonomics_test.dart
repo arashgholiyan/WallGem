@@ -14,6 +14,7 @@ import 'package:wall_gem/presentation/providers/wallpaper_action_provider.dart';
 import 'package:wall_gem/presentation/providers/wallpaper_deck_provider.dart';
 import 'package:wall_gem/presentation/widgets/batch/batch_complete_dialog.dart';
 import 'package:wall_gem/presentation/widgets/common/header_bar.dart';
+import 'package:wall_gem/presentation/widgets/common/keyboard_shortcuts_modal.dart';
 import 'package:wall_gem/presentation/widgets/palette/palette_export_modal.dart';
 import 'package:wall_gem/presentation/widgets/preview/wallpaper_preview_dialog.dart';
 import 'package:wall_gem/presentation/widgets/vault/favorites_vault_view.dart';
@@ -363,5 +364,76 @@ void main() {
         expect(folderOpened, isTrue);
       },
     );
+  });
+
+  group('KeyboardShortcutsModal Cheatsheet & Ergonomics', () {
+    testWidgets(
+      'KeyboardShortcutsModal renders sections, shortcuts, and closes on close button',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(1280, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(tester.view.resetPhysicalSize);
+
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Builder(
+                builder: (context) => ElevatedButton(
+                  onPressed: () => KeyboardShortcutsModal.show(context),
+                  child: const Text('Show Shortcuts'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Show Shortcuts'));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(KeyboardShortcutsModal), findsOneWidget);
+        expect(find.text('Keyboard Shortcuts'), findsOneWidget);
+        expect(find.text('🃏 Swipe Deck Navigation'), findsOneWidget);
+        expect(find.text('🏛️ Favorites Vault & Search'), findsOneWidget);
+        expect(find.text('⚡ General Controls'), findsOneWidget);
+
+        // Tap close icon button
+        await tester.tap(find.byIcon(Icons.close));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(KeyboardShortcutsModal), findsNothing);
+      },
+    );
+
+    testWidgets('KeyboardShortcutsModal dismisses on Escape key press', (
+      WidgetTester tester,
+    ) async {
+      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => ElevatedButton(
+                onPressed: () => KeyboardShortcutsModal.show(context),
+                child: const Text('Show Shortcuts'),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Show Shortcuts'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(KeyboardShortcutsModal), findsOneWidget);
+
+      // Send ESC key
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(KeyboardShortcutsModal), findsNothing);
+    });
   });
 }
