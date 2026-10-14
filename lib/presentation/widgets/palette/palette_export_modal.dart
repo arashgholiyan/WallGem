@@ -67,239 +67,256 @@ class _PaletteExportModalState extends State<PaletteExportModal> {
         ? widget.wallpaper.dominantColors
         : PaletteFormatService.fallbackPalette;
 
-    return Dialog(
-      backgroundColor: const Color(0xFF131722),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: AppColors.border),
-      ),
-      insetPadding: const EdgeInsets.all(24),
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 620, maxHeight: 600),
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Text('🎨', style: TextStyle(fontSize: 20)),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Dynamic Palette Exporter',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+    return Focus(
+      autofocus: true,
+      onKeyEvent: (node, event) {
+        if (event is KeyDownEvent &&
+            event.logicalKey == LogicalKeyboardKey.escape) {
+          Navigator.of(context).pop();
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: Dialog(
+        backgroundColor: const Color(0xFF131722),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: AppColors.border),
+        ),
+        insetPadding: const EdgeInsets.all(24),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 620, maxHeight: 600),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          Text(
-                            widget.wallpaper.title,
-                            style: const TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 12,
-                            ),
+                          child: const Text(
+                            '🎨',
+                            style: TextStyle(fontSize: 20),
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  IconButton(
-                    icon: const Icon(
-                      Icons.close,
-                      color: AppColors.textSecondary,
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 18),
-
-              // Swatch Row
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: colors.map((c) {
-                  final hex =
-                      '#${(c.toARGB32() & 0x00FFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
-                  return Tooltip(
-                    message: 'Click to copy $hex',
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(16),
-                      onTap: () {
-                        Clipboard.setData(ClipboardData(text: hex));
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            backgroundColor: const Color(0xFF1E293B),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            content: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    color: c,
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Text('Copied $hex to clipboard!'),
-                              ],
-                            ),
-                            duration: const Duration(seconds: 2),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
                         ),
-                        decoration: BoxDecoration(
-                          color: c.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: c.withValues(alpha: 0.6)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 14,
-                              height: 14,
-                              decoration: BoxDecoration(
-                                color: c,
-                                shape: BoxShape.circle,
+                            const Text(
+                              'Dynamic Palette Exporter',
+                              style: TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            const SizedBox(width: 6),
                             Text(
-                              hex,
-                              style: TextStyle(
-                                color: Colors.white.withValues(alpha: 0.9),
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'monospace',
+                              widget.wallpaper.title,
+                              style: const TextStyle(
+                                color: AppColors.textSecondary,
+                                fontSize: 12,
                               ),
                             ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 16),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.close,
+                        color: AppColors.textSecondary,
+                      ),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 18),
 
-              // Format Selector Tabs
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: ExportFormat.values.map((fmt) {
-                    final isSelected = _selectedFormat == fmt;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: ChoiceChip(
-                        label: Text(fmt.label),
-                        selected: isSelected,
-                        selectedColor: AppColors.primary,
-                        backgroundColor: const Color(0xFF1E2235),
-                        labelStyle: TextStyle(
-                          color: isSelected
-                              ? Colors.white
-                              : AppColors.textSecondary,
-                          fontSize: 12,
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                        ),
-                        side: BorderSide(
-                          color: isSelected
-                              ? AppColors.primary
-                              : AppColors.border,
-                        ),
-                        onSelected: (_) {
-                          setState(() => _selectedFormat = fmt);
+                // Swatch Row
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: colors.map((c) {
+                    final hex =
+                        '#${(c.toARGB32() & 0x00FFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
+                    return Tooltip(
+                      message: 'Click to copy $hex',
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () {
+                          Clipboard.setData(ClipboardData(text: hex));
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: const Color(0xFF1E293B),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              content: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    width: 12,
+                                    height: 12,
+                                    decoration: BoxDecoration(
+                                      color: c,
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text('Copied $hex to clipboard!'),
+                                ],
+                              ),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
                         },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: c.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: c.withValues(alpha: 0.6)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 14,
+                                height: 14,
+                                decoration: BoxDecoration(
+                                  color: c,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                hex,
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.9),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'monospace',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
                   }).toList(),
                 ),
-              ),
-              const SizedBox(height: 14),
+                const SizedBox(height: 16),
 
-              // Code Output Container
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF090C14),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
+                // Format Selector Tabs
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: ExportFormat.values.map((fmt) {
+                      final isSelected = _selectedFormat == fmt;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: ChoiceChip(
+                            label: Text(fmt.label),
+                            selected: isSelected,
+                            selectedColor: AppColors.primary,
+                            backgroundColor: const Color(0xFF1E2235),
+                            labelStyle: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : AppColors.textSecondary,
+                              fontSize: 12,
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                            ),
+                            side: BorderSide(
+                              color: isSelected
+                                  ? AppColors.primary
+                                  : AppColors.border,
+                            ),
+                            onSelected: (_) {
+                              setState(() => _selectedFormat = fmt);
+                            },
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                  child: SingleChildScrollView(
-                    child: SelectableText(
-                      _getFormattedCode(),
-                      style: const TextStyle(
-                        color: Color(0xFFE2E8F0),
-                        fontFamily: 'monospace',
-                        fontSize: 12,
-                        height: 1.5,
+                ),
+                const SizedBox(height: 14),
+
+                // Code Output Container
+                Expanded(
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF090C14),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: SingleChildScrollView(
+                      child: SelectableText(
+                        _getFormattedCode(),
+                        style: const TextStyle(
+                          color: Color(0xFFE2E8F0),
+                          fontFamily: 'monospace',
+                          fontSize: 12,
+                          height: 1.5,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
 
-              // Bottom Actions
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _copied
-                          ? AppColors.like
-                          : AppColors.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
+                // Bottom Actions
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _copied
+                            ? AppColors.like
+                            : AppColors.primary,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      icon: Icon(_copied ? Icons.check : Icons.copy, size: 16),
+                      label: Text(
+                        _copied ? 'Copied to Clipboard!' : 'Copy to Clipboard',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
+                      onPressed: _copyToClipboard,
                     ),
-                    icon: Icon(_copied ? Icons.check : Icons.copy, size: 16),
-                    label: Text(
-                      _copied ? 'Copied to Clipboard!' : 'Copy to Clipboard',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: _copyToClipboard,
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

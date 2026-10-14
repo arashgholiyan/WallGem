@@ -9,6 +9,7 @@ import 'data/services/wallpaper_service_factory.dart';
 import 'domain/repositories/i_favorites_repository.dart';
 import 'domain/repositories/i_wallpaper_repository.dart';
 import 'domain/services/i_wallpaper_service.dart';
+import 'core/theme/desktop_scroll_behavior.dart';
 import 'presentation/providers/favorites_provider.dart';
 import 'presentation/providers/wallpaper_action_provider.dart';
 import 'presentation/providers/wallpaper_deck_provider.dart';
@@ -70,6 +71,7 @@ class WallGemApp extends StatelessWidget {
         title: AppConstants.appName,
         debugShowCheckedModeBanner: false,
         theme: AppTheme.darkTheme,
+        scrollBehavior: const DesktopScrollBehavior(),
         home: const HomeScreen(),
       ),
     );

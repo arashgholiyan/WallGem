@@ -63,32 +63,35 @@ class HeaderBar extends StatelessWidget {
   }
 
   Widget _buildViewSegment(String label, bool isSelected, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOutCubic,
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: AppColors.primary.withValues(alpha: 0.4),
-                    blurRadius: 10,
-                    offset: const Offset(0, 1),
-                  ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 11.5,
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-            color: isSelected ? Colors.white : AppColors.textSecondary,
-            letterSpacing: 0.2,
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOutCubic,
+          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 5),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.4),
+                      blurRadius: 10,
+                      offset: const Offset(0, 1),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 11.5,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
+              color: isSelected ? Colors.white : AppColors.textSecondary,
+              letterSpacing: 0.2,
+            ),
           ),
         ),
       ),
@@ -119,8 +122,8 @@ class HeaderBar extends StatelessWidget {
             children: [
               LayoutBuilder(
                 builder: (context, constraints) {
-                  final isCompact = constraints.maxWidth < 950;
-                  final isUltraCompact = constraints.maxWidth < 650;
+                  final isCompact = constraints.maxWidth < 740;
+                  final isUltraCompact = constraints.maxWidth < 580;
 
                   return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -436,48 +439,61 @@ class HeaderBar extends StatelessWidget {
                               const SizedBox(width: 8),
 
                               // Batch Progress & Folder
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.like.withValues(alpha: 0.08),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: AppColors.like.withValues(
-                                      alpha: 0.25,
-                                    ),
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    SizedBox(
-                                      width: isUltraCompact ? 35 : 55,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(4),
-                                        child: LinearProgressIndicator(
-                                          value: progress,
-                                          backgroundColor: Colors.white12,
-                                          valueColor:
-                                              const AlwaysStoppedAnimation(
-                                                AppColors.like,
-                                              ),
-                                          minHeight: 4,
+                              MouseRegion(
+                                cursor: SystemMouseCursors.click,
+                                child: GestureDetector(
+                                  onTap: onOpenFolder,
+                                  child: Tooltip(
+                                    message:
+                                        'Open Wallpaper Slideshow Folder ($likedCount / ${AppConstants.batchTarget})',
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 5,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.like.withValues(
+                                          alpha: 0.08,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
+                                        border: Border.all(
+                                          color: AppColors.like.withValues(
+                                            alpha: 0.25,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      '$likedCount / ${AppConstants.batchTarget}',
-                                      style: const TextStyle(
-                                        fontSize: 10.5,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.like,
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                            width: isUltraCompact ? 35 : 55,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              child: LinearProgressIndicator(
+                                                value: progress,
+                                                backgroundColor: Colors.white12,
+                                                valueColor:
+                                                    const AlwaysStoppedAnimation(
+                                                      AppColors.like,
+                                                    ),
+                                                minHeight: 4,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            '$likedCount / ${AppConstants.batchTarget}',
+                                            style: const TextStyle(
+                                              fontSize: 10.5,
+                                              fontWeight: FontWeight.bold,
+                                              color: AppColors.like,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 2),

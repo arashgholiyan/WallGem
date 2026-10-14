@@ -154,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ).then((_) {
         _dialogOpen = false;
+        if (mounted) _focusNode.requestFocus();
       });
     }
   }
@@ -161,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _showPreview(Wallpaper wallpaper) {
     showDialog(
       context: context,
+      barrierDismissible: true,
       builder: (ctx) => WallpaperPreviewDialog(
         wallpaper: wallpaper,
         onApply: () async {
@@ -170,7 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
           _showApplyFeedback(success, wallpaper.title);
         },
       ),
-    );
+    ).then((_) {
+      if (mounted) _focusNode.requestFocus();
+    });
   }
 
   @override
@@ -185,20 +189,30 @@ class _HomeScreenState extends State<HomeScreen> {
       focusNode: _focusNode,
       autofocus: true,
       onKeyEvent: (event) {
-        if (event is KeyDownEvent && !isVault) {
-          if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-            _handleSwipeRight();
-          } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-            _handleSwipeLeft();
-          } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-            _handleSwipeUp();
-          } else if (event.logicalKey == LogicalKeyboardKey.keyZ) {
-            _handleUndo();
-          } else if (event.logicalKey == LogicalKeyboardKey.space &&
-              deckProvider.topCard != null) {
-            _showPreview(deckProvider.topCard!);
-          } else if (event.logicalKey == LogicalKeyboardKey.keyR) {
-            deckProvider.loadInitialFeed();
+        if (event is KeyDownEvent) {
+          // Guard: if primary focus is currently inside an EditableText (e.g. search bar), do not swallow hotkeys!
+          final primaryFocus = FocusManager.instance.primaryFocus;
+          final isEditingText = primaryFocus?.context?.widget is EditableText;
+          if (isEditingText) return;
+
+          if (!isVault) {
+            if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+              _handleSwipeRight();
+            } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              _handleSwipeLeft();
+            } else if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+              _handleSwipeUp();
+            } else if (event.logicalKey == LogicalKeyboardKey.keyZ) {
+              _handleUndo();
+            } else if (event.logicalKey == LogicalKeyboardKey.space &&
+                deckProvider.topCard != null) {
+              _showPreview(deckProvider.topCard!);
+            } else if (event.logicalKey == LogicalKeyboardKey.keyR) {
+              deckProvider.loadInitialFeed();
+            }
+          } else if (event.logicalKey == LogicalKeyboardKey.escape) {
+            deckProvider.setViewMode(ViewMode.deck);
+            _focusNode.requestFocus();
           }
         }
       },
@@ -229,7 +243,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     onSelectSource: (source) => deckProvider.setSource(source),
                     onOpenFolder: () => actionProvider.openFolder(),
                     activeViewMode: deckProvider.viewMode,
-                    onSelectViewMode: (mode) => deckProvider.setViewMode(mode),
+                    onSelectViewMode: (mode) {
+                      deckProvider.setViewMode(mode);
+                      if (mode == ViewMode.deck) {
+                        _focusNode.requestFocus();
+                      }
+                    },
                     favoritesCount: favProvider?.favorites.length ?? 0,
                     isDayNightEnabled: deckProvider.isDayNightModeEnabled,
                     onToggleDayNight: () => deckProvider.toggleDayNightMode(),

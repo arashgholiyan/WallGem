@@ -77,6 +77,23 @@ for (var i=0; i<allDesktops.length; i++) {
       if (rNitrogen.exitCode == 0) return true;
     } catch (_) {}
 
+    // 6. swww (Wayland / Hyprland / Sway)
+    try {
+      final rSwww = await runner('swww', ['img', filePath]);
+      if (rSwww.exitCode == 0) return true;
+    } catch (_) {}
+
+    // 7. hyprctl hyprpaper (Hyprland native)
+    try {
+      await runner('hyprctl', ['hyprpaper', 'preload', filePath]);
+      final rHypr = await runner('hyprctl', [
+        'hyprpaper',
+        'wallpaper',
+        ',$filePath',
+      ]);
+      if (rHypr.exitCode == 0) return true;
+    } catch (_) {}
+
     debugPrint('LinuxWallpaperService: No supported desktop setter found.');
     return false;
   }
