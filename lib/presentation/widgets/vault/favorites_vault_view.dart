@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/app_constants.dart';
@@ -49,89 +50,160 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Search & Filter Header
+          // Raycast / Linear Command Bar Search & Filter Header
           Row(
             children: [
               Expanded(
-                child: Container(
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF161B2A),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.border),
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.search,
-                        color: AppColors.textSecondary,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                    child: Container(
+                      height: 44,
+                      decoration: BoxDecoration(
+                        color: const Color(0xE6141826),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: _searchController.text.isNotEmpty
+                              ? AppColors.primary.withValues(alpha: 0.6)
+                              : Colors.white.withValues(alpha: 0.12),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
                           ),
-                          decoration: const InputDecoration(
-                            hintText:
-                                'Search favorites by title, artist, or tags...',
-                            hintStyle: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontSize: 13,
+                          if (_searchController.text.isNotEmpty)
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.15),
+                              blurRadius: 10,
                             ),
-                            border: InputBorder.none,
-                            isDense: true,
-                          ),
-                          onChanged: (val) => favProvider.setSearchKeyword(val),
-                        ),
+                        ],
                       ),
-                      if (_searchController.text.isNotEmpty)
-                        IconButton(
-                          tooltip: 'Clear search',
-                          icon: const Icon(
-                            Icons.close,
-                            size: 16,
-                            color: AppColors.textSecondary,
+                      padding: const EdgeInsets.symmetric(horizontal: 14),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.search_rounded,
+                            color: _searchController.text.isNotEmpty
+                                ? AppColors.cyan
+                                : AppColors.textSecondary,
+                            size: 20,
                           ),
-                          onPressed: () {
-                            _searchController.clear();
-                            favProvider.setSearchKeyword('');
-                          },
-                        ),
-                    ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: TextField(
+                              controller: _searchController,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              decoration: const InputDecoration(
+                                hintText:
+                                    'Search favorites by title, artist, or tags...',
+                                hintStyle: TextStyle(
+                                  color: AppColors.textMuted,
+                                  fontSize: 13,
+                                ),
+                                border: InputBorder.none,
+                                isDense: true,
+                              ),
+                              onChanged: (val) {
+                                setState(() {});
+                                favProvider.setSearchKeyword(val);
+                              },
+                            ),
+                          ),
+                          if (_searchController.text.isNotEmpty)
+                            IconButton(
+                              tooltip: 'Clear search',
+                              icon: const Icon(
+                                Icons.close_rounded,
+                                size: 17,
+                                color: AppColors.textSecondary,
+                              ),
+                              onPressed: () {
+                                _searchController.clear();
+                                favProvider.setSearchKeyword('');
+                                setState(() {});
+                              },
+                            )
+                          else
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2.5,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withValues(alpha: 0.07),
+                                borderRadius: BorderRadius.circular(5),
+                                border: Border.all(
+                                  color: Colors.white.withValues(alpha: 0.12),
+                                  width: 0.8,
+                                ),
+                              ),
+                              child: const Text(
+                                '⌘K',
+                                style: TextStyle(
+                                  color: AppColors.textMuted,
+                                  fontSize: 10.5,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.4,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(width: 12),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    const Text('🏛️', style: TextStyle(fontSize: 14)),
-                    const SizedBox(width: 6),
-                    Text(
-                      '${favorites.length} saved',
-                      style: const TextStyle(
-                        color: AppColors.primaryLight,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primary.withValues(alpha: 0.15),
+                          AppColors.secondary.withValues(alpha: 0.10),
+                        ],
                       ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.35),
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.primary.withValues(alpha: 0.12),
+                          blurRadius: 10,
+                        ),
+                      ],
                     ),
-                  ],
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('🏛️', style: TextStyle(fontSize: 15)),
+                        const SizedBox(width: 7),
+                        Text(
+                          '${favorites.length} saved',
+                          style: const TextStyle(
+                            color: AppColors.primaryLight,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -150,18 +222,28 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                     label: Text(cat),
                     selected: isSelected,
                     selectedColor: AppColors.primary,
-                    backgroundColor: const Color(0xFF161B2A),
+                    backgroundColor: const Color(0x99161B2A),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4,
+                      vertical: 2,
+                    ),
                     labelStyle: TextStyle(
                       color: isSelected
                           ? Colors.white
                           : AppColors.textSecondary,
-                      fontSize: 11,
+                      fontSize: 11.5,
                       fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+                          ? FontWeight.w700
+                          : FontWeight.w500,
+                      letterSpacing: 0.2,
                     ),
                     side: BorderSide(
-                      color: isSelected ? AppColors.primary : AppColors.border,
+                      color: isSelected
+                          ? const Color(0xFFA5B4FC).withValues(alpha: 0.7)
+                          : Colors.white.withValues(alpha: 0.08),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     onSelected: (_) => favProvider.setSelectedCategory(cat),
                   ),
@@ -251,11 +333,11 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
                             },
                             onSplit: () {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                                const SnackBar(
                                   content: Text(
                                     'Multi-Monitor Split: Dual-display assets prepared in Pictures/WallGem/MultiMonitor',
                                   ),
-                                  backgroundColor: const Color(0xFF1E2235),
+                                  backgroundColor: Color(0xFF1E2235),
                                 ),
                               );
                             },
@@ -274,61 +356,117 @@ class _FavoritesVaultViewState extends State<FavoritesVaultView> {
     final hasAnyFavorites = provider.favorites.isNotEmpty;
 
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            hasAnyFavorites ? '🔍' : '🏛️',
-            style: const TextStyle(fontSize: 48),
-          ),
-          const SizedBox(height: 14),
-          Text(
-            hasAnyFavorites ? 'No matching wallpapers' : 'Your Vault is Empty',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(24),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 36),
+            decoration: BoxDecoration(
+              color: const Color(0xD9121624),
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.08)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 72,
+                  height: 72,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.05),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.1),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      hasAnyFavorites ? '🔍' : '🏛️',
+                      style: const TextStyle(fontSize: 34),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  hasAnyFavorites
+                      ? 'No matching wallpapers'
+                      : 'Your Vault is Empty',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 380),
+                  child: Text(
+                    hasAnyFavorites
+                        ? 'Try adjusting your search query or category filter.'
+                        : 'Like or star wallpapers in the 3D Deck to preserve them in your offline vault.',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 13,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    elevation: 4,
+                    shadowColor: AppColors.primary.withValues(alpha: 0.4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                  icon: Icon(
+                    hasAnyFavorites
+                        ? Icons.clear_all_rounded
+                        : Icons.view_carousel_rounded,
+                    size: 18,
+                  ),
+                  label: Text(
+                    hasAnyFavorites ? 'Reset Filters' : 'Explore 3D Deck',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  onPressed: () {
+                    if (hasAnyFavorites) {
+                      _searchController.clear();
+                      provider.setSearchKeyword('');
+                      provider.setSelectedCategory('All');
+                      setState(() {});
+                    } else {
+                      context.read<WallpaperDeckProvider>().setViewMode(
+                        ViewMode.deck,
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            hasAnyFavorites
-                ? 'Try adjusting your search query or category filter.'
-                : 'Like or star wallpapers in the 3D Deck to preserve them in your offline vault.',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            icon: Icon(hasAnyFavorites ? Icons.clear_all : Icons.view_carousel),
-            label: Text(
-              hasAnyFavorites ? 'Reset Filters' : 'Explore 3D Deck',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            onPressed: () {
-              if (hasAnyFavorites) {
-                _searchController.clear();
-                provider.setSearchKeyword('');
-                provider.setSelectedCategory('All');
-              } else {
-                context.read<WallpaperDeckProvider>().setViewMode(
-                  ViewMode.deck,
-                );
-              }
-            },
-          ),
-        ],
+        ),
       ),
     );
   }

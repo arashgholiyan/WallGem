@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
@@ -12,16 +13,34 @@ class WallpaperCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accentColor = wallpaper.dominantColors.isNotEmpty
+        ? wallpaper.dominantColors.first
+        : AppColors.primary;
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.border),
-        boxShadow: const [
-          BoxShadow(
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.12),
+          width: 1,
+        ),
+        boxShadow: [
+          const BoxShadow(
             color: Colors.black87,
             blurRadius: 40,
             offset: Offset(0, 20),
+          ),
+          BoxShadow(
+            color: accentColor.withValues(alpha: 0.25),
+            blurRadius: 50,
+            spreadRadius: -4,
+            offset: const Offset(0, 10),
+          ),
+          BoxShadow(
+            color: accentColor.withValues(alpha: 0.12),
+            blurRadius: 24,
+            spreadRadius: 0,
           ),
         ],
       ),
@@ -109,68 +128,98 @@ class WallpaperCard extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(24, 48, 24, 20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [Colors.black, Colors.transparent],
-                ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(24),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          wallpaper.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          wallpaper.author,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(24, 36, 24, 20),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withValues(alpha: 0.88),
+                        Colors.black.withValues(alpha: 0.45),
+                        Colors.transparent,
                       ],
+                      stops: const [0.0, 0.7, 1.0],
+                    ),
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.white.withValues(alpha: 0.08),
+                        width: 0.8,
+                      ),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  if (wallpaper.dominantColors.isNotEmpty)
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: wallpaper.dominantColors
-                          .map(
-                            (c) => Container(
-                              margin: const EdgeInsets.only(left: 6),
-                              width: 12,
-                              height: 12,
-                              decoration: BoxDecoration(
-                                color: c,
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white38),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              wallpaper.title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                letterSpacing: -0.2,
                               ),
                             ),
-                          )
-                          .toList(),
-                    ),
-                ],
+                            const SizedBox(height: 4),
+                            Text(
+                              wallpaper.author,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      if (wallpaper.dominantColors.isNotEmpty)
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: wallpaper.dominantColors
+                              .map(
+                                (c) => Container(
+                                  margin: const EdgeInsets.only(left: 6),
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: c,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.white.withValues(
+                                        alpha: 0.5,
+                                      ),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: c.withValues(alpha: 0.5),
+                                        blurRadius: 6,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
