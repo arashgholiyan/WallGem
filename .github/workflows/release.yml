@@ -9,7 +9,7 @@ on:
       tag_name:
         description: 'Release tag to attach binaries to (e.g., v1.2.0)'
         required: false
-        default: 'v1.2.0'
+        default: 'v1.3.0'
 
 permissions:
   contents: write

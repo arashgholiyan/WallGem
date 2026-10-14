@@ -24,16 +24,16 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.2.0/wall-gem-windows-x64.zip">
-    <img src="https://img.shields.io/badge/Windows-v1.2.0_Portable_(.zip)-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Download Windows Release" />
+  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.3.0/wall-gem-windows-x64.zip">
+    <img src="https://img.shields.io/badge/Windows-v1.3.0_Portable_(.zip)-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Download Windows Release" />
   </a>
   &nbsp;
-  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.2.0/wall-gem-linux-x64.tar.gz">
-    <img src="https://img.shields.io/badge/Linux-v1.2.0_GTK_(.tar.gz)-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Download Linux Release" />
+  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.3.0/wall-gem-linux-x64.tar.gz">
+    <img src="https://img.shields.io/badge/Linux-v1.3.0_GTK_(.tar.gz)-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Download Linux Release" />
   </a>
   &nbsp;
-  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.2.0/wall-gem-macos-x64.zip">
-    <img src="https://img.shields.io/badge/macOS-v1.2.0_Universal_(.zip)-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Download macOS Release" />
+  <a href="https://github.com/arashgholiyan/wall-gem/releases/download/v1.3.0/wall-gem-macos-x64.zip">
+    <img src="https://img.shields.io/badge/macOS-v1.3.0_Universal_(.zip)-000000?style=for-the-badge&logo=apple&logoColor=white" alt="Download macOS Release" />
   </a>
 </p>
 

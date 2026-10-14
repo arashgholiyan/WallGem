@@ -2,7 +2,7 @@ name: wall_gem
 description: "A fast, gesture-driven 4K wallpaper discovery and slideshow application."
 publish_to: 'none'
 
-version: 1.2.0+3
+version: 1.3.0+4
 
 environment:
   sdk: ^3.10.8
